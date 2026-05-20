@@ -7,6 +7,7 @@ from pathlib import Path
 from sentence_transformers import SentenceTransformer
 import faiss
 import requests
+from answer_cards import match_answer_card
 
 # Find the chatbot root directory
 CHATBOT_ROOT = Path(__file__).parent
@@ -87,7 +88,8 @@ def keyword_intent_fallback(question):
     if any(x in q for x in [
         "pravna pomoc", "alimentacija", "otmica", "medjunarodna pravna",
         "dijete", "djeteta", "djece", "vidjanje", "vracanje",
-        "prijavim", "prijaviti"
+        "prijavim", "prijaviti", "nestalo dijete", "nestalo dete", "vidim necije dijete", "vidim nečije dijete",
+"izgubljeno dijete", "sumnjam na otmicu"
     ]):
         return "pravna_pomoc"
 
@@ -158,6 +160,9 @@ def infer_query_topic(question):
 
 
 DIRECT_ROUTE_RULES = [
+    (["trenutni", "ministar", "pravde"], "https://mpr.gov.ba/bs/ministar-pravde-bih"),
+    (["ko", "ministar", "pravde"], "https://mpr.gov.ba/bs/ministar-pravde-bih"),
+    (["ministar", "pravde"], "https://mpr.gov.ba/bs/ministar-pravde-bih"),
     (["osnovat", "udruzenj"], "https://mpr.gov.ba/bs/kako-osnovati-udruzenje"),
     (["statut", "udruzenj"], "https://mpr.gov.ba/bs/kako-osnovati-udruzenje"),
     (["papiri", "udruzenj"], "https://mpr.gov.ba/bs/potrebna-dokumentacija"),
@@ -561,13 +566,272 @@ Odgovor:
     except Exception as e:
         return None
 
+def detect_question_goal(question):
+    q = norm(question)
+
+    if any(x in q for x in ["kako", "na koji nacin", "procedura", "postupak"]):
+        return "procedure"
+
+    if any(x in q for x in ["sta treba", "šta treba", "dokumenti", "dokumentacija", "papiri", "priloziti", "priložiti"]):
+        return "requirements"
+
+    if any(x in q for x in ["koliko", "kosta", "košta", "cijena", "taksa", "troskovi", "troškovi", "uplata"]):
+        return "fee"
+
+    if any(x in q for x in ["kontakt", "telefon", "email", "mail", "kome", "gdje da se javim", "obratim"]):
+        return "contact"
+
+    if any(x in q for x in ["obrazac", "formular", "formulari", "prijava"]):
+        return "form"
+
+    if any(x in q for x in ["ko je", "sta je", "šta je", "definisi", "definiši", "znaci", "znači"]):
+        return "definition"
+
+    if any(x in q for x in ["rok", "kada", "kad", "termin", "datum"]):
+        return "date"
+
+    return "general"
+
+
+def normalize_fact_text(text):
+    text = str(text)
+    text = clean_scraped_text(text)
+
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"\s+([,.!?;:])", r"\1", text)
+    text = re.sub(r"([.!?])([A-ZČĆŠĐŽ])", r"\1 \2", text)
+
+    text = text.strip(" -•|;\n\t")
+
+    # ukloni početne oznake iz lista: a), b), 1), -
+    text = re.sub(r"^[a-z]\)\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^\d+[\).\s]+", "", text)
+    text = re.sub(r"^[-•]\s*", "", text)
+
+    if text:
+        text = text[0].upper() + text[1:]
+
+    return text.strip()
+
+
+def split_into_fact_candidates(text):
+    text = clean_scraped_text(text)
+
+    # čuvamo i rečenice i liste
+    parts = re.split(
+        r"(?<=[.!?])\s+|\n+|\s+(?=[a-z]\)\s)|\s+(?=\d+[\).]\s)|\s+[-•]\s+",
+        text
+    )
+
+    facts = []
+
+    for part in parts:
+        fact = normalize_fact_text(part)
+
+        if len(fact) < 35:
+            continue
+
+        if len(fact) > 450:
+            fact = fact[:450].rsplit(" ", 1)[0] + "."
+
+        bad_patterns = [
+            "hrvatski bosanski",
+            "english",
+            "početna",
+            "pocetna",
+            "oblasti rada",
+            "zakoni/ugovori",
+            "projekti/strategije",
+            "publikacije/priručnici",
+            "tenderi/javni oglasi",
+        ]
+
+        if any(bad in norm(fact) for bad in bad_patterns):
+            continue
+
+        facts.append(fact)
+
+    return facts
+
+
+def fact_score(question, fact, source):
+    q = norm(question)
+    f = norm(fact)
+
+    q_tokens = [t for t in re.findall(r"\w+", q) if len(t) >= 4]
+
+    score = 0.0
+
+    for token in q_tokens:
+        if token in f:
+            score += 1.0
+
+    goal = detect_question_goal(question)
+    page_type = str(source.get("page_type", ""))
+
+    goal_keywords = {
+        "procedure": ["postupak", "podnosi", "podnijeti", "zahtjev", "prijava", "registracija", "upis"],
+        "requirements": ["potrebno", "prilaže", "prilaze", "dokument", "obrazac", "statut", "odluka", "dokaz"],
+        "fee": ["km", "taksa", "pristojba", "uplata", "račun", "racun", "troš", "tros"],
+        "contact": ["telefon", "email", "e-mail", "kontakt", "fax", "faks"],
+        "form": ["obrazac", "formular", "zahtjev", "prijava"],
+        "definition": ["je", "predstavlja", "znači", "znaci", "podrazumijeva"],
+        "date": ["termin", "datum", "rok", "godine"],
+    }
+
+    for kw in goal_keywords.get(goal, []):
+        if kw in f:
+            score += 2.0
+
+    if goal == page_type:
+        score += 2.5
+
+    if len(fact) > 220:
+        score -= 0.5
+
+    if fact.count(",") > 8:
+        score -= 0.5
+
+    return score
+
+
+def extract_relevant_facts(question, results, max_facts=7):
+    scored = []
+    seen = set()
+
+    for source_rank, source in enumerate(results[:4]):
+        text = source.get("text", "")
+        facts = split_into_fact_candidates(text)
+
+        for fact in facts:
+            key = norm(fact)[:180]
+
+            if key in seen:
+                continue
+
+            seen.add(key)
+
+            score = fact_score(question, fact, source)
+
+            # blagi bonus za viši retrieval rank
+            score += max(0, 1.5 - source_rank * 0.4)
+
+            if score > 0:
+                scored.append((score, fact, source))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+
+    return scored[:max_facts]
+
+
+def make_fact_readable(fact):
+    fact = normalize_fact_text(fact)
+
+    replacements = {
+        "podnosilac zahtjeva": "podnosilac zahtjeva",
+        "podnositelj zahtjeva": "podnosilac zahtjeva",
+        "ovjerenu": "ovjerenu",
+        "u składu": "u skladu",
+        "pristojbe": "takse",
+        "pristojba": "taksa",
+    }
+
+    for old, new in replacements.items():
+        fact = fact.replace(old, new)
+
+    return fact
+
+
+def compose_natural_answer(question, results, intent=None):
+    goal = detect_question_goal(question)
+    facts = extract_relevant_facts(question, results, max_facts=7)
+
+    if not facts:
+        return (
+            "Pronašla sam relevantne izvore, ali u njima nema dovoljno jasno izdvojenih informacija "
+            "da bih sigurno formulisala odgovor. Najbolje je provjeriti izvore ispod."
+        )
+
+    clean_facts = [make_fact_readable(fact) for _, fact, _ in facts]
+
+    intro_by_goal = {
+        "procedure": "Postupak se može sažeti ovako:",
+        "requirements": "Za ovaj postupak potrebno je pripremiti sljedeće:",
+        "fee": "Prema dostupnim informacijama, za ovo pitanje su relevantni sljedeći iznosi ili podaci o uplati:",
+        "contact": "Za ovu oblast možeš koristiti sljedeće kontakt informacije:",
+        "form": "Za ovaj postupak relevantni su sljedeći obrasci ili zahtjevi:",
+        "definition": "Prema dostupnim informacijama:",
+        "date": "Prema dostupnim informacijama o terminima i rokovima:",
+        "general": "Prema dostupnim informacijama:"
+    }
+
+    answer = intro_by_goal.get(goal, "Prema dostupnim informacijama:")
+
+    if goal == "contact":
+        contact_text = " ".join(clean_facts)
+        phones = list(dict.fromkeys(re.findall(
+            r"(?:\+387\s?)?(?:\d{2,3}[\s/-]?){2,5}\d{2,3}",
+            contact_text
+        )))
+        emails = list(dict.fromkeys(re.findall(r"[\w\.-]+@[\w\.-]+", contact_text)))
+
+        details = []
+        if phones:
+            details.append("Telefon: " + ", ".join(phones[:3]))
+        if emails:
+            details.append("E-mail: " + ", ".join(emails[:3]))
+
+        if details:
+            return answer + "\n\n" + "\n".join(details)
+
+    if goal == "fee":
+        money_facts = [f for f in clean_facts if re.search(r"\d+[.,]?\d*\s*KM", f)]
+
+        if money_facts:
+            answer += "\n\n"
+            answer += "\n".join([f"- {f}" for f in money_facts[:5]])
+            return answer
+
+    # za procedure/requirements/form/general koristi kratku listu, ali čistu
+    selected = clean_facts[:5]
+
+    # ako je samo jedna dobra činjenica, napiši kao pasus
+    if len(selected) == 1:
+        return answer + "\n\n" + selected[0]
+
+    answer += "\n\n"
+    answer += "\n".join([f"- {fact}" for fact in selected])
+
+    return answer
+
+
+def answer_quality_is_bad(answer):
+    a = norm(answer)
+
+    bad_signals = [
+        "hrvatski bosanski",
+        "oblasti rada",
+        "zakoni/ugovori",
+        "projekti/strategije",
+        "publikacije/prirucnici",
+        "prema dostupnim informacijama:\n- stupku",
+    ]
+
+    if any(signal in a for signal in bad_signals):
+        return True
+
+    if len(answer.strip()) < 50:
+        return True
+
+    return False
+
 def generate_answer(question, results, intent=None, confidence=0.0):
     if not results:
         if intent == "needs_clarification":
             return {
                 "answer": (
-                    "Nisam sigurna na koju oblast se pitanje odnosi. "
-                    "Možeš li malo precizirati da li pitaš za registraciju, ispit, obrazac, taksu, kontakt ili pravnu pomoć?"
+                    "Mogu pomoći, ali mi treba malo preciznije pitanje. "
+                    "Na primjer, možeš pitati za registraciju udruženja, fondaciju, ispit, obrazac, taksu ili kontakt."
                 ),
                 "sources": []
             }
@@ -590,9 +854,8 @@ def generate_answer(question, results, intent=None, confidence=0.0):
             confidence=confidence
         )
 
-    if not answer_text:
-        main = results[0]
-        answer_text = make_user_friendly_answer(question, main)
+    if not answer_text or answer_quality_is_bad(answer_text):
+        answer_text = compose_natural_answer(question, results, intent=intent)
 
     sources = []
     seen_urls = set()
@@ -614,8 +877,57 @@ def generate_answer(question, results, intent=None, confidence=0.0):
         "answer": answer_text,
         "sources": sources
     }
-    
+      
+def is_smalltalk(question):
+    q = norm(question)
+    return any(x in q for x in [
+        "cao", "ćao", "zdravo", "hej", "hello", "hi",
+        "kako si", "sta ima", "šta ima"
+    ])
+
+
+def is_harmful_request(question):
+    q = norm(question)
+
+    harmful_patterns = [
+        "kako da otmem",
+        "kako oteti",
+        "hoću da otmem",
+        "hocu da otmem",
+        "kako da sakrijem",
+        "kako da prevarim",
+        "kako falsifikovati",
+    ]
+
+    return any(p in q for p in harmful_patterns)
+
+
 def ask(question):
+    if is_smalltalk(question):
+        return {
+            "question": question,
+            "intent": "smalltalk",
+            "confidence": 1.0,
+            "answer": (
+                "Zdravo! 😊 Mogu ti pomoći da pronađeš informacije sa stranice Ministarstva pravde BiH, "
+                "na primjer o registraciji udruženja i fondacija, ispitima, obrascima, taksama, kontaktima i pravnoj pomoći."
+            ),
+            "sources": []
+        }
+
+    if is_harmful_request(question):
+        return {
+            "question": question,
+            "intent": "safety_block",
+            "confidence": 1.0,
+            "answer": (
+                "Ne mogu pomoći s uputama za nezakonite ili štetne radnje. "
+                "Ako se pitanje odnosi na zakonit postupak, prijavu, zaštitu prava ili nadležnu instituciju, "
+                "mogu pomoći da pronađeš relevantne informacije."
+            ),
+            "sources": []
+        }
+
     intent, confidence, results = retrieve(question, top_k=5)
     response = generate_answer(question, results, intent=intent, confidence=confidence)
 
@@ -626,7 +938,6 @@ def ask(question):
         "answer": response["answer"],
         "sources": response["sources"]
     }
-
 
 if __name__ == "__main__":
     print("MPR Chatbot pipeline v1")

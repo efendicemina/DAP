@@ -203,12 +203,6 @@ export default function ChatInterface() {
                   <span className="text-xs font-medium">
                     {message.timestamp.toLocaleTimeString('bs-BA', { hour: '2-digit', minute: '2-digit' })}
                   </span>
-                  
-                  {message.confidence !== undefined && (
-                    <span className="text-[10px] uppercase font-bold tracking-wider bg-black/5 px-2 py-1 rounded-md">
-                      Pouzdanost: {(message.confidence * 100).toFixed(0)}%
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
