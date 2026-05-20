@@ -1,0 +1,7 @@
+{
+  "samples": 107,
+  "top1_accuracy": 0.5888,
+  "top3_recall": 0.6729,
+  "top5_recall": 0.7009,
+  "mrr": 0.6358
+}

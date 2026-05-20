@@ -1,0 +1,53 @@
+{
+  "total_rows": 5000,
+  "labels": {
+    "zakoni_i_propisi": 700,
+    "ispiti": 700,
+    "obrasci": 700,
+    "registracija": 650,
+    "pravna_pomoc": 600,
+    "out_of_scope": 600,
+    "registri": 550,
+    "kontakt_i_nadleznosti": 500
+  },
+  "subintents": {
+    "nevezano": 600,
+    "registar_tumaca": 191,
+    "zakoni_notari_tumaci": 189,
+    "registar_udruzenja": 187,
+    "obrazac_ispiti": 183,
+    "pravosudni_ispit": 183,
+    "kontakt_ispiti": 179,
+    "obrazac_promjena": 178,
+    "zakoni_zospi": 177,
+    "obrazac_registracija": 175,
+    "zakoni_udruzenja": 173,
+    "termini_ispita": 172,
+    "registar_notara": 172,
+    "kontakt": 170,
+    "brisanje_iz_registra": 167,
+    "registracija_udruzenja": 167,
+    "strucni_upravni_ispit": 166,
+    "nadleznosti": 165,
+    "organizacija": 165,
+    "obrazac_zospi": 164,
+    "besplatna_pravna_pomoc": 162,
+    "promjena_podataka": 162,
+    "zakoni_ispiti": 161,
+    "registracija_fondacije": 154,
+    "medjunarodna_pravna_pomoc": 148,
+    "alimentacija": 146,
+    "otmica_djece": 144
+  },
+  "splits": {
+    "train": 4000,
+    "test": 500,
+    "val": 500
+  },
+  "difficulty": {
+    "natural": 1714,
+    "medium": 1650,
+    "easy": 1619,
+    "short_query": 17
+  }
+}

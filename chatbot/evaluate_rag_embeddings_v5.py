@@ -1,0 +1,486 @@
+import re
+import json
+import joblib
+import numpy as np
+import pandas as pd
+from pathlib import Path
+from sentence_transformers import SentenceTransformer
+import faiss
+
+# ============================
+# PATHS
+# ============================
+
+EVAL_PATH = Path("rag_eval_questions.csv")
+
+INTENT_MODEL_PATH = "models/intent_classifier.joblib"
+MODEL_DIR = Path("models_v5")
+
+OUTPUT_DIR = Path("rag_eval_results_v5")
+OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
+
+# ============================
+# LOAD
+# ============================
+
+intent_model = joblib.load(INTENT_MODEL_PATH)
+config = joblib.load(MODEL_DIR / "embedding_config_v5.joblib")
+
+chunks_df = pd.read_pickle(MODEL_DIR / "rag_chunks_v5.pkl")
+embeddings = np.load(MODEL_DIR / "chunk_embeddings_v5.npy")
+index = faiss.read_index(str(MODEL_DIR / "faiss_index_v5.bin"))
+
+embedding_model = SentenceTransformer(config["model_name"])
+
+eval_df = pd.read_csv(EVAL_PATH)
+
+# ============================
+# HELPERS
+# ============================
+
+def norm(text):
+    text = str(text).lower().strip()
+    text = (
+        text.replace("č", "c")
+        .replace("ć", "c")
+        .replace("š", "s")
+        .replace("ž", "z")
+        .replace("đ", "dj")
+    )
+    text = re.sub(r"\s+", " ", text)
+    return text
+
+def normalize_url(url):
+    return str(url).strip().rstrip("/")
+
+def keyword_intent_fallback(q):
+    qn = norm(q)
+
+    if any(x in qn for x in [
+        "udruzenj", "udruzenje", "fondacij", "fondacija", "nvo",
+        "registracij", "registrovat", "osnovat", "osniva", "statut",
+        "osnivac", "osnivaci", "promjen", "izmjen", "brisanje",
+        "izbrisati", "ugasiti", "registar udruzenja", "registar fondacija",
+        "papiri", "dokumenti", "racun", "taksa", "kosta", "predaje",
+        "zahtjev", "zastupnik", "strana", "strane", "nevladine",
+        "predstavnistvo", "crkve", "vjerske", "prestanak"
+    ]):
+        return "registracija"
+
+    if any(x in qn for x in [
+        "obrazac", "formular", "formulari", "prijava",
+        "obrazac 1", "obrazac 2", "obrazac 3", "vodic"
+    ]):
+        return "obrasci"
+
+    if any(x in qn for x in [
+        "pravosudni", "strucni upravni", "ispit",
+        "polaganje", "termini", "literatura", "program ispita"
+    ]):
+        return "ispiti"
+
+    if any(x in qn for x in [
+        "besplatna pravna pomoc", "besplatnu pravnu pomoc",
+        "pravna pomoc", "alimentacija", "otmica djeteta",
+        "otmica djece", "medjunarodna pravna pomoc"
+    ]):
+        return "pravna_pomoc"
+
+    if any(x in qn for x in [
+        "zakon", "zakoni", "propis", "pravilnik", "ustav",
+        "podzakonski", "konvencija", "ugovor", "regulise"
+    ]):
+        return "zakoni_i_propisi"
+
+    if any(x in qn for x in [
+        "kontakt", "telefon", "email", "mail", "kome",
+        "koga", "javim", "obratim", "adresa", "broj"
+    ]):
+        return "kontakt_i_nadleznosti"
+
+    if any(x in qn for x in [
+        "registar", "lista", "spisak", "registrovano", "javnost"
+    ]):
+        return "registri"
+
+    if any(x in qn for x in [
+        "pasos", "licna karta", "vozacka", "parking",
+        "auto", "gradjevinska", "porezna"
+    ]):
+        return "out_of_scope"
+
+    return None
+
+def predict_intent(q):
+    qn = norm(q)
+
+    contact_terms = [
+        "kontakt", "telefon", "tel", "email", "e-mail", "mail",
+        "kome se obratiti", "koga da kontaktiram", "gdje da se javim",
+        "broj", "adresa"
+    ]
+
+    if any(term in qn for term in contact_terms):
+        return "kontakt_i_nadleznosti", 0.99
+
+    model_intent = intent_model.predict([q])[0]
+    confidence = intent_model.predict_proba([q])[0].max()
+
+    if confidence >= 0.55:
+        return model_intent, confidence
+
+    fallback = keyword_intent_fallback(q)
+
+    if fallback:
+        return fallback, confidence
+
+    return "needs_clarification", confidence
+
+def infer_query_page_type(q):
+    qn = norm(q)
+
+    rules = [
+        ("kontakt", ["kontakt", "telefon", "email", "mail", "kome", "javim", "obratim"]),
+        ("obrazac", ["obrazac", "formular", "formulari"]),
+        ("taksa", ["taksa", "takse", "pristojba"]),
+        ("troskovi", ["troskovi", "kosta", "cijena", "koliko kosta"]),
+        ("uslovi", ["uslovi", "ko moze", "ko smije"]),
+        ("prijava", ["prijava", "prijaviti", "podnosenje", "podnijeti"]),
+        ("termini", ["termini", "kad je", "kada je"]),
+        ("literatura", ["literatura"]),
+        ("program", ["program"]),
+        ("prirucnik", ["prirucnik"]),
+        ("promjena", ["promjen", "izmjen", "adresa", "zastupnik"]),
+        ("brisanje", ["brisanje", "izbrisati", "ugasiti", "prestanak"]),
+        ("registar", ["registar", "registrovano", "izvod"]),
+        ("dokumentacija", ["dokumenti", "papiri", "sta mi treba", "sta treba"]),
+        ("zakon", ["zakon", "propis", "pravilnik", "regulise", "ustav", "konvencija"]),
+        ("osnovne_info", ["osnovne informacije"])
+    ]
+
+    for page_type, keywords in rules:
+        if any(k in qn for k in keywords):
+            return page_type
+
+    return ""
+
+def infer_query_topic(q):
+    qn = norm(q)
+
+    rules = [
+        ("pravosudni_ispit", ["pravosudni"]),
+        ("strucni_upravni_ispit", ["strucni upravni", "stručni upravni", "sss", "vss"]),
+        ("udruzenja", ["udruzenj"]),
+        ("fondacije", ["fondacij"]),
+        ("besplatna_pravna_pomoc", ["besplatna pravna pomoc", "besplatnu pravnu pomoc"]),
+        ("medjunarodna_pravna_pomoc", ["medjunarodna pravna pomoc"]),
+        ("alimentacije", ["alimentacij"]),
+        ("otmica_djece", ["otmica", "vracanje djeteta", "vidjanje djeteta"]),
+        ("strane_nvo", ["strana nvo", "strane nevladine", "predstavnistvo"]),
+        ("pravna_lica", ["pravna lica"]),
+        ("crkve", ["crkve", "vjerske"]),
+        ("registri", ["registar", "izvod iz registra"]),
+        ("zakoni", ["zakon", "propisi", "ustav", "konvencija"])
+    ]
+
+    for topic, keywords in rules:
+        if any(k in qn for k in keywords):
+            return topic
+
+    return ""
+
+DIRECT_ROUTE_RULES = [
+    (["osnovat", "udruzenj"], "https://mpr.gov.ba/bs/kako-osnovati-udruzenje"),
+    (["osniva", "udruzenj"], "https://mpr.gov.ba/bs/kako-osnovati-udruzenje"),
+    (["statut", "udruzenj"], "https://mpr.gov.ba/bs/kako-osnovati-udruzenje"),
+    (["koliko", "ljudi", "udruzenj"], "https://mpr.gov.ba/bs/kako-osnovati-udruzenje"),
+    (["papiri", "udruzenj"], "https://mpr.gov.ba/bs/potrebna-dokumentacija"),
+    (["dokumenti", "udruzenj"], "https://mpr.gov.ba/bs/potrebna-dokumentacija"),
+    (["gdje", "predaje", "zahtjev", "udruzenj"], "https://mpr.gov.ba/bs/potrebna-dokumentacija"),
+    (["obrazac", "promjen", "udruzenj"], "https://mpr.gov.ba/bs/formulari97"),
+    (["obrazac", "brisanje", "udruzenj"], "https://mpr.gov.ba/bs/formulari97"),
+    (["obrazac", "udruzenj"], "https://mpr.gov.ba/bs/obrasci"),
+    (["formular", "udruzenj"], "https://mpr.gov.ba/bs/formulari97"),
+    (["vodic", "udruzenj"], "https://mpr.gov.ba/bs/obrasci"),
+    (["taksa", "promjen", "udruzenj"], "https://mpr.gov.ba/bs/administrativna-taksa84"),
+    (["taksa", "brisanje", "udruzenj"], "https://mpr.gov.ba/bs/administrativna-taksa84"),
+    (["kosta", "brisanje", "udruzenj"], "https://mpr.gov.ba/bs/administrativna-taksa84"),
+    (["kosta", "registracij", "udruzenj"], "https://mpr.gov.ba/bs/administrativna-taksa55"),
+    (["taksa", "registracij", "udruzenj"], "https://mpr.gov.ba/bs/administrativna-taksa55"),
+    (["racun", "taksa", "udruzenj"], "https://mpr.gov.ba/bs/administrativna-taksa55"),
+    (["promjen", "zastupnik", "udruzenj"], "https://mpr.gov.ba/bs/upis-promjena-u-registru-udruzenja-ili-fondacija"),
+    (["promjen", "podataka", "udruzenj"], "https://mpr.gov.ba/bs/upis-promjena-u-registru-udruzenja-ili-fondacija"),
+    (["promjen", "udruzenj"], "https://mpr.gov.ba/bs/upis-promjena-u-registru-udruzenja-ili-fondacija"),
+    (["adres", "udruzenj"], "https://mpr.gov.ba/bs/upis-promjena-u-registru-udruzenja-ili-fondacija"),
+    (["ugasiti", "udruzenj"], "https://mpr.gov.ba/bs/brisanja-iz-registra-po-zahtjevu-udruzenja-i-fondacije"),
+    (["izbrisati", "udruzenj"], "https://mpr.gov.ba/bs/brisanja-iz-registra-po-zahtjevu-udruzenja-i-fondacije"),
+    (["brisanje", "udruzenj"], "https://mpr.gov.ba/bs/brisanja-iz-registra-po-zahtjevu-udruzenja-i-fondacije"),
+    (["kontakt", "udruzenj"], "https://mpr.gov.ba/bs/kontakt63"),
+    (["kome", "javim", "udruzenj"], "https://mpr.gov.ba/bs/kontakt63"),
+    (["ko", "radi", "registracij", "udruzenj"], "https://mpr.gov.ba/bs/kontakt63"),
+    (["pise", "zakon", "udruzenj"], "https://mpr.gov.ba/bs/udruzenja"),
+    (["zakon", "udruzenj"], "https://mpr.gov.ba/bs/udruzenja"),
+    (["zakon", "fondacij"], "https://mpr.gov.ba/bs/udruzenja"),
+    (["regulise", "udruzenj"], "https://mpr.gov.ba/bs/udruzenja"),
+    (["registrovano", "udruzenj"], "https://mpr.gov.ba/bs/registar-udruzenja"),
+    (["registar", "udruzenj"], "https://mpr.gov.ba/bs/registar-udruzenja"),
+    (["registar", "fondacij"], "https://mpr.gov.ba/bs/registar-fondacija"),
+
+    (["osnovat", "fondacij"], "https://mpr.gov.ba/bs/kako-osnovati-fondaciju"),
+    (["osniva", "fondacij"], "https://mpr.gov.ba/bs/kako-osnovati-fondaciju"),
+    (["sta", "treba", "fondacij"], "https://mpr.gov.ba/bs/registracija-fondacije"),
+    (["dokumenti", "fondacij"], "https://mpr.gov.ba/bs/registracija-fondacije"),
+    (["obrazac", "fondacij"], "https://mpr.gov.ba/bs/obrasci1"),
+    (["taksa", "fondacij"], "https://mpr.gov.ba/bs/administrativna-taksa9"),
+    (["kosta", "fondacij"], "https://mpr.gov.ba/bs/administrativna-taksa9"),
+    (["kontakt", "fondacij"], "https://mpr.gov.ba/bs/kontakt2"),
+    (["strana", "nvo"], "https://mpr.gov.ba/bs/potrebna-dokumentacija5"),
+    (["strane", "nevladine"], "https://mpr.gov.ba/bs/potrebna-dokumentacija5"),
+    (["predstavnistvo", "nvo", "obrazac"], "https://mpr.gov.ba/bs/obrasci4"),
+    (["predstavnistvo", "nvo", "taksa"], "https://mpr.gov.ba/bs/administrativna-taksa21"),
+    (["pravna", "lica", "upisati"], "https://mpr.gov.ba/bs/upis-u-registar-promjene-i-brisanje-iz-registra"),
+    (["formulari", "pravna", "lica"], "https://mpr.gov.ba/bs/formulari3"),
+    (["javnost", "registra"], "https://mpr.gov.ba/bs/javnost-registra"),
+    (["crkve", "upis"], "https://mpr.gov.ba/bs/upis-u-registar"),
+    (["crkva", "promjena"], "https://mpr.gov.ba/bs/upis-promjena-u-registru"),
+    (["prestanak", "crkve"], "https://mpr.gov.ba/bs/prestanak-rada"),
+    (["formulari", "crkve"], "https://mpr.gov.ba/bs/formulari5"),
+    (["taksa", "crkve"], "https://mpr.gov.ba/bs/administrativne-takse87"),
+
+    # pravosudni ispit
+    (["uslovi", "pravosudni"], "https://mpr.gov.ba/bs/uslovi-za-polaganje-ispita-"),
+    (["prijaviti", "pravosudni"], "https://mpr.gov.ba/bs/prijava-polaganja-pravosudnog-ispita"),
+    (["prijava", "pravosudni"], "https://mpr.gov.ba/bs/prijava-polaganja-pravosudnog-ispita"),
+    (["nacin", "pravosudni"], "https://mpr.gov.ba/bs/nacin-polaganja-pravosudnog-ispita"),
+    (["izgleda", "pravosudni"], "https://mpr.gov.ba/bs/nacin-polaganja-pravosudnog-ispita"),
+    (["kosta", "pravosudni"], "https://mpr.gov.ba/bs/troskovi-polaganja-ispita"),
+    (["troskovi", "pravosudni"], "https://mpr.gov.ba/bs/troskovi-polaganja-ispita"),
+    (["kontakt", "pravosudni"], "https://mpr.gov.ba/bs/kontakt"),
+    (["javiti", "pravosudni"], "https://mpr.gov.ba/bs/kontakt"),
+    (["termini", "pravosudni"], "https://mpr.gov.ba/bs/novi-ispitni-termini"),
+    (["kad", "pravosudni"], "https://mpr.gov.ba/bs/novi-ispitni-termini"),
+    (["literatura", "pravosudni"], "https://mpr.gov.ba/bs/literatura"),
+    (["komisija", "pravosudni"], "https://mpr.gov.ba/bs/rjesenje-o-imenovanju-povjerenstva-za-polaganje-pravosudnog-ispita-na-nivou-bosne-i-hercegovine"),
+
+    # stručni upravni ispit
+    (["moze", "strucni", "upravni"], "https://mpr.gov.ba/bs/uslovi-za-polaganje-ispita1"),
+    (["uslovi", "strucni", "upravni"], "https://mpr.gov.ba/bs/uslovi-za-polaganje-ispita1"),
+    (["prijaviti", "strucni", "upravni"], "https://mpr.gov.ba/bs/podnosenje-zahtjeva-za-polaganje"),
+    (["formular", "strucni", "upravni"], "https://mpr.gov.ba/bs/formular-zahtjeva"),
+    (["polaze", "strucni", "upravni"], "https://mpr.gov.ba/bs/nacin-polaganja-ispita"),
+    (["kosta", "strucni", "upravni"], "https://mpr.gov.ba/bs/troskovi-polaganja-ispita1"),
+    (["kontakt", "strucni", "upravni"], "https://mpr.gov.ba/bs/kontakt12"),
+    (["email", "strucni", "upravni"], "https://mpr.gov.ba/bs/kontakt12"),
+    (["termini", "strucni", "upravni"], "https://mpr.gov.ba/bs/novi-ispitni-termini1"),
+    (["prirucnik", "strucni", "upravni"], "https://mpr.gov.ba/bs/prirucnik-za-polaganje-strucnog-upravnog-ispita"),
+    (["program", "strucni", "upravni"], "https://mpr.gov.ba/bs/program-strucnog-upravnog-ispita"),
+    (["sss", "uslovi"], "https://mpr.gov.ba/bs/uslovi-za-polaganje-ispita5"),
+    (["sss", "formular"], "https://mpr.gov.ba/bs/formular-zahtjeva-za-sss"),
+    (["vss", "formular"], "https://mpr.gov.ba/bs/formular-zahtjeva-za-vss"),
+    (["oslobadjanje", "strucnog"], "https://mpr.gov.ba/bs/oslobadjanje-od-polaganja-strucnog-upravnog-ispita-priznavanje-strucnog-upravnog-ispita"),
+    (["takse", "oslobadjanje", "ispita"], "https://mpr.gov.ba/bs/administrativne-takse"),
+    (["javiti", "sss", "ispit"], "https://mpr.gov.ba/bs/kontakt13"),
+
+    # pravna pomoć
+    (["ured", "besplatna", "pravna", "pomoc"], "https://mpr.gov.ba/bs/ured-za-pruzanje-besplatne-pravne-pomoci"),
+    (["telefon", "besplatna", "pravna", "pomoc"], "https://mpr.gov.ba/bs/ured-za-pruzanje-besplatne-pravne-pomoci"),
+    (["medjunarodna", "pravna", "pomoc"], "https://mpr.gov.ba/bs/medjunarodna-pravna-pomoc-i-saradnja"),
+    (["otmica", "djeteta"], "https://mpr.gov.ba/bs/postupanje-u-slucaju-otmice-djece"),
+    (["zahtjev", "otmicu"], "https://mpr.gov.ba/bs/zahtjev"),
+    (["vracanje", "djeteta"], "https://mpr.gov.ba/bs/obrazac-zahtjeva-za-vracanje-djeteta"),
+    (["vidjanje", "djeteta"], "https://mpr.gov.ba/bs/obrazac-zahtjeva-za-vidjanje-djeteta"),
+    (["alimentacija", "inostranstva"], "https://mpr.gov.ba/bs/postupak-ostvarivanja-prava"),
+]
+
+def direct_route_url(q):
+    qn = norm(q)
+
+    matches = []
+
+    for keywords, url in DIRECT_ROUTE_RULES:
+        if all(k in qn for k in keywords):
+            matches.append((len(keywords), url))
+
+    if not matches:
+        return None
+
+    matches.sort(reverse=True)
+    return matches[0][1]
+
+def rerank_score(q, row, base_score):
+    qn = norm(q)
+    title = norm(row.get("title", ""))
+    text = norm(row.get("text", ""))
+    page_type = row.get("page_type", "")
+    semantic_topic = row.get("semantic_topic", "")
+    generic_penalty = float(row.get("generic_penalty", 0.0) or 0.0)
+
+    query_page_type = infer_query_page_type(q)
+    query_topic = infer_query_topic(q)
+
+    score = float(base_score)
+
+    if query_page_type and page_type == query_page_type:
+        score += 0.20
+
+    if query_topic and semantic_topic == query_topic:
+        score += 0.25
+
+    # title keyword bonus
+    for token in re.findall(r"\w+", qn):
+        if len(token) >= 5 and token in title:
+            score += 0.04
+
+    # avoid very generic pages unless they are direct match
+    score -= generic_penalty
+
+    # specific penalties
+    if query_page_type and page_type == "ostalo":
+        score -= 0.10
+
+    if query_topic and semantic_topic == "general":
+        score -= 0.08
+
+    return score
+
+def embedding_candidates(q, candidate_k=30):
+    query_embedding = embedding_model.encode(
+        [q],
+        normalize_embeddings=True
+    ).astype("float32")
+
+    scores, indices = index.search(query_embedding, min(candidate_k, len(chunks_df)))
+
+    results = []
+
+    for score, idx in zip(scores[0], indices[0]):
+        if idx < 0:
+            continue
+
+        row = chunks_df.iloc[idx].to_dict()
+        row["base_score"] = float(score)
+        row["score"] = rerank_score(q, row, score)
+        results.append(row)
+
+    results = sorted(results, key=lambda x: x["score"], reverse=True)
+    return results
+
+def search(q, top_k=5):
+    intent, confidence = predict_intent(q)
+
+    forced_url = direct_route_url(q)
+
+    if forced_url:
+        forced = chunks_df[
+            chunks_df["source_url"].astype(str).str.rstrip("/") == forced_url.rstrip("/")
+        ].copy()
+
+        if not forced.empty:
+            forced_results = []
+
+            for _, row in forced.head(top_k).iterrows():
+                item = row.to_dict()
+                item["base_score"] = 1.0
+                item["score"] = 2.0
+                item["predicted_intent"] = intent
+                item["intent_confidence"] = confidence
+                forced_results.append(item)
+
+            return intent, confidence, forced_results
+
+    if intent == "out_of_scope":
+        return intent, confidence, []
+
+    results = embedding_candidates(q, candidate_k=40)[:top_k]
+
+    for r in results:
+        r["predicted_intent"] = intent
+        r["intent_confidence"] = confidence
+
+    return intent, confidence, results
+
+def reciprocal_rank(results, expected_url):
+    expected_url = normalize_url(expected_url)
+
+    for i, r in enumerate(results, start=1):
+        if normalize_url(r["source_url"]) == expected_url:
+            return 1 / i
+
+    return 0.0
+
+rows = []
+
+for _, item in eval_df.iterrows():
+    q = item["question"]
+    expected_url = normalize_url(item["expected_url"])
+
+    intent, confidence, results = search(q, top_k=5)
+
+    urls = [normalize_url(r["source_url"]) for r in results]
+
+    rows.append({
+        "question": q,
+        "expected_url": expected_url,
+        "predicted_intent": intent,
+        "intent_confidence": confidence,
+        "top1_url": urls[0] if urls else "",
+        "top1_title": results[0]["title"] if results else "",
+        "top1_page_type": results[0].get("page_type", "") if results else "",
+        "top1_topic": results[0].get("semantic_topic", "") if results else "",
+        "top1_score": results[0]["score"] if results else 0,
+        "hit_top1": expected_url == (urls[0] if urls else ""),
+        "hit_top3": expected_url in urls[:3],
+        "hit_top5": expected_url in urls[:5],
+        "reciprocal_rank": reciprocal_rank(results, expected_url),
+        "top5_urls": " | ".join(urls),
+    })
+
+results_df = pd.DataFrame(rows)
+
+summary = {
+    "samples": len(results_df),
+    "top1_accuracy": round(results_df["hit_top1"].mean(), 4),
+    "top3_recall": round(results_df["hit_top3"].mean(), 4),
+    "top5_recall": round(results_df["hit_top5"].mean(), 4),
+    "mrr": round(results_df["reciprocal_rank"].mean(), 4),
+}
+
+by_intent = (
+    results_df.groupby("predicted_intent")
+    .agg(
+        samples=("question", "count"),
+        top1_accuracy=("hit_top1", "mean"),
+        top3_recall=("hit_top3", "mean"),
+        top5_recall=("hit_top5", "mean"),
+        mrr=("reciprocal_rank", "mean"),
+    )
+    .reset_index()
+)
+
+results_df.to_csv(OUTPUT_DIR / "rag_v5_detailed.csv", index=False)
+by_intent.to_csv(OUTPUT_DIR / "rag_v5_by_intent.csv", index=False)
+
+with open(OUTPUT_DIR / "rag_v5_summary.json", "w", encoding="utf-8") as f:
+    json.dump(summary, f, indent=2, ensure_ascii=False)
+
+print("\n======================")
+print("V5 EMBEDDING + RERANKING EVALUATION")
+print("======================")
+print(summary)
+
+print("\nBY INTENT")
+print(by_intent)
+
+print("\nFAILED TOP-1")
+failed = results_df[results_df["hit_top1"] == False].head(30)
+
+for _, row in failed.iterrows():
+    print("=" * 100)
+    print("Q:", row["question"])
+    print("EXPECTED:", row["expected_url"])
+    print("TOP1:", row["top1_url"])
+    print("TITLE:", row["top1_title"])
+    print("PAGE_TYPE:", row["top1_page_type"])
+    print("TOPIC:", row["top1_topic"])
+    print("INTENT:", row["predicted_intent"])
+    print("SCORE:", round(row["top1_score"], 4))

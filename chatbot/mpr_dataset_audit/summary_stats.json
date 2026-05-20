@@ -1,0 +1,9 @@
+{
+  "total_records": 1487,
+  "kept_records": 543,
+  "dropped_records": 944,
+  "ocr_required": 0,
+  "chunks_created": 1019,
+  "avg_text_length": 1566.3046402151983,
+  "total_text_chars": 2329095
+}

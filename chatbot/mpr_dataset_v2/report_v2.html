@@ -1,0 +1,47 @@
+
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>MPR Dataset V2 Report</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; background: #fafafa; }
+            .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+            img { max-width: 950px; width: 100%; }
+            code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+            table { border-collapse: collapse; width: 100%; }
+            td, th { border: 1px solid #ddd; padding: 8px; }
+            th { background: #eee; }
+        </style>
+    </head>
+    <body>
+        <h1>MPR Dataset V2 Report</h1>
+
+        <div class="card">
+            <h2>Summary</h2>
+            <table>
+                <tr><th>Total records</th><td>197</td></tr>
+                <tr><th>Kept records</th><td>191</td></tr>
+                <tr><th>Dropped records</th><td>6</td></tr>
+                <tr><th>Total chunks</th><td>400</td></tr>
+                <tr><th>OCR required</th><td>0</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Files</h2>
+            <ul>
+                <li><code>all_records_v2.csv</code></li>
+                <li><code>kept_records_v2.csv</code></li>
+                <li><code>dropped_records_v2.csv</code></li>
+                <li><code>needs_review_v2.csv</code></li>
+                <li><code>needs_ocr_v2.csv</code></li>
+                <li><code>chunks_v2.jsonl</code></li>
+                <li><code>chunks_v2.csv</code></li>
+                <li><code>coverage_report_v2.json</code></li>
+            </ul>
+        </div>
+
+        <div class="card"><img src="reports/chunks_categories_v2.png"></div><div class="card"><img src="reports/document_types_v2.png"></div><div class="card"><img src="reports/keep_drop_v2.png"></div><div class="card"><img src="reports/kept_categories_v2.png"></div><div class="card"><img src="reports/reasons_v2.png"></div>
+    </body>
+    </html>
+    

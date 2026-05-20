@@ -1,0 +1,44 @@
+{
+  "total_records": 162,
+  "kept_records": 162,
+  "total_chunks": 276,
+  "records_by_category": {
+    "ostalo": 55,
+    "kontakt_i_nadleznosti": 26,
+    "registracija": 26,
+    "ispiti": 25,
+    "obrasci": 11,
+    "pravna_pomoc": 8,
+    "registri": 7,
+    "zakoni_i_propisi": 4
+  },
+  "chunks_by_category": {
+    "ostalo": 103,
+    "registracija": 57,
+    "ispiti": 39,
+    "kontakt_i_nadleznosti": 31,
+    "pravna_pomoc": 16,
+    "registri": 15,
+    "obrasci": 11,
+    "zakoni_i_propisi": 4
+  },
+  "chunks_by_subsection": {
+    "": 193,
+    "udruzenja": 32,
+    "pravosudni_ispit": 14,
+    "fondacije": 11,
+    "zakoni": 6,
+    "strucni_upravni_ispit": 6,
+    "besplatna_pravna_pomoc": 5,
+    "alimentacije": 3,
+    "pravna_lica": 2,
+    "strane_nvo": 2,
+    "crkve_vjerske_zajednice": 1,
+    "podzakonski_akti": 1
+  },
+  "priority_chunks": {
+    "normal": 221,
+    "high": 45,
+    "medium": 10
+  }
+}

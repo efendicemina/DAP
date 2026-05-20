@@ -1,0 +1,37 @@
+{
+  "page_types": {
+    "ostalo": 159,
+    "zakon": 14,
+    "registar": 14,
+    "kontakt": 13,
+    "taksa": 13,
+    "obrazac": 11,
+    "promjena": 11,
+    "dokumentacija": 7,
+    "osnovne_info": 7,
+    "troskovi": 6,
+    "brisanje": 4,
+    "termini": 4,
+    "program": 3,
+    "prirucnik": 3,
+    "uslovi": 3,
+    "prijava": 3,
+    "literatura": 1
+  },
+  "semantic_topics": {
+    "general": 146,
+    "udruzenja": 32,
+    "registri": 24,
+    "pravosudni_ispit": 14,
+    "strucni_upravni_ispit": 14,
+    "fondacije": 11,
+    "zakoni": 8,
+    "otmica_djece": 7,
+    "besplatna_pravna_pomoc": 5,
+    "medjunarodna_pravna_pomoc": 5,
+    "alimentacije": 3,
+    "pravna_lica": 3,
+    "crkve": 3,
+    "strane_nvo": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "selected_sitemap_links": 160,
+  "document_links_found": 4,
+  "total_records": 157,
+  "kept_records": 157,
+  "total_chunks": 302,
+  "ocr_required": 0,
+  "records_by_category": {
+    "obrasci": 55,
+    "zakoni_i_propisi": 34,
+    "registracija": 25,
+    "ispiti": 25,
+    "kontakt_i_nadleznosti": 12,
+    "pravna_pomoc": 5,
+    "registri": 1
+  },
+  "chunks_by_category": {
+    "obrasci": 128,
+    "zakoni_i_propisi": 65,
+    "registracija": 41,
+    "ispiti": 41,
+    "kontakt_i_nadleznosti": 21,
+    "pravna_pomoc": 5,
+    "registri": 1
+  },
+  "records_by_type": {
+    "html": 157
+  }
+}

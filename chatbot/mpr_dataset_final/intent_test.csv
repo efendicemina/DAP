@@ -1,0 +1,501 @@
+text,label,subintent,canonical_question,difficulty,source,split
+"Pozdrav, Gdje se vadi lična karta? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Gdje se vadi lična karta?,natural,synthetic_rule_based,test
+"Zanima me, Pokušavam naći tačan obrazac. Koja dokumentacija je potrebna za osnivanje udruženja?",registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,medium,synthetic_rule_based,test
+"Pozdrav, Koji propisi važe za fondacije? Nisam siguran gdje da tražim.",zakoni_i_propisi,zakoni_udruzenja,Koji propisi važe za fondacije?,easy,synthetic_rule_based,test
+"Molim vas, Kako dobiti uvjerenje o drzavljanstvu?",out_of_scope,nevezano,Kako dobiti uvjerenje o državljanstvu?,natural,synthetic_rule_based,test
+"Zanima me, Koji propisi važe za notare? Ako može.",zakoni_i_propisi,zakoni_notari_tumaci,Koji propisi važe za notare?,natural,synthetic_rule_based,test
+"Dobar dan, Gdje je obrazac za pristup informacijama? Treba mi hitno.",obrasci,obrazac_zospi,Gdje je obrazac za pristup informacijama?,natural,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Gdje mogu pronaći registar udruženja? Hvala.,registri,registar_udruzenja,Gdje mogu pronaći registar udruženja?,natural,synthetic_rule_based,test
+"Može pomoć, Kako dobiti uvjerenje o državljanstvu? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Kako dobiti uvjerenje o državljanstvu?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ima li zahtjev za pristup informacijama? Možete li me uputiti?",obrasci,obrazac_zospi,Ima li zahtjev za pristup informacijama?,medium,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Koji zakon reguliše udruženja i fondacije? Molim odgovor.,zakoni_i_propisi,zakoni_udruzenja,Koji zakon reguliše udruženja i fondacije?,medium,synthetic_rule_based,test
+Koji je email za stručni upravni ispit? Hvala.,ispiti,kontakt_ispiti,Koji je email za stručni upravni ispit?,easy,synthetic_rule_based,test
+Gdje se podnosi zahtjev/prijava za registraciju fondacije? Možete li me uputiti?,registracija,registracija_fondacije,Gdje se podnosi zahtjev za registraciju fondacije?,easy,synthetic_rule_based,test
+"Može pomoć, Treba mi za fakultetski zadatak. Koga mogu kontaktirati za pravosudni ispit? Nisam siguran gdje da tražim.",ispiti,kontakt_ispiti,Koga mogu kontaktirati za pravosudni ispit?,medium,synthetic_rule_based,test
+"Molim vas, Gdje su objavljeni notari? Možete li me uputiti?",registri,registar_notara,Gdje su objavljeni notari?,easy,synthetic_rule_based,test
+"Može pomoć, Pokušavam naći tačan obrazac. Gdje mogu naći zakon o udruženjima?",zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,natural,synthetic_rule_based,test
+Treba mi pravilnik o polaganju ispita.,zakoni_i_propisi,zakoni_ispiti,Treba mi pravilnik o polaganju ispita.,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne razumijem proceduru. Koji dokumenti trebaju za međunarodnu alimentaciju?",pravna_pomoc,alimentacija,Koji dokumenti trebaju za međunarodnu alimentaciju?,easy,synthetic_rule_based,test
+Koja dokumentacija je potrebna za osnivanje udruzenja? Nisam siguran gdje da trazim.,registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,easy,synthetic_rule_based,test
+porezna firma,out_of_scope,nevezano,Kako da produžim pasoš?,short_query,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako provjeriti notara? Ako može.",registri,registar_notara,Kako provjeriti notara?,natural,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Gdje mogu preuzeti obrazac za registraciju udruženja? Molim odgovor.,obrasci,obrazac_registracija,Gdje mogu preuzeti obrazac za registraciju udruženja?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Koji propisi važe za notare? Ako može.",zakoni_i_propisi,zakoni_notari_tumaci,Koji propisi važe za notare?,natural,synthetic_rule_based,test
+Kome se obratiti za međunarodnu pravnu pomoć? Ako može.,pravna_pomoc,medjunarodna_pravna_pomoc,Kome se obratiti za međunarodnu pravnu pomoć?,natural,synthetic_rule_based,test
+"Trebam informaciju, Radim ovo prvi put. Koji je email za stručni upravni ispit? Možete li me uputiti?",ispiti,kontakt_ispiti,Koji je email za stručni upravni ispit?,easy,synthetic_rule_based,test
+"Zanima me, Ima li zahtjev za registraciju u Word ili PDF formatu? Nisam siguran gdje da tražim.",obrasci,obrazac_registracija,Ima li zahtjev za registraciju u Word ili PDF formatu?,medium,synthetic_rule_based,test
+"Zanima me, Treba mi registar sudskih tumača. Hvala.",registri,registar_tumaca,Treba mi registar sudskih tumača.,easy,synthetic_rule_based,test
+"Trebam informaciju, Gdje se predaje zahtjev za upis udruženja?",registracija,registracija_udruzenja,Gdje se predaje zahtjev za upis udruženja?,easy,synthetic_rule_based,test
+Radim ovo prvi put. Ko je nadležan za međunarodnu pravnu pomoć? Treba mi hitno.,pravna_pomoc,medjunarodna_pravna_pomoc,Ko je nadležan za međunarodnu pravnu pomoć?,natural,synthetic_rule_based,test
+"Pozdrav, Gdje mogu naći zakon o udruženjima?",zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Na stranici ima puno linkova. Treba mi spisak notara u BiH.",registri,registar_notara,Treba mi spisak notara u BiH.,natural,synthetic_rule_based,test
+Radim ovo prvi put. Koji je email za stručni upravni ispit? Hvala.,ispiti,kontakt_ispiti,Koji je email za stručni upravni ispit?,easy,synthetic_rule_based,test
+"Može pomoć, Kome se šalje prijava za ispit?",ispiti,kontakt_ispiti,Kome se šalje prijava za ispit?,natural,synthetic_rule_based,test
+"Dobar dan, Kako registrovati udruženje? Molim odgovor.",registracija,registracija_udruzenja,Kako registrovati udruženje?,medium,synthetic_rule_based,test
+"Pozdrav, Gdje se plaća parking kazna? Hvala.",out_of_scope,nevezano,Gdje se plaća parking kazna?,natural,synthetic_rule_based,test
+"Trebam informaciju, Gdje se plaća parking kazna? Možete li me uputiti?",out_of_scope,nevezano,Gdje se plaća parking kazna?,natural,synthetic_rule_based,test
+"Molim vas, Koji propisi važe za fondacije?",zakoni_i_propisi,zakoni_udruzenja,Koji propisi važe za fondacije?,natural,synthetic_rule_based,test
+Ne znam koji dokument da predam. Kako prijaviti promjenu podataka udruženja? Treba mi hitno.,registracija,promjena_podataka,Kako prijaviti promjenu podataka udruženja?,easy,synthetic_rule_based,test
+"Zanima me, Gdje se predaje zahtjev za građevinsku dozvolu? Molim odgovor.",out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,medium,synthetic_rule_based,test
+Kome se obratiti za pravnu pomoć? Treba mi hitno.,kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,natural,synthetic_rule_based,test
+"Pozdrav, Treba mi za fakultetski zadatak. Kako registrovati auto? Možete li me uputiti?",out_of_scope,nevezano,Kako registrovati auto?,natural,synthetic_rule_based,test
+"Može pomoć, Kako se pokreće postupak za povrat djeteta?",pravna_pomoc,otmica_djece,Kako se pokreće postupak za povrat djeteta?,easy,synthetic_rule_based,test
+"Može pomoć, Ne razumijem proceduru. Kome se obratiti za alimentaciju ako je roditelj van BiH? Molim odgovor.",pravna_pomoc,alimentacija,Kome se obratiti za alimentaciju ako je roditelj van BiH?,natural,synthetic_rule_based,test
+"Molim vas, Ima li zahtjev za pristup informacijama? Hvala.",obrasci,obrazac_zospi,Ima li zahtjev za pristup informacijama?,medium,synthetic_rule_based,test
+"Trebam informaciju, Kako promijeniti adresu udruženja? Hvala.",registracija,promjena_podataka,Kako promijeniti adresu udruženja?,easy,synthetic_rule_based,test
+Kome se obratiti za alimentaciju ako je roditelj van BiH? Molim odgovor.,pravna_pomoc,alimentacija,Kome se obratiti za alimentaciju ako je roditelj van BiH?,natural,synthetic_rule_based,test
+"Pozdrav, Ne razumijem proceduru. Kako otvoriti firmu u poreznoj upravi?",out_of_scope,nevezano,Kako otvoriti firmu u poreznoj upravi?,easy,synthetic_rule_based,test
+Radim ovo prvi put. Treba mi broj telefona za informacije o ispitu. Molim odgovor.,ispiti,kontakt_ispiti,Treba mi broj telefona za informacije o ispitu.,medium,synthetic_rule_based,test
+"Dobar dan, Koji je email za stručni upravni ispit? Molim odgovor.",ispiti,kontakt_ispiti,Koji je email za stručni upravni ispit?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Treba mi obrazac za promjenu podataka udruženja. Nisam siguran gdje da tražim.",obrasci,obrazac_promjena,Treba mi obrazac za promjenu podataka udruženja.,natural,synthetic_rule_based,test
+"Može pomoć, Ima li raspored za polaganje ispita? Ako može.",ispiti,termini_ispita,Ima li raspored za polaganje ispita?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje da pitam za ispitne termine? Nisam siguran gdje da tražim.",ispiti,kontakt_ispiti,Gdje da pitam za ispitne termine?,medium,synthetic_rule_based,test
+"Pozdrav, Treba mi za fakultetski zadatak. Koji formular treba za promjenu zastupnika? Treba mi hitno.",obrasci,obrazac_promjena,Koji formular treba za promjenu zastupnika?,medium,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Kada su termini za stručni upravni ispit?,ispiti,strucni_upravni_ispit,Kada su termini za stručni upravni ispit?,medium,synthetic_rule_based,test
+Ima li raspored za polaganje ispita? Nisam siguran gdje da tražim.,ispiti,termini_ispita,Ima li raspored za polaganje ispita?,easy,synthetic_rule_based,test
+Ne razumijem proceduru. Koji obrazac se koristi za osnivanje udruženja?,obrasci,obrazac_registracija,Koji obrazac se koristi za osnivanje udruženja?,natural,synthetic_rule_based,test
+"Pozdrav, Gdje mogu pronaci listu notara?",registri,registar_notara,Gdje mogu pronaći listu notara?,medium,synthetic_rule_based,test
+Kada su termini za stručni upravni ispit? Ako može.,ispiti,strucni_upravni_ispit,Kada su termini za stručni upravni ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Gdje se polaže stručni upravni ispit? Molim odgovor.",ispiti,strucni_upravni_ispit,Gdje se polaže stručni upravni ispit?,natural,synthetic_rule_based,test
+Gdje mogu naći program pravosudnog ispita? Ako može.,zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,easy,synthetic_rule_based,test
+"Trebam informaciju, Gdje se nalazi vodič za pristup informacijama? Ako može.",zakoni_i_propisi,zakoni_zospi,Gdje se nalazi vodič za pristup informacijama?,easy,synthetic_rule_based,test
+"Pozdrav, Ko je nadležan za međunarodnu pravnu pomoć? Molim odgovor.",pravna_pomoc,medjunarodna_pravna_pomoc,Ko je nadležan za međunarodnu pravnu pomoć?,natural,synthetic_rule_based,test
+"Može pomoć, Šta mi treba za registraciju udruženja? Treba mi hitno.",registracija,registracija_udruzenja,Šta mi treba za registraciju udruženja?,natural,synthetic_rule_based,test
+Radim ovo prvi put. Gdje se predaje zahtjev za građevinsku dozvolu? Hvala.,out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,easy,synthetic_rule_based,test
+"Trebam informaciju, Ne razumijem proceduru. Ima li obrazac za popravni ispit? Hvala.",obrasci,obrazac_ispiti,Ima li obrazac za popravni ispit?,easy,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Koji zakon propisuje uslove za pravosudni ispit? Možete li me uputiti?,zakoni_i_propisi,zakoni_ispiti,Koji zakon propisuje uslove za pravosudni ispit?,natural,synthetic_rule_based,test
+"Može pomoć, Koji zakon reguliše pravosudni ispit? Molim odgovor.",zakoni_i_propisi,zakoni_ispiti,Koji zakon reguliše pravosudni ispit?,medium,synthetic_rule_based,test
+"Pozdrav, Radim ovo prvi put. Treba mi organizaciona struktura Ministarstva.",kontakt_i_nadleznosti,organizacija,Treba mi organizaciona struktura Ministarstva.,natural,synthetic_rule_based,test
+"Pozdrav, Kako se prijavljuje pravosudni ispit? Nisam siguran gdje da tražim.",ispiti,pravosudni_ispit,Kako se prijavljuje pravosudni ispit?,easy,synthetic_rule_based,test
+"Može pomoc, Gdje mogu naći zahtjev/prijava za izmjenu podataka? Možete li me uputiti?",obrasci,obrazac_promjena,Gdje mogu naći zahtjev za izmjenu podataka?,medium,synthetic_rule_based,test
+"Dobar dan, Kada je sljedeći termin ispita? Ako može.",ispiti,termini_ispita,Kada je sljedeći termin ispita?,medium,synthetic_rule_based,test
+Kako registrovati fondaciju? Nisam siguran gdje da tražim.,registracija,registracija_fondacije,Kako registrovati fondaciju?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne znam koji dokument da predam. Kako podnijeti zahtjev za brisanje fondacije?",registracija,brisanje_iz_registra,Kako podnijeti zahtjev za brisanje fondacije?,natural,synthetic_rule_based,test
+"Molim vas, Gdje je prijavni obrazac za upis u registar? Hvala.",obrasci,obrazac_registracija,Gdje je prijavni obrazac za upis u registar?,natural,synthetic_rule_based,test
+"Molim vas, Treba mi izvod iz registra udruzenja.",registri,registar_udruzenja,Treba mi izvod iz registra udruženja.,natural,synthetic_rule_based,test
+"Može pomoć, Kada je popravni ispit? Nisam siguran gdje da tražim.",ispiti,termini_ispita,Kada je popravni ispit?,easy,synthetic_rule_based,test
+"Dobar dan, Šta mi treba za registraciju udruženja? Treba mi hitno.",registracija,registracija_udruzenja,Šta mi treba za registraciju udruženja?,medium,synthetic_rule_based,test
+"Dobar dan, Kome se obratiti za pravnu pomoć? Hvala.",pravna_pomoc,besplatna_pravna_pomoc,Kome se obratiti za pravnu pomoć?,medium,synthetic_rule_based,test
+"Molim vas, Koji je email Ministarstva pravde BiH? Ako može.",kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,easy,synthetic_rule_based,test
+"Molim vas, Radim ovo prvi put. Kako ide pravna saradnja sa drugom državom?",pravna_pomoc,medjunarodna_pravna_pomoc,Kako ide pravna saradnja sa drugom državom?,medium,synthetic_rule_based,test
+"Trebam informaciju, Koji je email Ministarstva pravde BiH?",kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne znam koji dokument da predam. Ima li registar notara?",registri,registar_notara,Ima li registar notara?,medium,synthetic_rule_based,test
+Radim ovo prvi put. Šta uraditi u slučaju međunarodne otmice djeteta? Molim odgovor.,pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,medium,synthetic_rule_based,test
+"Molim vas, Kome se obratiti za pravnu pomoć? Nisam siguran gdje da tražim.",kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,easy,synthetic_rule_based,test
+"Dobar dan, Ima li zahtjev za registraciju u Word ili PDF formatu?",obrasci,obrazac_registracija,Ima li zahtjev za registraciju u Word ili PDF formatu?,easy,synthetic_rule_based,test
+Kada je sljedeći termin ispita? Ako može.,ispiti,termini_ispita,Kada je sljedeći termin ispita?,medium,synthetic_rule_based,test
+"Dobar dan, Gdje se vadi lična karta? Treba mi hitno.",out_of_scope,nevezano,Gdje se vadi lična karta?,easy,synthetic_rule_based,test
+"Zanima me, Kako provjeriti notara? Hvala.",registri,registar_notara,Kako provjeriti notara?,natural,synthetic_rule_based,test
+"Može pomoć, Kako prijaviti promjenu podataka udruženja?",registracija,promjena_podataka,Kako prijaviti promjenu podataka udruženja?,medium,synthetic_rule_based,test
+"Dobar dan, Kako odjaviti udruženje iz registra?",registracija,brisanje_iz_registra,Kako odjaviti udruženje iz registra?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne znam koji dokument da predam. Koji obrazac se koristi za osnivanje udruženja?",obrasci,obrazac_registracija,Koji obrazac se koristi za osnivanje udruženja?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje mogu pronaći listu notara?",registri,registar_notara,Gdje mogu pronaći listu notara?,natural,synthetic_rule_based,test
+"Pozdrav, Kako naplatiti alimentaciju iz inostranstva? Treba mi hitno.",pravna_pomoc,alimentacija,Kako naplatiti alimentaciju iz inostranstva?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje mogu naći zakon o udruženjima?",zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,natural,synthetic_rule_based,test
+Gdje se predaje zahtjev za upis udruženja? Molim odgovor.,registracija,registracija_udruzenja,Gdje se predaje zahtjev za upis udruženja?,easy,synthetic_rule_based,test
+"Zanima me, Ne razumijem proceduru. Kako naplatiti alimentaciju iz inostranstva?",pravna_pomoc,alimentacija,Kako naplatiti alimentaciju iz inostranstva?,medium,synthetic_rule_based,test
+Šta treba za promjenu osobe ovlaštene za zastupanje?,registracija,promjena_podataka,Šta treba za promjenu osobe ovlaštene za zastupanje?,medium,synthetic_rule_based,test
+"Dobar dan, Koji dokumenti trebaju za besplatnu pravnu pomoć?",pravna_pomoc,besplatna_pravna_pomoc,Koji dokumenti trebaju za besplatnu pravnu pomoć?,medium,synthetic_rule_based,test
+"Pozdrav, Ima li registar notara?",registri,registar_notara,Ima li registar notara?,easy,synthetic_rule_based,test
+"Molim vas, Ne razumijem proceduru. Ko ima pravo na besplatnu pravnu pomoć? Nisam siguran gdje da tražim.",pravna_pomoc,besplatna_pravna_pomoc,Ko ima pravo na besplatnu pravnu pomoć?,easy,synthetic_rule_based,test
+Gdje mogu pronaći sudskog tumača? Hvala.,registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,easy,synthetic_rule_based,test
+"Pozdrav, Koji dokumenti trebaju za likvidaciju udruženja? Hvala.",registracija,brisanje_iz_registra,Koji dokumenti trebaju za likvidaciju udruženja?,natural,synthetic_rule_based,test
+"Zanima me, Radim ovo prvi put. Koji su uslovi za vozačku dozvolu? Treba mi hitno.",out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,natural,synthetic_rule_based,test
+Koji je email Ministarstva pravde BiH? Možete li me uputiti?,kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,medium,synthetic_rule_based,test
+"Pozdrav, Gdje se podnosi zahtjev za registraciju fondacije?",registracija,registracija_fondacije,Gdje se podnosi zahtjev za registraciju fondacije?,medium,synthetic_rule_based,test
+"Trebam informaciju, Koji zakon reguliše notarsku službu?",zakoni_i_propisi,zakoni_notari_tumaci,Koji zakon reguliše notarsku službu?,medium,synthetic_rule_based,test
+Gdje mogu naći zakon o udruženjima? Molim odgovor.,zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,natural,synthetic_rule_based,test
+"Molim vas, Radim ovo prvi put. Gdje su pravilnici za sudske tumače? Molim odgovor.",zakoni_i_propisi,zakoni_notari_tumaci,Gdje su pravilnici za sudske tumače?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako podnijeti zahtjev po ZOSPI-u?",obrasci,obrazac_zospi,Kako podnijeti zahtjev po ZOSPI-u?,easy,synthetic_rule_based,test
+"Pozdrav, Koliko košta polaganje pravosudnog ispita? Hvala.",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Treba mi za fakultetski zadatak. Šta uraditi u slučaju međunarodne otmice djeteta?",pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,medium,synthetic_rule_based,test
+Gdje se polaže strucni upravni ispit? Možete li me uputiti?,ispiti,strucni_upravni_ispit,Gdje se polaže stručni upravni ispit?,medium,synthetic_rule_based,test
+"Dobar dan, Koji su uslovi za vozačku dozvolu?",out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,natural,synthetic_rule_based,test
+"Zanima me, Pokušavam naći tačan obrazac. Gdje se nalazi Ministarstvo pravde?",kontakt_i_nadleznosti,kontakt,Gdje se nalazi Ministarstvo pravde?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Pokušavam naći tačan obrazac. Šta uraditi u slučaju međunarodne otmice djeteta?",pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Radim ovo prvi put. Treba mi obrazac za promjenu podataka udruženja. Treba mi hitno.",obrasci,obrazac_promjena,Treba mi obrazac za promjenu podataka udruženja.,easy,synthetic_rule_based,test
+"Dobar dan, Kako registrovati fondaciju? Možete li me uputiti?",registracija,registracija_fondacije,Kako registrovati fondaciju?,easy,synthetic_rule_based,test
+Kako funkcioniše međunarodna pravna pomoć? Nisam siguran gdje da tražim.,pravna_pomoc,medjunarodna_pravna_pomoc,Kako funkcioniše međunarodna pravna pomoć?,easy,synthetic_rule_based,test
+Treba mi registar sudskih tumača. Možete li me uputiti?,registri,registar_tumaca,Treba mi registar sudskih tumača.,easy,synthetic_rule_based,test
+"Pozdrav, Koji formular treba za promjenu zastupnika? Treba mi hitno.",obrasci,obrazac_promjena,Koji formular treba za promjenu zastupnika?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako se prijaviti na biro za zapošljavanje?",out_of_scope,nevezano,Kako se prijaviti na biro za zapošljavanje?,medium,synthetic_rule_based,test
+"Dobar dan, Kada rade općinske službe? Hvala.",out_of_scope,nevezano,Kada rade općinske službe?,medium,synthetic_rule_based,test
+Na stranici ima puno linkova. Kako otvoriti firmu u poreznoj upravi?,out_of_scope,nevezano,Kako otvoriti firmu u poreznoj upravi?,medium,synthetic_rule_based,test
+Koji je broj telefona Ministarstva? Ako može.,kontakt_i_nadleznosti,kontakt,Koji je broj telefona Ministarstva?,natural,synthetic_rule_based,test
+Koji su uslovi za pravosudni ispit? Ako može.,ispiti,pravosudni_ispit,Koji su uslovi za pravosudni ispit?,easy,synthetic_rule_based,test
+"Trebam informaciju, Radim ovo prvi put. Kako pronaći kontakt osobe u Ministarstvu?",kontakt_i_nadleznosti,organizacija,Kako pronaći kontakt osobe u Ministarstvu?,natural,synthetic_rule_based,test
+Koji je broj telefona Ministarstva? Hvala.,kontakt_i_nadleznosti,kontakt,Koji je broj telefona Ministarstva?,easy,synthetic_rule_based,test
+Ko je nadležan za otmicu djece preko granice? Nisam siguran gdje da tražim.,pravna_pomoc,otmica_djece,Ko je nadležan za otmicu djece preko granice?,natural,synthetic_rule_based,test
+"Trebam informaciju, Šta uraditi u slučaju međunarodne otmice djeteta? Treba mi hitno.",pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,easy,synthetic_rule_based,test
+"Dobar dan, Kako ide pravna saradnja sa drugom državom? Hvala.",pravna_pomoc,medjunarodna_pravna_pomoc,Kako ide pravna saradnja sa drugom državom?,easy,synthetic_rule_based,test
+Radim ovo prvi put. Koji sektori postoje u Ministarstvu?,kontakt_i_nadleznosti,organizacija,Koji sektori postoje u Ministarstvu?,natural,synthetic_rule_based,test
+"Molim vas, Koji sektori postoje u Ministarstvu? Treba mi hitno.",kontakt_i_nadleznosti,organizacija,Koji sektori postoje u Ministarstvu?,medium,synthetic_rule_based,test
+"Može pomoć, Treba mi registar sudskih tumača.",registri,registar_tumaca,Treba mi registar sudskih tumača.,easy,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Ko može polagati pravosudni ispit?,ispiti,pravosudni_ispit,Ko može polagati pravosudni ispit?,natural,synthetic_rule_based,test
+"Dobar dan, Koji obrazac se koristi za osnivanje udruženja? Hvala.",obrasci,obrazac_registracija,Koji obrazac se koristi za osnivanje udruženja?,medium,synthetic_rule_based,test
+Na stranici ima puno linkova. Koji dokumenti trebaju za likvidaciju udruženja?,registracija,brisanje_iz_registra,Koji dokumenti trebaju za likvidaciju udruženja?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Koji sektori postoje u Ministarstvu?",kontakt_i_nadleznosti,organizacija,Koji sektori postoje u Ministarstvu?,medium,synthetic_rule_based,test
+Kako ide postupak upisa udruženja u registar? Molim odgovor.,registracija,registracija_udruzenja,Kako ide postupak upisa udruženja u registar?,easy,synthetic_rule_based,test
+Radim ovo prvi put. Treba mi organizaciona struktura Ministarstva. Nisam siguran gdje da tražim.,kontakt_i_nadleznosti,organizacija,Treba mi organizaciona struktura Ministarstva.,natural,synthetic_rule_based,test
+"Molim vas, Koji dokumenti trebaju za stručni upravni ispit?",ispiti,strucni_upravni_ispit,Koji dokumenti trebaju za stručni upravni ispit?,natural,synthetic_rule_based,test
+"Može pomoć, Ne razumijem proceduru. Treba mi formular za slobodu pristupa informacijama.",obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,natural,synthetic_rule_based,test
+Kada rade općinske službe?,out_of_scope,nevezano,Kada rade općinske službe?,medium,synthetic_rule_based,test
+Treba mi formular za slobodu pristupa informacijama. Možete li me uputiti?,obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,natural,synthetic_rule_based,test
+"Trebam informaciju, Kome se šalje prijava za ispit? Hvala.",ispiti,kontakt_ispiti,Kome se šalje prijava za ispit?,natural,synthetic_rule_based,test
+"Molim vas, Gdje su pravilnici za sudske tumače? Hvala.",zakoni_i_propisi,zakoni_notari_tumaci,Gdje su pravilnici za sudske tumače?,medium,synthetic_rule_based,test
+"Može pomoć, Koji je broj telefona Ministarstva?",kontakt_i_nadleznosti,kontakt,Koji je broj telefona Ministarstva?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Pokušavam naći tačan obrazac. Kako poslati upit Ministarstvu? Ako može.",kontakt_i_nadleznosti,kontakt,Kako poslati upit Ministarstvu?,easy,synthetic_rule_based,test
+Koji obrazac ide za ZOSPI? Ako može.,obrasci,obrazac_zospi,Koji obrazac ide za ZOSPI?,natural,synthetic_rule_based,test
+"Dobar dan, Koja dokumentacija je potrebna za osnivanje udruženja? Možete li me uputiti?",registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,easy,synthetic_rule_based,test
+"Zanima me, Gdje mogu naći pravila za imenovanje sudskog tumača?",zakoni_i_propisi,zakoni_notari_tumaci,Gdje mogu naći pravila za imenovanje sudskog tumača?,medium,synthetic_rule_based,test
+Kako se briše udruženje iz registra? Nisam siguran gdje da tražim.,registracija,brisanje_iz_registra,Kako se briše udruženje iz registra?,easy,synthetic_rule_based,test
+"Trebam informaciju, Kako da produžim pasoš?",out_of_scope,nevezano,Kako da produžim pasoš?,medium,synthetic_rule_based,test
+"Molim vas, Gdje mogu pronaći sudskog tumača? Nisam siguran gdje da tražim.",registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,easy,synthetic_rule_based,test
+"Dobar dan, Ko radi u sektoru za pravosuđe? Hvala.",kontakt_i_nadleznosti,organizacija,Ko radi u sektoru za pravosuđe?,medium,synthetic_rule_based,test
+"Pozdrav, Kako ide pravna saradnja sa drugom državom? Treba mi hitno.",pravna_pomoc,medjunarodna_pravna_pomoc,Kako ide pravna saradnja sa drugom državom?,medium,synthetic_rule_based,test
+Koji zakon propisuje uslove za pravosudni ispit? Molim odgovor.,zakoni_i_propisi,zakoni_ispiti,Koji zakon propisuje uslove za pravosudni ispit?,natural,synthetic_rule_based,test
+"Dobar dan, Pokušavam naći tačan obrazac. Koji zakon propisuje uslove za pravosudni ispit? Nisam siguran gdje da tražim.",zakoni_i_propisi,zakoni_ispiti,Koji zakon propisuje uslove za pravosudni ispit?,medium,synthetic_rule_based,test
+Gdje se predaje zahtjev/prijava za registraciju fondacije? Treba mi hitno.,registracija,registracija_fondacije,Gdje se podnosi zahtjev za registraciju fondacije?,easy,synthetic_rule_based,test
+"Dobar dan, Za šta je nadležno Ministarstvo pravde?",kontakt_i_nadleznosti,nadleznosti,Za šta je nadležno Ministarstvo pravde?,easy,synthetic_rule_based,test
+"Pozdrav, Ima li obrazac za preregistraciju? Ako može.",obrasci,obrazac_promjena,Ima li obrazac za preregistraciju?,medium,synthetic_rule_based,test
+"Zanima me, Kome se obratiti za pravnu pomoć? Treba mi hitno.",kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,natural,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Kako dobiti uvjerenje o državljanstvu? Molim odgovor.,out_of_scope,nevezano,Kako dobiti uvjerenje o državljanstvu?,natural,synthetic_rule_based,test
+"Može pomoć, Ne znam koji dokument da predam. Kada su termini za pravosudni ispit? Treba mi hitno.",ispiti,pravosudni_ispit,Kada su termini za pravosudni ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Koji propisi važe za notare?",zakoni_i_propisi,zakoni_notari_tumaci,Koji propisi važe za notare?,medium,synthetic_rule_based,test
+"Dobar dan, Treba mi za fakultetski zadatak. Treba mi spisak notara u BiH. Ako može.",registri,registar_notara,Treba mi spisak notara u BiH.,easy,synthetic_rule_based,test
+Na stranici ima puno linkova. Koji zakon reguliše pravosudni ispit?,zakoni_i_propisi,zakoni_ispiti,Koji zakon reguliše pravosudni ispit?,medium,synthetic_rule_based,test
+Gdje mogu naći zakon o udruženjima? Treba mi hitno.,zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,easy,synthetic_rule_based,test
+"Molim vas, Koja dokumentacija je potrebna za osnivanje udruženja? Možete li me uputiti?",registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,natural,synthetic_rule_based,test
+"Zanima me, Kako pronaći podatke o udruženju? Nisam siguran gdje da tražim.",registri,registar_udruzenja,Kako pronaći podatke o udruženju?,easy,synthetic_rule_based,test
+"Molim vas, Kako se prijaviti na biro za zaposljavanje? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Kako se prijaviti na biro za zapošljavanje?,natural,synthetic_rule_based,test
+"Ne mogu da nadjem na stranici, Koji dokumenti trebaju za stručni upravni ispit?",ispiti,strucni_upravni_ispit,Koji dokumenti trebaju za stručni upravni ispit?,easy,synthetic_rule_based,test
+Šta treba za prestanak rada udruženja? Možete li me uputiti?,registracija,brisanje_iz_registra,Šta treba za prestanak rada udruženja?,easy,synthetic_rule_based,test
+"Pozdrav, Ima li raspored za polaganje ispita? Treba mi hitno.",ispiti,termini_ispita,Ima li raspored za polaganje ispita?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako registrovati auto? Treba mi hitno.",out_of_scope,nevezano,Kako registrovati auto?,natural,synthetic_rule_based,test
+Kako se prijavljuje stručni upravni ispit? Hvala.,ispiti,strucni_upravni_ispit,Kako se prijavljuje stručni upravni ispit?,easy,synthetic_rule_based,test
+"Može pomoć, Šta uraditi u slučaju međunarodne otmice djeteta?",pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,easy,synthetic_rule_based,test
+"Može pomoć, Pokušavam naći tačan obrazac. Koja dokumentacija je potrebna za osnivanje udruženja? Nisam siguran gdje da tražim.",registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,natural,synthetic_rule_based,test
+"Molim vas, Koliko košta polaganje pravosudnog ispita? Možete li me uputiti?",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,easy,synthetic_rule_based,test
+"Dobar dan, Gdje se nalazi vodič za pristup informacijama? Nisam siguran gdje da tražim.",zakoni_i_propisi,zakoni_zospi,Gdje se nalazi vodič za pristup informacijama?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Na stranici ima puno linkova. Ima li obrazac za popravni ispit?",obrasci,obrazac_ispiti,Ima li obrazac za popravni ispit?,easy,synthetic_rule_based,test
+"Molim vas, Ko je nadležan za otmicu djece preko granice? Molim odgovor.",pravna_pomoc,otmica_djece,Ko je nadležan za otmicu djece preko granice?,natural,synthetic_rule_based,test
+"Zanima me, Koji formular se predaje za polaganje ispita? Hvala.",obrasci,obrazac_ispiti,Koji formular se predaje za polaganje ispita?,easy,synthetic_rule_based,test
+"Pozdrav, Kako dobiti uvjerenje o državljanstvu? Hvala.",out_of_scope,nevezano,Kako dobiti uvjerenje o državljanstvu?,easy,synthetic_rule_based,test
+"Pozdrav, Kako se briše udruženje iz registra? Hvala.",registracija,brisanje_iz_registra,Kako se briše udruženje iz registra?,natural,synthetic_rule_based,test
+"Molim vas, Pokušavam naći tačan obrazac. Ima li registar notara?",registri,registar_notara,Ima li registar notara?,natural,synthetic_rule_based,test
+"Zanima me, Treba mi za fakultetski zadatak. Kako pokrenuti postupak za izdržavanje iz druge države?",pravna_pomoc,alimentacija,Kako pokrenuti postupak za izdržavanje iz druge države?,easy,synthetic_rule_based,test
+"Pozdrav, Kako mogu kontaktirati Ministarstvo pravde? Hvala.",kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,natural,synthetic_rule_based,test
+"Molim vas, Gdje mogu naći program pravosudnog ispita?",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,medium,synthetic_rule_based,test
+"Dobar dan, Kako mogu kontaktirati Ministarstvo pravde? Molim odgovor.",kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,easy,synthetic_rule_based,test
+"Dobar dan, Gdje mogu vidjeti listu kandidata za ispit?",ispiti,termini_ispita,Gdje mogu vidjeti listu kandidata za ispit?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Koji su uslovi za vozačku dozvolu? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,easy,synthetic_rule_based,test
+"Zanima me, Gdje se plaća parking kazna? Ako može.",out_of_scope,nevezano,Gdje se plaća parking kazna?,easy,synthetic_rule_based,test
+Gdje se predaje zahtjev/prijava za građevinsku dozvolu? Hvala.,out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,easy,synthetic_rule_based,test
+"Pozdrav, Kako se zove obrazac za izmjenu u registru? Treba mi hitno.",obrasci,obrazac_promjena,Kako se zove obrazac za izmjenu u registru?,medium,synthetic_rule_based,test
+Na stranici ima puno linkova. Kada su termini za stručni upravni ispit? Hvala.,ispiti,strucni_upravni_ispit,Kada su termini za stručni upravni ispit?,natural,synthetic_rule_based,test
+"Dobar dan, Treba mi pomoć za predmet u inostranstvu. Nisam siguran gdje da tražim.",pravna_pomoc,medjunarodna_pravna_pomoc,Treba mi pomoć za predmet u inostranstvu.,medium,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Kako pokrenuti postupak za izdržavanje iz druge države?,pravna_pomoc,alimentacija,Kako pokrenuti postupak za izdržavanje iz druge države?,natural,synthetic_rule_based,test
+Gdje mogu naći program pravosudnog ispita? Treba mi hitno.,zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,medium,synthetic_rule_based,test
+Ne razumijem proceduru. Gdje mogu vidjeti listu kandidata za ispit? Nisam siguran gdje da tražim.,ispiti,termini_ispita,Gdje mogu vidjeti listu kandidata za ispit?,medium,synthetic_rule_based,test
+"Dobar dan, Kada su termini za stručni upravni ispit? Treba mi hitno.",ispiti,strucni_upravni_ispit,Kada su termini za stručni upravni ispit?,easy,synthetic_rule_based,test
+"Zanima me, Koliko košta polaganje pravosudnog ispita? Treba mi hitno.",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,natural,synthetic_rule_based,test
+"Može pomoć, Koji zakon se primjenjuje na NVO? Možete li me uputiti?",zakoni_i_propisi,zakoni_udruzenja,Koji zakon se primjenjuje na NVO?,natural,synthetic_rule_based,test
+"Pozdrav, Koliko košta polaganje pravosudnog ispita? Nisam siguran gdje da tražim.",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,natural,synthetic_rule_based,test
+"Pozdrav, Radim ovo prvi put. Treba mi propis o stalnim sudskim tumačima.",zakoni_i_propisi,zakoni_notari_tumaci,Treba mi propis o stalnim sudskim tumačima.,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje mogu pronaći registar udruženja? Hvala.",registri,registar_udruzenja,Gdje mogu pronaći registar udruženja?,medium,synthetic_rule_based,test
+Koji su uslovi za osnivanje fondacije? Nisam siguran gdje da tražim.,registracija,registracija_fondacije,Koji su uslovi za osnivanje fondacije?,easy,synthetic_rule_based,test
+"Može pomoć, Gdje mogu pronaći listu notara? Nisam siguran gdje da tražim.",registri,registar_notara,Gdje mogu pronaći listu notara?,medium,synthetic_rule_based,test
+Kako mogu kontaktirati Ministarstvo pravde? Nisam siguran gdje da tražim.,kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne znam koji dokument da predam. Gdje da nađem listu notara? Molim odgovor.",registri,registar_notara,Gdje mogu pronaći listu notara?,natural,synthetic_rule_based,test
+"Molim vas, Treba mi obrazac za promjenu podataka udruženja. Molim odgovor.",obrasci,obrazac_promjena,Treba mi obrazac za promjenu podataka udruženja.,natural,synthetic_rule_based,test
+"Može pomoć, Kako provjeriti notara? Ako može.",registri,registar_notara,Kako provjeriti notara?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Treba mi za fakultetski zadatak. Koja je procedura za upis fondacije? Ako može.",registracija,registracija_fondacije,Koja je procedura za upis fondacije?,medium,synthetic_rule_based,test
+"Može pomoć, Gdje je zakon o slobodi pristupa informacijama?",zakoni_i_propisi,zakoni_zospi,Gdje je zakon o slobodi pristupa informacijama?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Treba mi spisak notara u BiH.",registri,registar_notara,Treba mi spisak notara u BiH.,easy,synthetic_rule_based,test
+Na stranici ima puno linkova. Šta treba za prestanak rada udruženja? Molim odgovor.,registracija,brisanje_iz_registra,Šta treba za prestanak rada udruženja?,easy,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Gdje da pitam za ispitne termine? Ako može.,ispiti,kontakt_ispiti,Gdje da pitam za ispitne termine?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje se vadi lična karta? Treba mi hitno.",out_of_scope,nevezano,Gdje se vadi lična karta?,natural,synthetic_rule_based,test
+"Može pomoć, Na stranici ima puno linkova. Kako mogu dobiti besplatnu pravnu pomoć? Ako može.",pravna_pomoc,besplatna_pravna_pomoc,Kako mogu dobiti besplatnu pravnu pomoć?,natural,synthetic_rule_based,test
+Treba mi formular za slobodu pristupa informacijama.,obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,natural,synthetic_rule_based,test
+"Može pomoć, Gdje mogu pronaći sudskog tumača?",registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,natural,synthetic_rule_based,test
+Treba mi formular za registraciju fondacije. Ako može.,obrasci,obrazac_registracija,Treba mi formular za registraciju fondacije.,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Na stranici ima puno linkova. Treba mi propis o stalnim sudskim tumačima.",zakoni_i_propisi,zakoni_notari_tumaci,Treba mi propis o stalnim sudskim tumačima.,medium,synthetic_rule_based,test
+"Može pomoć, Treba mi za fakultetski zadatak. Treba mi formular za slobodu pristupa informacijama. Treba mi hitno.",obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,natural,synthetic_rule_based,test
+Ne razumijem proceduru. Gdje su pravilnici za sudske tumače? Treba mi hitno.,zakoni_i_propisi,zakoni_notari_tumaci,Gdje su pravilnici za sudske tumače?,medium,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Kako se prijaviti na biro za zapošljavanje?,out_of_scope,nevezano,Kako se prijaviti na biro za zapošljavanje?,easy,synthetic_rule_based,test
+"Zanima me, Koji je email Ministarstva pravde BiH? Ako može.",kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,natural,synthetic_rule_based,test
+Kako prijaviti promjenu podataka udruženja? Nisam siguran gdje da tražim.,registracija,promjena_podataka,Kako prijaviti promjenu podataka udruženja?,natural,synthetic_rule_based,test
+"Trebam informaciju, Radim ovo prvi put. Ko je nadležan za pravosudni ispit? Možete li me uputiti?",kontakt_i_nadleznosti,nadleznosti,Ko je nadležan za pravosudni ispit?,easy,synthetic_rule_based,test
+Koji zakon reguliše notarsku službu? Molim odgovor.,zakoni_i_propisi,zakoni_notari_tumaci,Koji zakon reguliše notarsku službu?,easy,synthetic_rule_based,test
+Koji obrazac ide za ZOSPI? Možete li me uputiti?,obrasci,obrazac_zospi,Koji obrazac ide za ZOSPI?,medium,synthetic_rule_based,test
+"Zanima me, Gdje se preuzima prijava za ispit? Treba mi hitno.",obrasci,obrazac_ispiti,Gdje se preuzima prijava za ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Koga da kontaktiram za pravnu pomoć? Hvala.",kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,natural,synthetic_rule_based,test
+"Može pomoć, Ko je nadležan za otmicu djece preko granice? Možete li me uputiti?",pravna_pomoc,otmica_djece,Ko je nadležan za otmicu djece preko granice?,easy,synthetic_rule_based,test
+"Dobar dan, Kako provjeriti notara? Treba mi hitno.",registri,registar_notara,Kako provjeriti notara?,easy,synthetic_rule_based,test
+Gdje se predaje zahtjev za građevinsku dozvolu? Molim odgovor.,out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,easy,synthetic_rule_based,test
+"Pozdrav, Treba mi izvod iz registra udruženja. Nisam siguran gdje da tražim.",registri,registar_udruzenja,Treba mi izvod iz registra udruženja.,easy,synthetic_rule_based,test
+Ne znam koji dokument da predam. Koji su uslovi za vozačku dozvolu? Možete li me uputiti?,out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,natural,synthetic_rule_based,test
+Gdje je obrazac za pristup informacijama? Treba mi hitno.,obrasci,obrazac_zospi,Gdje je obrazac za pristup informacijama?,natural,synthetic_rule_based,test
+"Moze pomoc, Koji zakon reguliše pravosudni ispit?",zakoni_i_propisi,zakoni_ispiti,Koji zakon reguliše pravosudni ispit?,easy,synthetic_rule_based,test
+"Dobar dan, Kada su termini za stručni upravni ispit? Možete li me uputiti?",ispiti,strucni_upravni_ispit,Kada su termini za stručni upravni ispit?,medium,synthetic_rule_based,test
+Ima li zahtjev/prijava za pristup informacijama?,obrasci,obrazac_zospi,Ima li zahtjev za pristup informacijama?,medium,synthetic_rule_based,test
+Ne znam koji dokument da predam. Kako ide pravna saradnja sa drugom državom? Nisam siguran gdje da tražim.,pravna_pomoc,medjunarodna_pravna_pomoc,Kako ide pravna saradnja sa drugom državom?,medium,synthetic_rule_based,test
+"Trebam informaciju, Kako registrovati auto?",out_of_scope,nevezano,Kako registrovati auto?,medium,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Koja dokumentacija je potrebna za osnivanje udruženja? Hvala.,registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,medium,synthetic_rule_based,test
+"Dobar dan, Koga mogu kontaktirati za pravosudni ispit?",ispiti,kontakt_ispiti,Koga mogu kontaktirati za pravosudni ispit?,easy,synthetic_rule_based,test
+"Molim vas, Radim ovo prvi put. Kako se radi preregistracija udruženja? Ako može.",registracija,promjena_podataka,Kako se radi preregistracija udruženja?,natural,synthetic_rule_based,test
+"Trebam informaciju, Kako je regulisan zahtjev za pristup informacijama?",zakoni_i_propisi,zakoni_zospi,Kako je regulisan zahtjev za pristup informacijama?,easy,synthetic_rule_based,test
+"Dobar dan, Koliko košta polaganje pravosudnog ispita? Molim odgovor.",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,easy,synthetic_rule_based,test
+"Može pomoć, Kada je popravni ispit? Treba mi hitno.",ispiti,termini_ispita,Kada je popravni ispit?,easy,synthetic_rule_based,test
+"Zanima me, Kako registrovati auto?",out_of_scope,nevezano,Kako registrovati auto?,easy,synthetic_rule_based,test
+"Molim vas, Radim ovo prvi put. Ima li zahtjev za pristup informacijama? Molim odgovor.",obrasci,obrazac_zospi,Ima li zahtjev za pristup informacijama?,natural,synthetic_rule_based,test
+Radim ovo prvi put. Treba mi pomoć za predmet u inostranstvu. Treba mi hitno.,pravna_pomoc,medjunarodna_pravna_pomoc,Treba mi pomoć za predmet u inostranstvu.,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ko ima pravo na besplatnu pravnu pomoć? Hvala.",pravna_pomoc,besplatna_pravna_pomoc,Ko ima pravo na besplatnu pravnu pomoć?,medium,synthetic_rule_based,test
+"Dobar dan, Kako se prijavljuje pravosudni ispit? Ako može.",ispiti,pravosudni_ispit,Kako se prijavljuje pravosudni ispit?,natural,synthetic_rule_based,test
+"Trebam informaciju, Kada su termini za pravosudni ispit? Molim odgovor.",ispiti,pravosudni_ispit,Kada su termini za pravosudni ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Kako se pokreće postupak za povrat djeteta? Hvala.",pravna_pomoc,otmica_djece,Kako se pokreće postupak za povrat djeteta?,natural,synthetic_rule_based,test
+Gdje se polaže stručni upravni ispit? Možete li me uputiti?,ispiti,strucni_upravni_ispit,Gdje se polaže stručni upravni ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Kome se šalje prijava za ispit? Nisam siguran gdje da tražim.",ispiti,kontakt_ispiti,Kome se šalje prijava za ispit?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Koja dokumentacija treba za izmjenu podataka u registru?",registracija,promjena_podataka,Koja dokumentacija treba za izmjenu podataka u registru?,medium,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Šta treba za promjenu osobe ovlaštene za zastupanje?,registracija,promjena_podataka,Šta treba za promjenu osobe ovlaštene za zastupanje?,natural,synthetic_rule_based,test
+"Trebam informaciju, Kome se šalje prijava za ispit? Ako može.",ispiti,kontakt_ispiti,Kome se šalje prijava za ispit?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje su objavljeni ovlašteni sudski tumači? Hvala.",registri,registar_tumaca,Gdje su objavljeni ovlašteni sudski tumači?,natural,synthetic_rule_based,test
+Kako prijaviti promjenu podataka udruženja? Možete li me uputiti?,registracija,promjena_podataka,Kako prijaviti promjenu podataka udruženja?,medium,synthetic_rule_based,test
+"Zanima me, Koliko košta polaganje pravosudnog ispita? Možete li me uputiti?",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,natural,synthetic_rule_based,test
+"Molim vas, Pokušavam naći tačan obrazac. Gdje se vadi lična karta? Hvala.",out_of_scope,nevezano,Gdje se vadi lična karta?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako otvoriti firmu u poreznoj upravi? Hvala.",out_of_scope,nevezano,Kako otvoriti firmu u poreznoj upravi?,natural,synthetic_rule_based,test
+"Dobar dan, Ne znam koji dokument da predam. Treba mi pomoć za alimentaciju iz inostranstva.",pravna_pomoc,alimentacija,Treba mi pomoć za alimentaciju iz inostranstva.,medium,synthetic_rule_based,test
+"Zanima me, Na stranici ima puno linkova. Kako odjaviti udruženje iz registra? Molim odgovor.",registracija,brisanje_iz_registra,Kako odjaviti udruženje iz registra?,medium,synthetic_rule_based,test
+Kako pokrenuti postupak za izdržavanje iz druge države?,pravna_pomoc,alimentacija,Kako pokrenuti postupak za izdržavanje iz druge države?,medium,synthetic_rule_based,test
+Gdje mogu naći zahtjev za izmjenu podataka? Hvala.,obrasci,obrazac_promjena,Gdje mogu naći zahtjev za izmjenu podataka?,medium,synthetic_rule_based,test
+"Molim vas, Treba mi za fakultetski zadatak. Kako provjeriti notara? Ako može.",registri,registar_notara,Kako provjeriti notara?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Treba mi formular za slobodu pristupa informacijama.",obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,natural,synthetic_rule_based,test
+"Trebam informaciju, Treba mi pravni osnov za registraciju udruženja. Nisam siguran gdje da tražim.",zakoni_i_propisi,zakoni_udruzenja,Treba mi pravni osnov za registraciju udruženja.,easy,synthetic_rule_based,test
+"Trebam informaciju, Treba mi za fakultetski zadatak. Gdje su objavljeni notari?",registri,registar_notara,Gdje su objavljeni notari?,medium,synthetic_rule_based,test
+"Zanima me, Kako odjaviti udruženje iz registra? Ako može.",registracija,brisanje_iz_registra,Kako odjaviti udruženje iz registra?,natural,synthetic_rule_based,test
+"Može pomoć, Gdje mogu naći pravila za imenovanje sudskog tumača? Hvala.",zakoni_i_propisi,zakoni_notari_tumaci,Gdje mogu naći pravila za imenovanje sudskog tumača?,natural,synthetic_rule_based,test
+Šta treba za prestanak rada udruženja? Hvala.,registracija,brisanje_iz_registra,Šta treba za prestanak rada udruženja?,easy,synthetic_rule_based,test
+Gdje mogu naći program pravosudnog ispita? Hvala.,zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,easy,synthetic_rule_based,test
+"Dobar dan, Treba mi za fakultetski zadatak. Treba mi pravilnik o polaganju ispita.",zakoni_i_propisi,zakoni_ispiti,Treba mi pravilnik o polaganju ispita.,natural,synthetic_rule_based,test
+"Zanima me, Kako ide postupak upisa udruženja u registar? Ako može.",registracija,registracija_udruzenja,Kako ide postupak upisa udruženja u registar?,medium,synthetic_rule_based,test
+"Pozdrav, Kada je popravni ispit?",ispiti,termini_ispita,Kada je popravni ispit?,easy,synthetic_rule_based,test
+Ne znam koji dokument da predam. Kako se briše udruženje iz registra? Možete li me uputiti?,registracija,brisanje_iz_registra,Kako se briše udruženje iz registra?,natural,synthetic_rule_based,test
+"Molim vas, Na stranici ima puno linkova. Koji propisi važe za notare?",zakoni_i_propisi,zakoni_notari_tumaci,Koji propisi važe za notare?,easy,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Kako mogu dobiti besplatnu pravnu pomoć?,pravna_pomoc,besplatna_pravna_pomoc,Kako mogu dobiti besplatnu pravnu pomoć?,medium,synthetic_rule_based,test
+"Može pomoć, Pokušavam naći tačan obrazac. Kako provjeriti notara? Možete li me uputiti?",registri,registar_notara,Kako provjeriti notara?,natural,synthetic_rule_based,test
+"Može pomoć, Koji obrazac ide za ZOSPI?",obrasci,obrazac_zospi,Koji obrazac ide za ZOSPI?,medium,synthetic_rule_based,test
+"Može pomoć, Gdje mogu naći program pravosudnog ispita? Ako može.",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,easy,synthetic_rule_based,test
+"Zanima me, Koji sektori postoje u Ministarstvu? Možete li me uputiti?",kontakt_i_nadleznosti,organizacija,Koji sektori postoje u Ministarstvu?,easy,synthetic_rule_based,test
+"Molim vas, Koji formular se predaje za polaganje ispita? Hvala.",obrasci,obrazac_ispiti,Koji formular se predaje za polaganje ispita?,easy,synthetic_rule_based,test
+"Može pomoć, Na stranici ima puno linkova. Gdje je obrazac za prijavu pravosudnog ispita?",obrasci,obrazac_ispiti,Gdje je obrazac za prijavu pravosudnog ispita?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kada rade općinske službe? Možete li me uputiti?",out_of_scope,nevezano,Kada rade općinske službe?,medium,synthetic_rule_based,test
+Treba mi formular za registraciju fondacije. Možete li me uputiti?,obrasci,obrazac_registracija,Treba mi formular za registraciju fondacije.,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje se plaća parking kazna?",out_of_scope,nevezano,Gdje se plaća parking kazna?,easy,synthetic_rule_based,test
+Na stranici ima puno linkova. Kako pronaći podatke o udruženju? Nisam siguran gdje da tražim.,registri,registar_udruzenja,Kako pronaći podatke o udruženju?,medium,synthetic_rule_based,test
+Kako da dobiti besplatnu pravnu pomoć? Molim odgovor.,pravna_pomoc,besplatna_pravna_pomoc,Kako mogu dobiti besplatnu pravnu pomoć?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne znam koji dokument da predam. Koji su uslovi za pravosudni ispit? Možete li me uputiti?",ispiti,pravosudni_ispit,Koji su uslovi za pravosudni ispit?,medium,synthetic_rule_based,test
+Ne razumijem proceduru. Gdje da pitam za ispitne termine? Ako može.,ispiti,kontakt_ispiti,Gdje da pitam za ispitne termine?,natural,synthetic_rule_based,test
+"Zanima me, Gdje se preuzima prijava za ispit? Možete li me uputiti?",obrasci,obrazac_ispiti,Gdje se preuzima prijava za ispit?,natural,synthetic_rule_based,test
+"Trebam informaciju, Na stranici ima puno linkova. Treba mi formular za slobodu pristupa informacijama.",obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,natural,synthetic_rule_based,test
+"Zanima me, Ko je nadležan za pravosudni ispit? Možete li me uputiti?",kontakt_i_nadleznosti,nadleznosti,Ko je nadležan za pravosudni ispit?,easy,synthetic_rule_based,test
+Ne razumijem proceduru. Ima li obrazac za popravni ispit?,obrasci,obrazac_ispiti,Ima li obrazac za popravni ispit?,natural,synthetic_rule_based,test
+Ko može polagati pravosudni ispit? Možete li me uputiti?,ispiti,pravosudni_ispit,Ko može polagati pravosudni ispit?,natural,synthetic_rule_based,test
+Ne znam koji dokument da predam. Ko može polagati pravosudni ispit?,ispiti,pravosudni_ispit,Ko može polagati pravosudni ispit?,easy,synthetic_rule_based,test
+Na stranici ima puno linkova. Treba mi informacija o Haškoj konvenciji za djecu. Mozete li me uputiti?,pravna_pomoc,otmica_djece,Treba mi informacija o Haškoj konvenciji za djecu.,natural,synthetic_rule_based,test
+"Molim vas, Ne znam koji dokument da predam. Koga mogu kontaktirati za pravosudni ispit?",ispiti,kontakt_ispiti,Koga mogu kontaktirati za pravosudni ispit?,medium,synthetic_rule_based,test
+"Dobar dan, Treba mi za fakultetski zadatak. Kako pronaći kontakt osobe u Ministarstvu?",kontakt_i_nadleznosti,organizacija,Kako pronaći kontakt osobe u Ministarstvu?,natural,synthetic_rule_based,test
+"Može pomoć, Kako mogu kontaktirati Ministarstvo pravde?",kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,medium,synthetic_rule_based,test
+"Pozdrav, Gdje se vadi lična karta? Ako može.",out_of_scope,nevezano,Gdje se vadi lična karta?,natural,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Koji su uslovi za vozačku dozvolu? Hvala.,out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako se prijavljuje stručni upravni ispit?",ispiti,strucni_upravni_ispit,Kako se prijavljuje stručni upravni ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Kome prijaviti odvođenje djeteta u drugu državu?",pravna_pomoc,otmica_djece,Kome prijaviti odvođenje djeteta u drugu državu?,natural,synthetic_rule_based,test
+Koji obrazac se koristi za osnivanje udruženja?,obrasci,obrazac_registracija,Koji obrazac se koristi za osnivanje udruženja?,easy,synthetic_rule_based,test
+"Molim vas, Kako mogu kontaktirati Ministarstvo pravde? Nisam siguran gdje da tražim.",kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,medium,synthetic_rule_based,test
+Treba mi spisak notara u BiH. Možete li me uputiti?,registri,registar_notara,Treba mi spisak notara u BiH.,natural,synthetic_rule_based,test
+"Trebam informaciju, Kako provjeriti notara?",registri,registar_notara,Kako provjeriti notara?,easy,synthetic_rule_based,test
+"Molim vas, Kako provjeriti da li je neko sudski tumač?",registri,registar_tumaca,Kako provjeriti da li je neko sudski tumač?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako se prijavljuje stručni upravni ispit? Hvala.",ispiti,strucni_upravni_ispit,Kako se prijavljuje stručni upravni ispit?,natural,synthetic_rule_based,test
+"Trebam informaciju, Kako da produžim pasoš? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Kako da produžim pasoš?,natural,synthetic_rule_based,test
+"Dobar dan, Treba mi pravilnik za ZOSPI.",zakoni_i_propisi,zakoni_zospi,Treba mi pravilnik za ZOSPI.,medium,synthetic_rule_based,test
+"Zanima me, Treba mi za fakultetski zadatak. Kako provjeriti da li je neko sudski tumač? Treba mi hitno.",registri,registar_tumaca,Kako provjeriti da li je neko sudski tumač?,medium,synthetic_rule_based,test
+"Molim vas, Na stranici ima puno linkova. Treba mi izvod iz registra udruženja. Treba mi hitno.",registri,registar_udruzenja,Treba mi izvod iz registra udruženja.,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Gdje mogu vidjeti listu kandidata za ispit?",ispiti,termini_ispita,Gdje mogu vidjeti listu kandidata za ispit?,natural,synthetic_rule_based,test
+"Molim vas, Treba mi pomoć za predmet u inostranstvu. Nisam siguran gdje da tražim.",pravna_pomoc,medjunarodna_pravna_pomoc,Treba mi pomoć za predmet u inostranstvu.,easy,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Gdje mogu naći pravila za imenovanje sudskog tumača? Treba mi hitno.,zakoni_i_propisi,zakoni_notari_tumaci,Gdje mogu naći pravila za imenovanje sudskog tumača?,easy,synthetic_rule_based,test
+"Dobar dan, Treba mi informacija o Haškoj konvenciji za djecu. Možete li me uputiti?",pravna_pomoc,otmica_djece,Treba mi informacija o Haškoj konvenciji za djecu.,easy,synthetic_rule_based,test
+"Pozdrav, Koji zakon reguliše udruženja i fondacije? Ako može.",zakoni_i_propisi,zakoni_udruzenja,Koji zakon reguliše udruženja i fondacije?,easy,synthetic_rule_based,test
+"Zanima me, Kako dobiti uvjerenje o državljanstvu? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Kako dobiti uvjerenje o državljanstvu?,easy,synthetic_rule_based,test
+"Dobar dan, Gdje mogu preuzeti obrazac za registraciju udruženja?",obrasci,obrazac_registracija,Gdje mogu preuzeti obrazac za registraciju udruženja?,easy,synthetic_rule_based,test
+"Dobar dan, Treba mi pomoć za alimentaciju iz inostranstva. Ako može.",pravna_pomoc,alimentacija,Treba mi pomoć za alimentaciju iz inostranstva.,easy,synthetic_rule_based,test
+"Trebam informaciju, Treba mi pravilnik za ZOSPI.",zakoni_i_propisi,zakoni_zospi,Treba mi pravilnik za ZOSPI.,natural,synthetic_rule_based,test
+"Molim vas, Koja je procedura za upis fondacije? Ako može.",registracija,registracija_fondacije,Koja je procedura za upis fondacije?,easy,synthetic_rule_based,test
+"Pozdrav, Gdje se plaća parking kazna? Molim odgovor.",out_of_scope,nevezano,Gdje se plaća parking kazna?,easy,synthetic_rule_based,test
+Ne razumijem proceduru. Koji obrazac se koristi za osnivanje udruženja? Hvala.,obrasci,obrazac_registracija,Koji obrazac se koristi za osnivanje udruženja?,medium,synthetic_rule_based,test
+Koji formular treba za promjenu zastupnika?,obrasci,obrazac_promjena,Koji formular treba za promjenu zastupnika?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako podnijeti zahtjev za brisanje fondacije? Hvala.",registracija,brisanje_iz_registra,Kako podnijeti zahtjev za brisanje fondacije?,easy,synthetic_rule_based,test
+"Dobar dan, Treba mi za fakultetski zadatak. Koji propisi važe za fondacije?",zakoni_i_propisi,zakoni_udruzenja,Koji propisi važe za fondacije?,medium,synthetic_rule_based,test
+Ne razumijem proceduru. Koliko košta polaganje pravosudnog ispita? Nisam siguran gdje da tražim.,ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,easy,synthetic_rule_based,test
+"Molim vas, Ko radi u sektoru za pravosuđe?",kontakt_i_nadleznosti,organizacija,Ko radi u sektoru za pravosuđe?,medium,synthetic_rule_based,test
+"Dobar dan, Na stranici ima puno linkova. Gdje mogu vidjeti organizaciju Ministarstva?",kontakt_i_nadleznosti,organizacija,Gdje mogu vidjeti organizaciju Ministarstva?,natural,synthetic_rule_based,test
+Na stranici ima puno linkova. Treba mi pravilnik za ZOSPI.,zakoni_i_propisi,zakoni_zospi,Treba mi pravilnik za ZOSPI.,natural,synthetic_rule_based,test
+"Može pomoć, Ne razumijem proceduru. Kako se briše udruženje iz registra?",registracija,brisanje_iz_registra,Kako se briše udruženje iz registra?,medium,synthetic_rule_based,test
+Treba mi formular za registraciju fondacije.,obrasci,obrazac_registracija,Treba mi formular za registraciju fondacije.,easy,synthetic_rule_based,test
+"Molim vas, Ne razumijem proceduru. Treba mi spisak notara u BiH. Treba mi hitno.",registri,registar_notara,Treba mi spisak notara u BiH.,easy,synthetic_rule_based,test
+"Dobar dan, Ne znam koji dokument da predam. Kako se briše udruženje iz registra? Molim odgovor.",registracija,brisanje_iz_registra,Kako se briše udruženje iz registra?,natural,synthetic_rule_based,test
+Radim ovo prvi put. Gdje mogu naći program pravosudnog ispita? Treba mi hitno.,zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,easy,synthetic_rule_based,test
+"Dobar dan, Kako prijaviti promjenu podataka udruženja?",registracija,promjena_podataka,Kako prijaviti promjenu podataka udruženja?,easy,synthetic_rule_based,test
+"Dobar dan, Kada rade općinske službe? Ako može.",out_of_scope,nevezano,Kada rade općinske službe?,natural,synthetic_rule_based,test
+"Može pomoć, Gdje mogu naći program pravosudnog ispita?",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,natural,synthetic_rule_based,test
+"Dobar dan, Koga da kontaktiram za međunarodnu pravnu pomoć? Možete li me uputiti?",pravna_pomoc,medjunarodna_pravna_pomoc,Kome se obratiti za međunarodnu pravnu pomoć?,medium,synthetic_rule_based,test
+"Može pomoć, Treba mi izvod iz registra udruženja. Hvala.",registri,registar_udruzenja,Treba mi izvod iz registra udruženja.,natural,synthetic_rule_based,test
+"Molim vas, Koji je email Ministarstva pravde BiH?",kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,natural,synthetic_rule_based,test
+"Zanima me, Pokušavam naći tacan obrazac. Gdje mogu pronaći sudskog tumaca? Molim odgovor.",registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,medium,synthetic_rule_based,test
+"Može pomoć, Radim ovo prvi put. Ko ima pravo na besplatnu pravnu pomoć?",pravna_pomoc,besplatna_pravna_pomoc,Ko ima pravo na besplatnu pravnu pomoć?,medium,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Gdje je obrazac za pristup informacijama? Ako može.,obrasci,obrazac_zospi,Gdje je obrazac za pristup informacijama?,easy,synthetic_rule_based,test
+Radim ovo prvi put. Koja je procedura za upis fondacije? Treba mi hitno.,registracija,registracija_fondacije,Koja je procedura za upis fondacije?,easy,synthetic_rule_based,test
+Ne razumijem proceduru. Kako se prijaviti na biro za zaposljavanje? Treba mi hitno.,out_of_scope,nevezano,Kako se prijaviti na biro za zapošljavanje?,medium,synthetic_rule_based,test
+"Zanima me, Ima li obrazac za preregistraciju? Treba mi hitno.",obrasci,obrazac_promjena,Ima li obrazac za preregistraciju?,natural,synthetic_rule_based,test
+Šta uraditi u slučaju međunarodne otmice djeteta? Molim odgovor.,pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,natural,synthetic_rule_based,test
+"Može pomoć, Koji su uslovi za pravosudni ispit? Ako može.",ispiti,pravosudni_ispit,Koji su uslovi za pravosudni ispit?,easy,synthetic_rule_based,test
+"Trebam informaciju, Gdje mogu naći program pravosudnog ispita?",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako promijeniti adresu udruženja? Nisam siguran gdje da tražim.",registracija,promjena_podataka,Kako promijeniti adresu udruženja?,medium,synthetic_rule_based,test
+"Dobar dan, Treba mi za fakultetski zadatak. Kako se radi preregistracija udruženja? Ako može.",registracija,promjena_podataka,Kako se radi preregistracija udruženja?,easy,synthetic_rule_based,test
+"Dobar dan, Koga da kontaktiram za pravnu pomoć? Nisam siguran gdje da tražim.",pravna_pomoc,besplatna_pravna_pomoc,Kome se obratiti za pravnu pomoć?,easy,synthetic_rule_based,test
+"Može pomoć, Koga da kontaktiram za pravnu pomoć? Nisam siguran gdje da tražim.",kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,easy,synthetic_rule_based,test
+Treba mi formular za slobodu pristupa informacijama. Ako može.,obrasci,obrazac_zospi,Treba mi formular za slobodu pristupa informacijama.,medium,synthetic_rule_based,test
+Koji sektori postoje u Ministarstvu? Nisam siguran gdje da tražim.,kontakt_i_nadleznosti,organizacija,Koji sektori postoje u Ministarstvu?,medium,synthetic_rule_based,test
+"Dobar dan, Koji dokumenti trebaju za stručni upravni ispit?",ispiti,strucni_upravni_ispit,Koji dokumenti trebaju za stručni upravni ispit?,natural,synthetic_rule_based,test
+Šta treba za prestanak rada udruženja?,registracija,brisanje_iz_registra,Šta treba za prestanak rada udruženja?,natural,synthetic_rule_based,test
+"Trebam informaciju, Radim ovo prvi put. Kome se šalje prijava za ispit? Nisam siguran gdje da tražim.",ispiti,kontakt_ispiti,Kome se šalje prijava za ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Koji je email Ministarstva pravde BiH? Ako može.",kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,natural,synthetic_rule_based,test
+"Pozdrav, Ima li obrazac za preregistraciju? Nisam siguran gdje da tražim.",obrasci,obrazac_promjena,Ima li obrazac za preregistraciju?,medium,synthetic_rule_based,test
+"Trebam informaciju, Šta uraditi u slučaju međunarodne otmice djeteta?",pravna_pomoc,otmica_djece,Šta uraditi u slučaju međunarodne otmice djeteta?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne razumijem proceduru. Kako otvoriti firmu u poreznoj upravi? Molim odgovor.",out_of_scope,nevezano,Kako otvoriti firmu u poreznoj upravi?,easy,synthetic_rule_based,test
+"Trebam informaciju, Koja dokumentacija je potrebna za osnivanje udruženja? Možete li me uputiti?",registracija,registracija_udruzenja,Koja dokumentacija je potrebna za osnivanje udruženja?,easy,synthetic_rule_based,test
+Jesu li objavljeni novi ispitni termini? Molim odgovor.,ispiti,termini_ispita,Jesu li objavljeni novi ispitni termini?,easy,synthetic_rule_based,test
+"Molim vas, Ima li zahtjev za registraciju u Word ili PDF formatu? Molim odgovor.",obrasci,obrazac_registracija,Ima li zahtjev za registraciju u Word ili PDF formatu?,easy,synthetic_rule_based,test
+"Dobar dan, Gdje mogu pronaci sudskog tumača? Ako može.",registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,medium,synthetic_rule_based,test
+"Molim vas, Kako registrovati auto? Molim odgovor.",out_of_scope,nevezano,Kako registrovati auto?,easy,synthetic_rule_based,test
+"Pozdrav, Na stranici ima puno linkova. Gdje mogu preuzeti obrazac za registraciju udruženja? Ako može.",obrasci,obrazac_registracija,Gdje mogu preuzeti obrazac za registraciju udruženja?,easy,synthetic_rule_based,test
+"Zanima me, Treba mi za fakultetski zadatak. Ima li zahtjev za pristup informacijama? Možete li me uputiti?",obrasci,obrazac_zospi,Ima li zahtjev za pristup informacijama?,natural,synthetic_rule_based,test
+Koji je email Ministarstva pravde BiH? Treba mi hitno.,kontakt_i_nadleznosti,kontakt,Koji je email Ministarstva pravde BiH?,medium,synthetic_rule_based,test
+Gdje su objavljeni notari? Molim odgovor.,registri,registar_notara,Gdje su objavljeni notari?,natural,synthetic_rule_based,test
+Gdje je obrazac za pristup informacijama? Hvala.,obrasci,obrazac_zospi,Gdje je obrazac za pristup informacijama?,natural,synthetic_rule_based,test
+Kako promijeniti adresu udruženja? Molim odgovor.,registracija,promjena_podataka,Kako promijeniti adresu udruženja?,medium,synthetic_rule_based,test
+"Pozdrav, Radim ovo prvi put. Gdje su pravilnici za sudske tumače? Treba mi hitno.",zakoni_i_propisi,zakoni_notari_tumaci,Gdje su pravilnici za sudske tumače?,natural,synthetic_rule_based,test
+"Dobar dan, Gdje je zakon o slobodi pristupa informacijama? Možete li me uputiti?",zakoni_i_propisi,zakoni_zospi,Gdje je zakon o slobodi pristupa informacijama?,natural,synthetic_rule_based,test
+"Može pomoć, Gdje mogu naći program pravosudnog ispita? Treba mi hitno.",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,medium,synthetic_rule_based,test
+Koja dokumentacija treba za izmjenu podataka u registru? Hvala.,registracija,promjena_podataka,Koja dokumentacija treba za izmjenu podataka u registru?,natural,synthetic_rule_based,test
+Gdje mogu preuzeti obrazac za registraciju udruženja? Možete li me uputiti?,obrasci,obrazac_registracija,Gdje mogu preuzeti obrazac za registraciju udruženja?,medium,synthetic_rule_based,test
+"Dobar dan, Gdje mogu naci zakon o udruženjima?",zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,natural,synthetic_rule_based,test
+"Može pomoć, Kako se radi preregistracija udruženja? Treba mi hitno.",registracija,promjena_podataka,Kako se radi preregistracija udruženja?,easy,synthetic_rule_based,test
+"Dobar dan, Gdje mogu naći zahtjev za izmjenu podataka?",obrasci,obrazac_promjena,Gdje mogu naći zahtjev za izmjenu podataka?,easy,synthetic_rule_based,test
+"Dobar dan, Kako mogu kontaktirati Ministarstvo pravde?",kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,easy,synthetic_rule_based,test
+Kako se radi preregistracija udruzenja? Ako moze.,registracija,promjena_podataka,Kako se radi preregistracija udruženja?,easy,synthetic_rule_based,test
+"Pozdrav, Gdje mogu pronaći sudskog tumača? Možete li me uputiti?",registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,medium,synthetic_rule_based,test
+"Pozdrav, Koji su uslovi za vozačku dozvolu? Možete li me uputiti?",out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,medium,synthetic_rule_based,test
+"Dobar dan, Kome prijaviti odvođenje djeteta u drugu državu? Ako može.",pravna_pomoc,otmica_djece,Kome prijaviti odvođenje djeteta u drugu državu?,medium,synthetic_rule_based,test
+"Zanima me, Ima li obrazac za popravni ispit?",obrasci,obrazac_ispiti,Ima li obrazac za popravni ispit?,medium,synthetic_rule_based,test
+"Trebam informaciju, Koji je broj telefona Ministarstva? Hvala.",kontakt_i_nadleznosti,kontakt,Koji je broj telefona Ministarstva?,natural,synthetic_rule_based,test
+"Dobar dan, Gdje su pravilnici za sudske tumače? Treba mi hitno.",zakoni_i_propisi,zakoni_notari_tumaci,Gdje su pravilnici za sudske tumače?,easy,synthetic_rule_based,test
+"Može pomoć, Koji zakon reguliše notarsku službu? Treba mi hitno.",zakoni_i_propisi,zakoni_notari_tumaci,Koji zakon reguliše notarsku službu?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Pokušavam naći tačan obrazac. Koji su uslovi za vozačku dozvolu?",out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,medium,synthetic_rule_based,test
+"Dobar dan, Ima li obrazac za popravni ispit? Nisam siguran gdje da tražim.",obrasci,obrazac_ispiti,Ima li obrazac za popravni ispit?,natural,synthetic_rule_based,test
+"Može pomoć, Ko radi u sektoru za pravosuđe? Treba mi hitno.",kontakt_i_nadleznosti,organizacija,Ko radi u sektoru za pravosuđe?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Kako odjaviti udruženje iz registra? Molim odgovor.",registracija,brisanje_iz_registra,Kako odjaviti udruženje iz registra?,easy,synthetic_rule_based,test
+"Zanima me, Kako provjeriti da li je udruženje registrovano? Možete li me uputiti?",registri,registar_udruzenja,Kako provjeriti da li je udruženje registrovano?,natural,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne razumijem proceduru. Kome se obratiti za pravnu pomoć? Nisam siguran gdje da tražim.",kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Ne znam koji dokument da predam. Gdje je javni registar fondacija? Možete li me uputiti?",registri,registar_udruzenja,Gdje je javni registar fondacija?,medium,synthetic_rule_based,test
+"Dobar dan, Kako registrovati udruženje? Nisam siguran gdje da tražim.",registracija,registracija_udruzenja,Kako registrovati udruženje?,natural,synthetic_rule_based,test
+"Trebam informaciju, Ne znam koji dokument da predam. Kada rade općinske službe?",out_of_scope,nevezano,Kada rade općinske službe?,natural,synthetic_rule_based,test
+"Moze pomoć, Za šta je nadlezno Ministarstvo pravde?",kontakt_i_nadleznosti,nadleznosti,Za šta je nadležno Ministarstvo pravde?,natural,synthetic_rule_based,test
+"Zanima me, Treba mi za fakultetski zadatak. Koji propisi vaze za notare?",zakoni_i_propisi,zakoni_notari_tumaci,Koji propisi važe za notare?,natural,synthetic_rule_based,test
+"Pozdrav, Gdje se preuzima prijava za ispit? Ako može.",obrasci,obrazac_ispiti,Gdje se preuzima prijava za ispit?,medium,synthetic_rule_based,test
+Kako da produžim pasoš? Ako može.,out_of_scope,nevezano,Kako da produžim pasoš?,medium,synthetic_rule_based,test
+Kako poslati upit Ministarstvu?,kontakt_i_nadleznosti,kontakt,Kako poslati upit Ministarstvu?,medium,synthetic_rule_based,test
+"Pozdrav, Gdje mogu naći program pravosudnog ispita?",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,medium,synthetic_rule_based,test
+Ne znam koji dokument da predam. Gdje se plaća parking kazna? Treba mi hitno.,out_of_scope,nevezano,Gdje se plaća parking kazna?,medium,synthetic_rule_based,test
+Ne znam koji dokument da predam. Kako mogu kontaktirati Ministarstvo pravde? Nisam siguran gdje da tražim.,kontakt_i_nadleznosti,kontakt,Kako mogu kontaktirati Ministarstvo pravde?,natural,synthetic_rule_based,test
+"Trebam informaciju, Ima li raspored za polaganje ispita? Hvala.",ispiti,termini_ispita,Ima li raspored za polaganje ispita?,natural,synthetic_rule_based,test
+"Pozdrav, Kako promijeniti adresu udruženja?",registracija,promjena_podataka,Kako promijeniti adresu udruženja?,easy,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Kako ide postupak upisa udruženja u registar? Hvala.,registracija,registracija_udruzenja,Kako ide postupak upisa udruženja u registar?,easy,synthetic_rule_based,test
+"Pozdrav, Gdje se predaje zahtjev/prijava za građevinsku dozvolu? Ako može.",out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,medium,synthetic_rule_based,test
+"Može pomoć, Kako ide pravna saradnja sa drugom državom?",pravna_pomoc,medjunarodna_pravna_pomoc,Kako ide pravna saradnja sa drugom državom?,natural,synthetic_rule_based,test
+"Zanima me, Gdje mogu pronaći sudskog tumača? Molim odgovor.",registri,registar_tumaca,Gdje mogu pronaći sudskog tumača?,medium,synthetic_rule_based,test
+"Trebam informaciju, Ne razumijem proceduru. Gdje su objavljeni notari?",registri,registar_notara,Gdje su objavljeni notari?,natural,synthetic_rule_based,test
+"Dobar dan, Radim ovo prvi put. Ko može polagati pravosudni ispit? Nisam siguran gdje da tražim.",ispiti,pravosudni_ispit,Ko može polagati pravosudni ispit?,easy,synthetic_rule_based,test
+"Molim vas, Ne znam koji dokument da predam. Ko može polagati pravosudni ispit?",ispiti,pravosudni_ispit,Ko može polagati pravosudni ispit?,easy,synthetic_rule_based,test
+"Molim vas, Treba mi za fakultetski zadatak. Gdje je zakon o slobodi pristupa informacijama? Možete li me uputiti?",zakoni_i_propisi,zakoni_zospi,Gdje je zakon o slobodi pristupa informacijama?,easy,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Treba mi propis o stalnim sudskim tumačima.,zakoni_i_propisi,zakoni_notari_tumaci,Treba mi propis o stalnim sudskim tumačima.,medium,synthetic_rule_based,test
+"Zanima me, Pokušavam naći tačan obrazac. Šta treba predati za registraciju fondacije?",registracija,registracija_fondacije,Šta treba predati za registraciju fondacije?,natural,synthetic_rule_based,test
+"Molim vas, Ne razumijem proceduru. Koji formular treba za promjenu zastupnika? Ako može.",obrasci,obrazac_promjena,Koji formular treba za promjenu zastupnika?,natural,synthetic_rule_based,test
+"Može pomoć, Radim ovo prvi put. Ko radi u sektoru za pravosuđe? Treba mi hitno.",kontakt_i_nadleznosti,organizacija,Ko radi u sektoru za pravosuđe?,natural,synthetic_rule_based,test
+"Pozdrav, Treba mi spisak notara u BiH.",registri,registar_notara,Treba mi spisak notara u BiH.,medium,synthetic_rule_based,test
+Koji je email za stručni upravni ispit? Treba mi hitno.,ispiti,kontakt_ispiti,Koji je email za stručni upravni ispit?,easy,synthetic_rule_based,test
+"Trebam informaciju, Na stranici ima puno linkova. Kako registrovati auto? Nisam siguran gdje da tražim.",out_of_scope,nevezano,Kako registrovati auto?,natural,synthetic_rule_based,test
+"Može pomoć, Ne znam koji dokument da predam. Ko ima pravo na besplatnu pravnu pomoć? Možete li me uputiti?",pravna_pomoc,besplatna_pravna_pomoc,Ko ima pravo na besplatnu pravnu pomoć?,medium,synthetic_rule_based,test
+"Dobar dan, Na stranici ima puno linkova. Treba mi registar sudskih tumača. Nisam siguran gdje da tražim.",registri,registar_tumaca,Treba mi registar sudskih tumača.,medium,synthetic_rule_based,test
+"Trebam informaciju, Radim ovo prvi put. Treba mi registar sudskih tumača.",registri,registar_tumaca,Treba mi registar sudskih tumača.,easy,synthetic_rule_based,test
+"Pozdrav, Treba mi pravilnik o polaganju ispita.",zakoni_i_propisi,zakoni_ispiti,Treba mi pravilnik o polaganju ispita.,easy,synthetic_rule_based,test
+Ne znam koji dokument da predam. Kako otvoriti firmu u poreznoj upravi? Hvala.,out_of_scope,nevezano,Kako otvoriti firmu u poreznoj upravi?,medium,synthetic_rule_based,test
+Gdje su objavljeni ovlašteni sudski tumači? Možete li me uputiti?,registri,registar_tumaca,Gdje su objavljeni ovlašteni sudski tumači?,medium,synthetic_rule_based,test
+Koji dokumenti trebaju za međunarodnu alimentaciju? Molim odgovor.,pravna_pomoc,alimentacija,Koji dokumenti trebaju za međunarodnu alimentaciju?,medium,synthetic_rule_based,test
+"Zanima me, Ne znam koji dokument da predam. Kome se obratiti za alimentaciju ako je roditelj van BiH? Molim odgovor.",pravna_pomoc,alimentacija,Kome se obratiti za alimentaciju ako je roditelj van BiH?,natural,synthetic_rule_based,test
+"Zanima me, Koliko košta polaganje pravosudnog ispita?",ispiti,pravosudni_ispit,Koliko košta polaganje pravosudnog ispita?,easy,synthetic_rule_based,test
+Kako provjeriti da li je udruženje registrovano?,registri,registar_udruzenja,Kako provjeriti da li je udruženje registrovano?,medium,synthetic_rule_based,test
+"Dobar dan, Gdje se podnosi zahtjev za registraciju fondacije? Ako može.",registracija,registracija_fondacije,Gdje se podnosi zahtjev za registraciju fondacije?,easy,synthetic_rule_based,test
+Ima li zahtjev za pristup informacijama?,obrasci,obrazac_zospi,Ima li zahtjev za pristup informacijama?,natural,synthetic_rule_based,test
+Kome se obratiti za alimentaciju ako je roditelj van BiH?,pravna_pomoc,alimentacija,Kome se obratiti za alimentaciju ako je roditelj van BiH?,easy,synthetic_rule_based,test
+Gdje se polaže stručni upravni ispit?,ispiti,strucni_upravni_ispit,Gdje se polaže stručni upravni ispit?,easy,synthetic_rule_based,test
+"Zanima me, Kako registrovati fondaciju? Nisam siguran gdje da tražim.",registracija,registracija_fondacije,Kako registrovati fondaciju?,medium,synthetic_rule_based,test
+"Može pomoć, Kako funkcioniše međunarodna pravna pomoć? Treba mi hitno.",pravna_pomoc,medjunarodna_pravna_pomoc,Kako funkcioniše međunarodna pravna pomoć?,easy,synthetic_rule_based,test
+Kako da produžim pasoš? Molim odgovor.,out_of_scope,nevezano,Kako da produžim pasoš?,medium,synthetic_rule_based,test
+"Molim vas, Kako podnijeti zahtjev po ZOSPI-u? Možete li me uputiti?",obrasci,obrazac_zospi,Kako podnijeti zahtjev po ZOSPI-u?,easy,synthetic_rule_based,test
+"Pozdrav, Kako podnijeti zahtjev/prijava po ZOSPI-u? Hvala.",obrasci,obrazac_zospi,Kako podnijeti zahtjev po ZOSPI-u?,easy,synthetic_rule_based,test
+Kako podnijeti zahtjev po ZOSPI-u? Treba mi hitno.,obrasci,obrazac_zospi,Kako podnijeti zahtjev po ZOSPI-u?,medium,synthetic_rule_based,test
+"Molim vas, Ne razumijem proceduru. Kome se obratiti za međunarodnu pravnu pomoć? Treba mi hitno.",pravna_pomoc,medjunarodna_pravna_pomoc,Kome se obratiti za međunarodnu pravnu pomoć?,easy,synthetic_rule_based,test
+Treba mi izvod iz registra udruženja. Možete li me uputiti?,registri,registar_udruzenja,Treba mi izvod iz registra udruženja.,easy,synthetic_rule_based,test
+"Zanima me, Na stranici ima puno linkova. Gdje se predaje zahtjev za građevinsku dozvolu? Molim odgovor.",out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,easy,synthetic_rule_based,test
+"Pozdrav, Pokušavam naći tačan obrazac. Kako se prijavljuje pravosudni ispit? Nisam siguran gdje da tražim.",ispiti,pravosudni_ispit,Kako se prijavljuje pravosudni ispit?,easy,synthetic_rule_based,test
+Pokušavam naći tačan obrazac. Gdje je obrazac za pristup informacijama? Nisam siguran gdje da tražim.,obrasci,obrazac_zospi,Gdje je obrazac za pristup informacijama?,medium,synthetic_rule_based,test
+"Molim vas, Radim ovo prvi put. Gdje se nalazi Ministarstvo pravde?",kontakt_i_nadleznosti,kontakt,Gdje se nalazi Ministarstvo pravde?,medium,synthetic_rule_based,test
+"Trebam informaciju, Kako otvoriti firmu u poreznoj upravi?",out_of_scope,nevezano,Kako otvoriti firmu u poreznoj upravi?,natural,synthetic_rule_based,test
+"Trebam informaciju, Kako pronaći kontakt osobe u Ministarstvu? Ako može.",kontakt_i_nadleznosti,organizacija,Kako pronaći kontakt osobe u Ministarstvu?,medium,synthetic_rule_based,test
+"Zanima me, Koji dokumenti trebaju za međunarodnu alimentaciju? Hvala.",pravna_pomoc,alimentacija,Koji dokumenti trebaju za međunarodnu alimentaciju?,natural,synthetic_rule_based,test
+"Zanima me, Gdje se predaje zahtjev za gradjevinsku dozvolu?",out_of_scope,nevezano,Gdje se predaje zahtjev za građevinsku dozvolu?,easy,synthetic_rule_based,test
+"Može pomoc, Gdje mogu naći zakon o udruženjima? Hvala.",zakoni_i_propisi,zakoni_udruzenja,Gdje mogu naći zakon o udruženjima?,natural,synthetic_rule_based,test
+"Pozdrav, Gdje se vadi lična karta? Hvala.",out_of_scope,nevezano,Gdje se vadi lična karta?,natural,synthetic_rule_based,test
+"Trebam informaciju, Ko ima pravo na besplatnu pravnu pomoć? Nisam siguran gdje da tražim.",pravna_pomoc,besplatna_pravna_pomoc,Ko ima pravo na besplatnu pravnu pomoć?,easy,synthetic_rule_based,test
+"Molim vas, Gdje se nalazi Ministarstvo pravde? Hvala.",kontakt_i_nadleznosti,kontakt,Gdje se nalazi Ministarstvo pravde?,easy,synthetic_rule_based,test
+"Dobar dan, Ne razumijem proceduru. Kada je popravni ispit? Možete li me uputiti?",ispiti,termini_ispita,Kada je popravni ispit?,easy,synthetic_rule_based,test
+"Zanima me, Gdje je prijavni obrazac za upis u registar?",obrasci,obrazac_registracija,Gdje je prijavni obrazac za upis u registar?,medium,synthetic_rule_based,test
+"Može pomoć, Gdje je obrazac za pristup informacijama?",obrasci,obrazac_zospi,Gdje je obrazac za pristup informacijama?,medium,synthetic_rule_based,test
+zospi obrazac,registracija,registracija_udruzenja,Gdje se predaje zahtjev za upis udruženja?,short_query,synthetic_rule_based,test
+"Moze pomoc, Ne znam koji dokument da predam. Koji dokumenti trebaju za besplatnu pravnu pomoc? Molim odgovor.",pravna_pomoc,besplatna_pravna_pomoc,Koji dokumenti trebaju za besplatnu pravnu pomoć?,easy,synthetic_rule_based,test
+Gdje se vadi lična karta? Molim odgovor.,out_of_scope,nevezano,Gdje se vadi lična karta?,easy,synthetic_rule_based,test
+Na stranici ima puno linkova. Koji propisi važe za notare?,zakoni_i_propisi,zakoni_notari_tumaci,Koji propisi važe za notare?,easy,synthetic_rule_based,test
+"Pozdrav, Kako podnijeti zahtjev po ZOSPI-u? Možete li me uputiti?",obrasci,obrazac_zospi,Kako podnijeti zahtjev po ZOSPI-u?,medium,synthetic_rule_based,test
+Ne znam koji dokument da predam. Koji propis reguliše pristup informacijama?,zakoni_i_propisi,zakoni_zospi,Koji propis reguliše pristup informacijama?,easy,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Pokušavam naći tačan obrazac. Gdje se nalazi vodič za pristup informacijama? Ako može.",zakoni_i_propisi,zakoni_zospi,Gdje se nalazi vodič za pristup informacijama?,natural,synthetic_rule_based,test
+"Molim vas, Gdje se preuzima prijava za ispit? Hvala.",obrasci,obrazac_ispiti,Gdje se preuzima prijava za ispit?,natural,synthetic_rule_based,test
+Gdje je javni registar fondacija? Ako može.,registri,registar_udruzenja,Gdje je javni registar fondacija?,medium,synthetic_rule_based,test
+Gdje se predaje zahtjev za upis udruženja? Nisam siguran gdje da tražim.,registracija,registracija_udruzenja,Gdje se predaje zahtjev za upis udruženja?,natural,synthetic_rule_based,test
+Ne znam koji dokument da predam. Gdje mogu naći pravila za imenovanje sudskog tumača? Treba mi hitno.,zakoni_i_propisi,zakoni_notari_tumaci,Gdje mogu naći pravila za imenovanje sudskog tumača?,easy,synthetic_rule_based,test
+"Pozdrav, Kako provjeriti da li je neko sudski tumač? Molim odgovor.",registri,registar_tumaca,Kako provjeriti da li je neko sudski tumač?,natural,synthetic_rule_based,test
+"Zanima me, Gdje mogu naći program pravosudnog ispita? Nisam siguran gdje da tražim.",zakoni_i_propisi,zakoni_ispiti,Gdje mogu naći program pravosudnog ispita?,easy,synthetic_rule_based,test
+"Molim vas, Radim ovo prvi put. Kako provjeriti notara? Možete li me uputiti?",registri,registar_notara,Kako provjeriti notara?,easy,synthetic_rule_based,test
+Ne znam koji dokument da predam. Kako mogu dobiti besplatnu pravnu pomoć?,pravna_pomoc,besplatna_pravna_pomoc,Kako mogu dobiti besplatnu pravnu pomoć?,easy,synthetic_rule_based,test
+Treba mi pravni osnov za registraciju udruženja. Možete li me uputiti?,zakoni_i_propisi,zakoni_udruzenja,Treba mi pravni osnov za registraciju udruženja.,natural,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Ko je nadležan za otmicu djece preko granice? Hvala.,pravna_pomoc,otmica_djece,Ko je nadležan za otmicu djece preko granice?,natural,synthetic_rule_based,test
+Koga da kontaktiram za pravnu pomoc? Hvala.,kontakt_i_nadleznosti,nadleznosti,Kome se obratiti za pravnu pomoć?,natural,synthetic_rule_based,test
+Treba mi za fakultetski zadatak. Kako dobiti uvjerenje o državljanstvu?,out_of_scope,nevezano,Kako dobiti uvjerenje o državljanstvu?,natural,synthetic_rule_based,test
+"Trebam informaciju, Šta mi treba za stručni upravni ispit? Treba mi hitno.",ispiti,strucni_upravni_ispit,Koji dokumenti trebaju za stručni upravni ispit?,medium,synthetic_rule_based,test
+"Ne mogu da nađem na stranici, Radim ovo prvi put. Koji su uslovi za vozačku dozvolu?",out_of_scope,nevezano,Koji su uslovi za vozačku dozvolu?,easy,synthetic_rule_based,test
+Šta treba predati za registraciju fondacije? Nisam siguran gdje da tražim.,registracija,registracija_fondacije,Šta treba predati za registraciju fondacije?,natural,synthetic_rule_based,test
+Ne znam koji dokument da predam. Gdje su propisi za stručni upravni ispit?,zakoni_i_propisi,zakoni_ispiti,Gdje su propisi za stručni upravni ispit?,natural,synthetic_rule_based,test
+"Pozdrav, Gdje se nalazi Ministarstvo pravde?",kontakt_i_nadleznosti,kontakt,Gdje se nalazi Ministarstvo pravde?,medium,synthetic_rule_based,test
+"Pozdrav, Ima li raspored za polaganje ispita?",ispiti,termini_ispita,Ima li raspored za polaganje ispita?,easy,synthetic_rule_based,test
+"Dobar dan, Koji zakon propisuje uslove za pravosudni ispit?",zakoni_i_propisi,zakoni_ispiti,Koji zakon propisuje uslove za pravosudni ispit?,easy,synthetic_rule_based,test
+Gdje su propisi za stručni upravni ispit? Treba mi hitno.,zakoni_i_propisi,zakoni_ispiti,Gdje su propisi za stručni upravni ispit?,easy,synthetic_rule_based,test
+Koji je email za stručni upravni ispit? Nisam siguran gdje da tražim.,ispiti,kontakt_ispiti,Koji je email za stručni upravni ispit?,medium,synthetic_rule_based,test
+Ne razumijem proceduru. Treba mi informacija o Haškoj konvenciji za djecu. Nisam siguran gdje da tražim.,pravna_pomoc,otmica_djece,Treba mi informacija o Haškoj konvenciji za djecu.,natural,synthetic_rule_based,test

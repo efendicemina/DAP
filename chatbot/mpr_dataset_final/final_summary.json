@@ -1,0 +1,8 @@
+{
+  "original_records": 1487,
+  "final_kept_records": 99,
+  "final_dropped_records": 1388,
+  "final_chunks": 292,
+  "qa_rows": 1460,
+  "chat_rows": 1460
+}

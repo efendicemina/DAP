@@ -1,0 +1,34 @@
+{
+  "records_by_category": {
+    "zakoni_i_propisi": 61,
+    "obrasci": 56,
+    "registracija": 27,
+    "kontakt_i_nadleznosti": 24,
+    "ispiti": 12,
+    "registri": 3,
+    "pravna_pomoc": 3,
+    "ostalo": 2,
+    "sudski_tumaci": 2,
+    "notari": 1
+  },
+  "chunks_by_category": {
+    "obrasci": 120,
+    "zakoni_i_propisi": 82,
+    "kontakt_i_nadleznosti": 55,
+    "registracija": 51,
+    "ostalo": 47,
+    "ispiti": 18,
+    "notari": 11,
+    "sudski_tumaci": 9,
+    "registri": 4,
+    "pravna_pomoc": 3
+  },
+  "records_by_type": {
+    "html": 191
+  },
+  "ocr_required": 0,
+  "total_records": 197,
+  "kept_records": 191,
+  "dropped_records": 6,
+  "total_chunks": 400
+}
