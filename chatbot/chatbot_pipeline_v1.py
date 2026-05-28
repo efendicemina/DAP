@@ -3,8 +3,9 @@ import json
 import joblib
 import numpy as np
 import pandas as pd
+import os
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 import faiss
 import requests
 from answer_cards import match_answer_card
@@ -31,6 +32,15 @@ for col in chunks_df.columns:
     chunks_df[col] = chunks_df[col].astype(str)
 index = faiss.read_index(str(MODEL_DIR / "faiss_index_v5.bin"))
 embedding_model = SentenceTransformer(config["model_name"])
+
+# Default reranker switched to multilingual mMARCO for better BS/HR/SR coverage.
+RERANKER_MODEL_NAME = os.getenv(
+    "RERANKER_MODEL_NAME",
+    "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+).strip()
+reranker_model = CrossEncoder(RERANKER_MODEL_NAME)
+
+RERANK_DEBUG = os.getenv("RERANK_DEBUG", "").strip().lower() in {"1", "true", "yes", "y"}
 
 def norm(text):
     text = str(text).lower().strip()
@@ -286,6 +296,35 @@ def embedding_candidates(question, candidate_k=40):
     return results
 
 
+def rerank_with_cross_encoder(question, results, top_k=5):
+    if not results:
+        return []
+
+    pairs = [(question, str(r.get("text", ""))) for r in results]
+    cross_scores = reranker_model.predict(pairs)
+
+    import math
+    def sigmoid(x):
+        return 1 / (1 + math.exp(-x))
+
+    for r, score in zip(results, cross_scores):
+        sig_score = sigmoid(float(score))
+        r["cross_score"] = float(score)
+        # Kombinovani score: uzimamo originalni heuristici score (r["score"]) i dodajemo cross_score kao blagi boost
+        r["score"] = r["score"] + (sig_score * 0.5)
+
+    reranked = sorted(results, key=lambda x: x["score"], reverse=True)[:top_k]
+
+    if RERANK_DEBUG:
+        print("\nRERANK DEBUG (top results)")
+        for r in reranked[: min(5, len(reranked))]:
+            print(
+                f"combined={r.get('score'):.4f} | cross_logit={r.get('cross_score'):.4f} | url={str(r.get('source_url',''))[:80]} | title={str(r.get('title',''))[:80]}"
+            )
+
+    return reranked
+
+
 def retrieve(question, top_k=5):
     intent, confidence = predict_intent(question)
 
@@ -311,7 +350,16 @@ def retrieve(question, top_k=5):
                 results.append(item)
             return intent, confidence, results
 
-    results = embedding_candidates(question)[:top_k]
+    candidates = embedding_candidates(question, candidate_k=40)
+
+    if RERANK_DEBUG:
+        print("\nBEFORE RERANK (top candidates)")
+        for r in candidates[: min(5, len(candidates))]:
+            print(
+                f"heur={float(r.get('score',0.0)):.4f} base={float(r.get('base_score',0.0)):.4f} | url={str(r.get('source_url',''))[:80]} | title={str(r.get('title',''))[:80]}"
+            )
+    results = rerank_with_cross_encoder(question, candidates, top_k=top_k)
+
     return intent, confidence, results
 
 
