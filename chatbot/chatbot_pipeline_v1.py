@@ -8,7 +8,7 @@ from sentence_transformers import SentenceTransformer
 import faiss
 import requests
 from answer_cards import match_answer_card
-from few_shot_composer import compose_few_shot_answer, answer_quality_bad
+from few_shot_composer import compose_few_shot_answer, answer_quality_bad as few_shot_answer_quality_bad
 
 # Find the chatbot root directory
 CHATBOT_ROOT = Path(__file__).parent
@@ -832,7 +832,7 @@ def generate_answer(question, results, intent=None, confidence=0.0):
             return {
                 "answer": (
                     "Mogu pomoći, ali mi treba malo preciznije pitanje. "
-                    "Možeš pitati za registraciju udruženja, fondaciju, ispit, obrazac, taksu, kontakt ili pravnu pomoć."
+                    "Na primjer, možeš pitati za registraciju udruženja, fondaciju, ispit, obrazac, taksu ili kontakt."
                 ),
                 "sources": []
             }
@@ -855,12 +855,13 @@ def generate_answer(question, results, intent=None, confidence=0.0):
             confidence=confidence
         )
 
-    if not answer_text or answer_quality_bad(answer_text):
-        answer_text = compose_few_shot_answer(
-            question=question,
-            results=results,
-            intent=intent
-        )
+    # Primary non-LLM answer: few-shot composer (fact extraction + structured formatting).
+    if not answer_text or answer_quality_is_bad(answer_text):
+        answer_text = compose_few_shot_answer(question, results, intent=intent)
+
+    # Safety fallback to existing composer if few-shot output looks bad.
+    if not answer_text or few_shot_answer_quality_bad(answer_text):
+        answer_text = compose_natural_answer(question, results, intent=intent)
 
     sources = []
     seen_urls = set()

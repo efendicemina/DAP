@@ -113,10 +113,14 @@ def split_facts(text):
 
     facts = []
 
+    phone_re = re.compile(r"(?:\+?\d{1,3}[\s/-]?)?(?:\d{2,3}[\s/-]?){2,5}\d{2,3}")
+    email_re = re.compile(r"[\w\.-]+@[\w\.-]+")
+
     for part in parts:
         fact = normalize_fact(part)
 
-        if len(fact) < 35:
+        # Keep short but valuable contact facts (phones/emails).
+        if len(fact) < 35 and not (phone_re.search(fact) or email_re.search(fact)):
             continue
 
         if len(fact) > 420:
@@ -154,6 +158,15 @@ def normalize_fact(text):
 
     if text:
         text = text[0].upper() + text[1:]
+
+    # Remove broken leading fragments like "Stva," that can appear after aggressive splitting.
+    if "," in text:
+        first, rest = text.split(",", 1)
+        first_clean = first.strip()
+        if 1 <= len(first_clean) <= 4 and first_clean.lower() not in {"npr", "dr", "mr", "itd"}:
+            text = rest.strip()
+            if text:
+                text = text[0].upper() + text[1:]
 
     return text
 
@@ -205,8 +218,28 @@ def score_fact(question, fact, source, goal):
 
     page_type = str(source.get("page_type", ""))
 
+    GOAL_PAGE_TYPE_MAP = {
+        "fee": {"taksa", "troskovi", "troškovi"},
+        "contact": {"kontakt", "nadleznosti", "nadležnosti"},
+        "requirements": {"dokumentacija", "uslovi", "uvjeti"},
+        "form": {"obrazac", "obrasci", "formular", "formulari"},
+        "procedure": {"prijava", "postupak", "registracija", "upis", "promjena", "brisanje"},
+        "date": {"termini", "rok", "rokovi"},
+        "definition": {"zakon", "propis", "pravilnik"},
+        "general": set(),
+    }
+
     if page_type == goal:
         score += 2.0
+    elif page_type in GOAL_PAGE_TYPE_MAP.get(goal, set()):
+        score += 1.5
+
+    # Strong bonus for explicit contact signals in extracted facts.
+    if goal == "contact":
+        if re.search(r"[\w\.-]+@[\w\.-]+", fact):
+            score += 2.5
+        if re.search(r"(?:\+?\d{1,3}[\s/-]?)?(?:\d{2,3}[\s/-]?){2,5}\d{2,3}", fact):
+            score += 2.0
 
     if page_type == "ostalo":
         score -= 0.6
