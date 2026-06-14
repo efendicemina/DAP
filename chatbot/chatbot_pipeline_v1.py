@@ -896,6 +896,7 @@ def answer_quality_is_bad(answer):
     return False
 
 def generate_answer(question, results, intent=None, confidence=0.0):
+    goal = detect_question_goal(question)
     if not results:
         if intent == "needs_clarification":
             return {
@@ -903,7 +904,15 @@ def generate_answer(question, results, intent=None, confidence=0.0):
                     "Mogu pomoći, ali mi treba malo preciznije pitanje. "
                     "Na primjer, možeš pitati za registraciju udruženja, fondaciju, ispit, obrazac, taksu ili kontakt."
                 ),
-                "sources": []
+                "sources": [],
+                "generation": {
+                    "task": "Task 3 - response generation",
+                    "approach": "rule_based_few_shot_without_llm",
+                    "method": "clarification_fallback",
+                    "goal": goal,
+                    "fallback_used": False,
+                    "local_llm_used": False
+                }
             }
 
         return {
@@ -911,11 +920,23 @@ def generate_answer(question, results, intent=None, confidence=0.0):
                 "Ovo pitanje vjerovatno nije u nadležnosti Ministarstva pravde BiH "
                 "ili trenutno nemam dovoljno relevantnih informacija u bazi."
             ),
-            "sources": []
+            "sources": [],
+            "generation": {
+                "task": "Task 3 - response generation",
+                "approach": "rule_based_few_shot_without_llm",
+                "method": "out_of_scope_fallback",
+                "goal": goal,
+                "fallback_used": False,
+                "local_llm_used": False
+            }
         }
 
     answer_text = None
+    generation_method = "few_shot_composer"
+    fallback_used = False
 
+    # Za finalni Task 3 koristimo pristup 1:
+    # rule-based / few-shot composer bez lokalnog LLM-a.
     if USE_LOCAL_LLM:
         answer_text = local_llm_answer(
             question=question,
@@ -923,14 +944,16 @@ def generate_answer(question, results, intent=None, confidence=0.0):
             intent=intent,
             confidence=confidence
         )
+        generation_method = "local_llm"
 
-    # Primary non-LLM answer: few-shot composer (fact extraction + structured formatting).
     if not answer_text or answer_quality_is_bad(answer_text):
         answer_text = compose_few_shot_answer(question, results, intent=intent)
+        generation_method = "few_shot_composer"
 
-    # Safety fallback to existing composer if few-shot output looks bad.
     if not answer_text or few_shot_answer_quality_bad(answer_text):
         answer_text = compose_natural_answer(question, results, intent=intent)
+        generation_method = "natural_fact_composer"
+        fallback_used = True
 
     sources = []
     seen_urls = set()
@@ -950,7 +973,16 @@ def generate_answer(question, results, intent=None, confidence=0.0):
 
     return {
         "answer": answer_text,
-        "sources": sources
+        "sources": sources,
+        "generation": {
+            "task": "Task 3 - response generation",
+            "approach": "rule_based_few_shot_without_llm",
+            "method": generation_method,
+            "goal": goal,
+            "fallback_used": fallback_used,
+            "local_llm_used": generation_method == "local_llm",
+            "source_count": len(sources)
+        }
     }
       
 def is_smalltalk(question):
@@ -1011,6 +1043,7 @@ def ask(question):
         "intent": intent,
         "confidence": round(float(confidence), 4),
         "query_understanding": query_info.to_dict(),
+        "generation": response.get("generation", {}),
         "answer": response["answer"],
         "sources": response["sources"]
     }

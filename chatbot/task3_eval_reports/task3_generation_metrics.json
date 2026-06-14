@@ -1,0 +1,13 @@
+{
+  "task": "Task 3 - response generation",
+  "approach": "rule-based / few-shot answer composer without local LLM",
+  "number_of_questions": 19,
+  "average_score": 0.9474,
+  "goal_accuracy": 0.8947,
+  "terms_accuracy": 0.8421,
+  "format_accuracy": 1.0,
+  "noise_free_rate": 1.0,
+  "source_coverage": 0.9474,
+  "average_latency_ms": 3404.25,
+  "median_latency_ms": 4587.9
+}
