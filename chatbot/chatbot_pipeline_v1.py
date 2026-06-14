@@ -1,4 +1,5 @@
 import re
+import os
 import json
 import joblib
 import numpy as np
@@ -16,9 +17,9 @@ MODELS_DIR = CHATBOT_ROOT / "models"
 MODELS_V5_DIR = CHATBOT_ROOT / "models_v5"
 DATASET_DIR = CHATBOT_ROOT / "mpr_dataset_v5"
 
-OLLAMA_MODEL = "qwen2.5:3b"
+OLLAMA_MODEL = "gemma3:4b"
 OLLAMA_URL = "http://localhost:11434/api/generate"
-USE_LOCAL_LLM = False
+USE_LOCAL_LLM = True
 
 INTENT_MODEL_PATH = MODELS_DIR / "intent_classifier.joblib"
 MODEL_DIR = MODELS_V5_DIR
@@ -110,6 +111,8 @@ def infer_query_page_type(question):
     q = norm(question)
 
     rules = [
+        ("procedura", ["procedura", "postupak", "osnovati"]),
+        ("registracija", ["registracija", "registrovati", "upis u registar"]),
         ("kontakt", ["kontakt", "telefon", "email", "mail", "kome", "javim", "obratim"]),
         ("obrazac", ["obrazac", "formular", "formulari"]),
         ("taksa", ["taksa", "takse", "pristojba"]),
@@ -285,6 +288,63 @@ def embedding_candidates(question, candidate_k=40):
     results = sorted(results, key=lambda x: x["score"], reverse=True)
     return results
 
+def extract_law_title_query(question):
+    q = norm(question)
+
+    match = re.search(r"(zakon o [a-z0-9\s\-]+)", q)
+    if not match:
+        return ""
+
+    law_query = match.group(1).strip()
+
+    stop_words = {
+        "treba", "trebam", "mi", "daj", "nadji", "pronadji", "pronađi",
+        "gdje", "mogu", "naci", "naći", "informacije", "tekst", "link"
+    }
+
+    tokens = [
+        t for t in re.findall(r"\w+", law_query)
+        if len(t) >= 3 and t not in stop_words
+    ]
+
+    return " ".join(tokens)
+
+
+def exact_law_candidates(question, top_k=5):
+    law_query = extract_law_title_query(question)
+
+    if not law_query:
+        return []
+
+    query_tokens = [t for t in re.findall(r"\w+", law_query) if len(t) >= 3]
+
+    if len(query_tokens) < 3:
+        return []
+
+    candidates = []
+
+    for _, row in chunks_df.iterrows():
+        title = norm(row.get("title", ""))
+        text = norm(row.get("text", ""))[:1500]
+        page_type = str(row.get("page_type", ""))
+        topic = str(row.get("semantic_topic", ""))
+
+        if page_type != "zakon" and topic != "zakoni":
+            continue
+
+        haystack = title + " " + text
+
+        hits = sum(1 for token in query_tokens if token in haystack)
+        ratio = hits / max(len(query_tokens), 1)
+
+        if ratio >= 0.65:
+            item = row.to_dict()
+            item["base_score"] = 1.0
+            item["score"] = 2.5 + ratio
+            candidates.append(item)
+
+    candidates = sorted(candidates, key=lambda x: x["score"], reverse=True)
+    return candidates[:top_k]
 
 def retrieve(question, top_k=5):
     intent, confidence = predict_intent(question)
@@ -296,6 +356,11 @@ def retrieve(question, top_k=5):
         return intent, confidence, []
 
     forced_url = direct_route_url(question)
+
+    if intent == "zakoni_i_propisi":
+        law_results = exact_law_candidates(question, top_k=top_k)
+        if law_results:
+            return intent, confidence, law_results
 
     if forced_url:
         forced = chunks_df[
@@ -475,7 +540,7 @@ def make_user_friendly_answer(question, main_source):
 
     return "Pronašla sam relevantan izvor, ali tekst nije dovoljno jasan za automatsko formulisanje odgovora."
 
-def build_context_for_llm(results, max_chars_per_source=1800):
+def build_context_for_llm(results, max_chars_per_source=800):
     blocks = []
     seen = set()
 
@@ -507,35 +572,28 @@ def local_llm_answer(question, results, intent=None, confidence=0.0):
     context = build_context_for_llm(results)
 
     prompt = f"""
-Ti si korisnički chatbot Ministarstva pravde Bosne i Hercegovine.
+Ti si chatbot Ministarstva pravde Bosne i Hercegovine.
 
-Odgovori isključivo na osnovu izvora ispod.
-Nemoj izmišljati podatke.
-Nemoj spominjati chunkove, RAG, model, embeddinge ili tehničke detalje.
-Odgovori prirodno, jasno i gramatički ispravno na bosanskom jeziku.
-Ako korisnik pita neformalno, i dalje odgovori profesionalno i jednostavno.
-Ako izvor ne sadrži dovoljno informacija, reci to jasno i uputi korisnika na priložene izvore.
-Odgovor treba biti user-friendly, kao pravi chatbot.
+Odgovori korisniku na bosanskom jeziku, latinicom.
+Koristi samo informacije iz izvora ispod.
+Ne izmišljaj podatke i ne dodaji ništa što ne piše u izvorima.
+Ne navodi izvore na kraju, aplikacija ih prikazuje posebno.
 
-Format:
-- Kratak direktan odgovor.
-- Ako postoji procedura, navedi je u kratkim koracima.
-- Ako postoje iznosi, telefoni, e-mailovi ili obrasci, jasno ih izdvoji.
-- Ne piši listu izvora na kraju, aplikacija ih prikazuje posebno.
+Ako izvori ne sadrže tačan odgovor, napiši:
+"U pronađenim izvorima nema dovoljno preciznih informacija za ovo pitanje."
 
-Pitanje korisnika:
+Odgovor treba biti kratak, jasan i gramatički ispravan.
+Ako korisnik traži dokumentaciju, napiši najviše 6 stavki.
+Ako korisnik traži proceduru, napiši najviše 5 koraka.
+Ne mijenjaj nazive zakona, obrazaca i dokumenata iz izvora.
+
+PITANJE:
 {question}
 
-Intent:
-{intent}
-
-Pouzdanje:
-{confidence}
-
-Izvori:
+IZVORI:
 {context}
 
-Odgovor:
+ODGOVOR:
 """
 
     try:
@@ -548,7 +606,7 @@ Odgovor:
                 "options": {
                     "temperature": 0.2,
                     "top_p": 0.9,
-                    "num_predict": 500
+                    "num_predict": 300
                 }
             },
             timeout=120

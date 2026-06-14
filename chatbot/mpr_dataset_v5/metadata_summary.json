@@ -1,6 +1,6 @@
 {
   "page_types": {
-    "ostalo": 159,
+    "ostalo": 149,
     "zakon": 14,
     "registar": 14,
     "kontakt": 13,
@@ -9,7 +9,9 @@
     "promjena": 11,
     "dokumentacija": 7,
     "osnovne_info": 7,
+    "procedura": 6,
     "troskovi": 6,
+    "registracija": 4,
     "brisanje": 4,
     "termini": 4,
     "program": 3,

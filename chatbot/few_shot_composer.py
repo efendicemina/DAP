@@ -129,6 +129,9 @@ def split_facts(text):
         if is_noise(fact):
             continue
 
+        if is_broken_fact(fact):
+            continue
+
         facts.append(fact)
 
     return facts
@@ -187,6 +190,41 @@ def is_noise(text):
     ]
 
     return any(x in t for x in noise)
+
+def is_broken_fact(text):
+    t = norm(text).strip()
+
+    broken_starts = [
+        "ovog pravilnika",
+        "ovog zakona",
+        "zakona ",
+        "clana ",
+        "clanom ",
+        "kao dokaze",
+        "u skladu s clanom",
+        "u skladu sa clanom",
+        "licima iz clana",
+        "stavom ",
+        "stava ",
+    ]
+
+    if any(t.startswith(x) for x in broken_starts):
+        return True
+
+    broken_endings = [
+        "u skladu s clanom",
+        "u skladu sa clanom",
+        "iz clana",
+        "iz stava",
+        "podnosi original ili ovjerene kopije:",
+        "podnosilac zahtjeva prilaze:",
+        "podnosilac zahtjeva prilaže:",
+    ]
+
+    if any(t.endswith(x) for x in broken_endings):
+        return True
+
+    return False
 
 
 def score_fact(question, fact, source, goal):

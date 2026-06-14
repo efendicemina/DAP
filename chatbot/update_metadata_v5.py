@@ -72,6 +72,24 @@ def detect_page_type(title, url, text):
 
     if "osnovne-informacije" in url_n or "osnovne informacije" in title_n:
         return "osnovne_info"
+    
+    if any(x in title_n or x in url_n for x in [
+        "osnovati-udruzenje",
+        "osnovati udruzenje",
+        "osnovati-fondaciju",
+        "osnovati fondaciju"
+    ]):
+        return "procedura"
+
+    if any(x in title_n or x in url_n for x in [
+        "registracija-udruzenja",
+        "registracija udruzenja",
+        "registracija-fondacije",
+        "registracija fondacije",
+        "upis-u-registar",
+        "upis u registar"
+    ]):
+        return "registracija"
 
     # tek na kraju zakon, jer se riječ zakon pojavljuje na mnogo stranica
     if any(x in title_n or x in url_n for x in [

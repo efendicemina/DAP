@@ -1,0 +1,532 @@
+CONTEXT ZA NASTAVAK RADA - MPR DAP CHATBOT
+Datum: 2026-06-03
+
+1. OPSTI OPIS PROJEKTA
+- Projekat je NLP/RAG chatbot za pravnu podrsku i digitalno usmjeravanje korisnika Ministarstva pravde BiH.
+- Krajnji cilj: korisniku dati tacne, kratke i izvorom potkrijepljene informacije o zakonima, pravilnicima, registrima, obrascima i procedurama, bez davanja pravnog savjeta.
+- Ciljni korisnici: gradjani, NVO/udruzenja, fondacije, kandidati za pravosudni/strucni upravni ispit, te svi koji traze administrativne informacije.
+- Problem koji rjesava: pronalazenje relevantnih i pouzdanih informacija na mpr.gov.ba kroz prirodni jezik.
+- Glavne funkcionalnosti: intent klasifikacija, semanticki retrieval (FAISS + embeddings), reranking sa metapodacima, generisanje odgovora iz izvora, safety i small talk.
+- Sistem treba odgovarati na bosanskom/hrvatskom/srpskom jeziku i mora biti source-based (uvek navesti izvore, bez izmisljanja).
+
+2. STRUKTURA PROJEKTA
+Najvazniji folderi i fajlovi:
+- DAP/
+  - backend/
+    - main.py (FastAPI API, /chat, /health, /info, /suggested-questions)
+    - dummy_responses.py (fallback, keyword-based)
+    - requirements.txt (backend + ML deps)
+  - chatbot/
+    - chatbot_pipeline_v1.py (glavni RAG pipeline; v5 embeddings)
+    - answer_cards.py (hardkodirani odgovori; trenutno nije ukljuceno u pipeline)
+    - few_shot_composer.py (fact extraction + formatiranje odgovora)
+    - postprocess.py (strogo filtriranje i chunking)
+    - update_metadata_v5.py (page_type/semantic_topic/generic_penalty)
+    - build_rag_index.py, build_rag_index_v2.py, build_rag_index_v3.py, build_rag_index_v4.py (TF-IDF retrieval verzije)
+    - build_embedding_index_v4.py, build_embedding_index_v5.py (embedding + FAISS index)
+    - evaluate_rag_v4.py, evaluate_rag_embeddings_v4.py, evaluate_rag_embeddings_v5.py (evaluation skripte)
+    - train_intent_model.py, make_intent_dataset.py, evaluation.py (intent dataset i treniranje/eval)
+    - scraper.py, scraper_v3.py, scraper_v4_curated.py (scraping)
+    - mpr_dataset_audit/, mpr_dataset_final/, mpr_dataset_v4/, mpr_dataset_v5/ (dataseti)
+    - models/, models_v2/, models_v3/, models_v4/, models_v4_embeddings/, models_v5/ (modeli i indeksi)
+    - rag_eval_results/, rag_eval_results_embeddings/, rag_eval_results_v5/ (eval rezultati)
+  - frontend/
+    - app/page.tsx (trenutna UI stranica; ne prikazuje izvore/confidence)
+    - app/layout.tsx (global layout)
+    - app/components/ChatInterface.tsx (wrapper ka frontend/components/ChatInterface.tsx)
+    - components/ChatInterface.tsx (druga UI verzija; prikazuje izvore/confidence)
+    - styles/globals.css
+    - package.json, tsconfig.json, tailwind.config.js
+  - Dokumentacija u rootu:
+    - DATASET_STRUKTURA_I_PIPELINE.md, EVALUATION_VISUAL_COMPARISON.md, INTEGRACIJA_ML_MODELA.md, PROJECT_OVERVIEW_DETAILED.txt
+
+Kljucevi za nastavak razvoja:
+- chatbot/chatbot_pipeline_v1.py
+- chatbot/build_embedding_index_v5.py
+- chatbot/update_metadata_v5.py
+- chatbot/postprocess.py
+- backend/main.py
+- frontend/app/page.tsx i frontend/components/ChatInterface.tsx
+
+3. TEHNOLOGIJE I DEPENDENCIES
+Python (backend + ML):
+- FastAPI, Uvicorn, Pydantic
+- scikit-learn, sentence-transformers, faiss-cpu, numpy, pandas, joblib, requests
+- Dodatno za scraping (nije u requirements.txt): beautifulsoup4, trafilatura, pypdf, python-docx, openpyxl, matplotlib, tqdm
+
+Frontend (npm):
+- Next.js 14, React 18, TypeScript 5
+- Tailwind CSS, postcss, autoprefixer
+- @heroicons/react
+
+Nije pronadjeno u repozitoriju:
+- pyproject.toml, environment.yml
+- .env.example (nema primjera env varijabli)
+
+4. POKRETANJE PROJEKTA LOKALNO
+Python venv (Windows, primjer):
+- Aktivacija: .\.venv\Scripts\Activate.ps1
+- Instalacija backend + ML: pip install -r backend/requirements.txt
+
+Backend (FastAPI):
+- cd backend
+- python main.py
+- ili: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+- Port: 8000
+
+Frontend (Next.js):
+- cd frontend
+- npm install
+- npm run dev
+- Port: 3000
+
+Env varijable:
+- Frontend: NEXT_PUBLIC_API_URL (default http://localhost:8000)
+- Backend: nema definisanih env varijabli
+- Ollama lokalni LLM: OLLAMA_URL i OLLAMA_MODEL su hardkodirani u chatbot_pipeline_v1.py (USE_LOCAL_LLM = False)
+
+Ako modeli/FAISS/dataset nisu generisani:
+1) python chatbot/scraper_v4_curated.py  (mpr_dataset_v4)
+2) python chatbot/update_metadata_v5.py  (mpr_dataset_v5/chunks_v5.csv)
+3) python chatbot/build_embedding_index_v5.py  (models_v5/faiss_index_v5.bin + embeddings)
+4) python chatbot/make_intent_dataset.py  (mpr_dataset_final/intent_*.csv)
+5) python chatbot/train_intent_model.py  (models/intent_classifier.joblib)
+
+5. DATA PIPELINE I SCRAPING
+- scraper.py: opsti crawler, radi audit; snima raw zapise i fajlove u chatbot/mpr_dataset_audit/ (all_records.csv, chunks.jsonl, audit_report.html, reports/).
+- scraper_v3.py: sitemap-based, filtrira linkove i podrzava dokumente (PDF/DOCX/XLSX); output u chatbot/mpr_dataset_v3_fixed/.
+- scraper_v4_curated.py: kurirana lista URL-ova + selected sitemap (selected_sitemap_links.csv), rucni prioriteti; output u chatbot/mpr_dataset_v4/ (records_v4.csv, chunks_v4.csv, coverage_v4.json).
+- postprocess.py: stroga filtriranja (URL patterni, GOOD_CATEGORIES, GOOD_TERMS), chunking (MIN 350, MAX 900, OVERLAP 120), deduplikacija; output u chatbot/mpr_dataset_final/.
+- update_metadata_v5.py: dodaje page_type, semantic_topic i generic_penalty na v4 chunkove; output u chatbot/mpr_dataset_v5/ (chunks_v5.csv, records_v5.csv, metadata_summary.json).
+- Rucno odabrani URL-ovi i sitemap logika postoje u scraper_v4_curated.py; page_type/semantic_topic heuristike u update_metadata_v5.py.
+
+6. INTENT KLASIFIKACIJA
+- Dataset generisanje: chatbot/make_intent_dataset.py (TARGET_SIZE=5000, varijacije, tiposi, informalni stilovi).
+- Klase/intenti: registracija, obrasci, zakoni_i_propisi, pravna_pomoc, ispiti, registri, kontakt_i_nadleznosti, out_of_scope (+ subintenti u skripti).
+- Train/eval: chatbot/train_intent_model.py (TF-IDF 1-3 grams + LogisticRegression class_weight=balanced).
+- Evaluacija: chatbot/evaluation.py (accuracy, macro F1, weighted F1, confusion matrix) ali rezultati nisu sacuvani u fajl.
+- Model se cuva u chatbot/models/intent_classifier.joblib.
+
+7. RETRIEVAL / RAG SISTEM
+- Verzije:
+  - TF-IDF baseline: build_rag_index.py (mpr_dataset_final) + test_rag_pipeline.py
+  - v2: build_rag_index_v2.py (mpr_dataset_v2)
+  - v3: build_rag_index_v3.py (mpr_dataset_v3_fixed)
+  - v4: build_rag_index_v4.py (mpr_dataset_v4)
+  - Embeddings v4: build_embedding_index_v4.py (models_v4_embeddings)
+  - Embeddings v5: build_embedding_index_v5.py (models_v5)
+- Embedding model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+- FAISS: IndexFlatIP, normalized embeddings (cosine), modeli u chatbot/models_v5/ (faiss_index_v5.bin, chunk_embeddings_v5.npy, embedding_config_v5.joblib)
+- Metadata enrichment: page_type, semantic_topic, generic_penalty (update_metadata_v5.py)
+- Reranking (chatbot_pipeline_v1.py):
+  - +0.20 ako page_type odgovara pitanju
+  - +0.25 ako semantic_topic odgovara
+  - +0.04 za token match u title
+  - -generic_penalty (0.25 za genericke stranice)
+  - penalizacija za page_type=ostalo ili semantic_topic=general
+- Direktno rutiranje (DIRECT_ROUTE_RULES) za kriticne URL-ove (udruzenja, fondacije, ispiti, pravna pomoc, ministar itd.)
+- mMARCO/cross-encoder reranker: Nije pronadjeno u repozitoriju.
+
+Metrike (stvarni brojevi iz rag_eval_results/*.json):
+- v4 TF-IDF: Top1=0.5888, Top3=0.6729, Top5=0.7009, MRR=0.6358 (107 uzoraka)
+- v4 Embeddings: Top1=0.6355, Top3=0.6822, Top5=0.7477, MRR=0.6718 (107 uzoraka)
+- v5 Embeddings: Top1=0.7290, Top3=0.7664, Top5=0.7850, MRR=0.7488 (107 uzoraka)
+
+By-intent (v5, skraceno):
+- registracija Top1=0.95 (najjači), obrasci ~0.73, ispiti ~0.54, zakoni_i_propisi 0.40 (slabo), pravna_pomoc ~0.67, kontakt ~0.55.
+
+8. CHATBOT PIPELINE I ANSWER GENERATION
+- Glavni fajl: chatbot/chatbot_pipeline_v1.py
+- Tok: pitanje -> smalltalk/safety -> intent -> direct route ili embedding retrieval -> reranking -> generisanje odgovora -> odgovor + izvori.
+- Answer generation:
+  - Primarno: few_shot_composer.compose_few_shot_answer (fact extraction, formatiranje)
+  - Fallback: compose_natural_answer (lokalna logika u pipeline)
+  - Lokalni LLM preko Ollama: local_llm_answer (USE_LOCAL_LLM=False po defaultu)
+- Answer cards: chatbot/answer_cards.py sadrzi strukturisane odgovore (udruzenja, fondacije, takse, ispiti, pravna pomoc). Trenutno nije pozvano u pipeline.
+- Sources: vracaju se top 3 izvora (title, url, score, page_type, semantic_topic).
+
+9. SIGURNOST I OGRANICENJA ODGOVORA
+- smalltalk detekcija: is_smalltalk() u chatbot_pipeline_v1.py (pozdravi, kako si, itd.)
+- harmful detekcija: is_harmful_request() (npr. "kako da otmem", "kako falsifikovati", "kako da prevarim")
+- out_of_scope: intent fallback vraca out_of_scope za pasose, licne karte, vozacke, itd; pipeline vraca informativni odbijajuci odgovor.
+- Pravilo: chatbot ne smije davati pravni savjet, vec informativno upucivanje na izvore. Ovo je u frontendu istaknuto, a u pipeline-u ukljuceno kroz prompt i fallback.
+
+10. FRONTEND
+- Framework: Next.js 14, React, TypeScript, Tailwind.
+- Aktivni UI: frontend/app/page.tsx (ne prikazuje izvore ni confidence).
+- Alternativni UI: frontend/components/ChatInterface.tsx (prikazuje sources i confidence, intent).
+- frontend/app/components/ChatInterface.tsx je samo wrapper ka frontend/components/ChatInterface.tsx.
+- API komunikacija: fetch na ${NEXT_PUBLIC_API_URL}/suggested-questions i /chat.
+- Poznati UX napomeni: prikaz confidence score-a je ranije uklonjen u page.tsx jer je zbunjivao korisnika, ali u components/ChatInterface.tsx i dalje postoji.
+- Moguca konfuzija: postoje dvije UI verzije; trenutno page.tsx ne koristi sources koje backend salje.
+
+11. BACKEND API
+- FastAPI (backend/main.py). Endpoints:
+  - GET / -> HealthResponse (status, message)
+  - GET /health -> HealthResponse
+  - GET /info -> meta o API + status ML modela
+  - GET /suggested-questions -> list[str]
+  - POST /chat -> ChatResponse
+- POST /chat input: { query: string, session_id?: string, language?: string }
+- POST /chat output: { response, confidence, category, sources[], timestamp, query, intent }
+- Backend pokusava ucitati chatbot_pipeline_v1.ask(); ako import padne, koristi dummy_responses.
+- CORS: allow_origins=["*"] (development).
+- session_id je definisan, ali se ne koristi.
+
+12. EVALUACIJA I REZULTATI
+- Skripte: evaluate_rag_v4.py, evaluate_rag_embeddings_v4.py, evaluate_rag_embeddings_v5.py
+- Dataset: chatbot/rag_eval_questions.csv (kolone: question, expected_url), 107 primjera.
+- Rezultati su u: chatbot/rag_eval_results/, rag_eval_results_embeddings/, rag_eval_results_v5/ (summary JSON + detailed CSV).
+- Vizuelni izvjestaji: EVALUATION_VISUAL_COMPARISON.md i .html sadrze mermaid grafike; PNG slike navedene u tom dokumentu nisu pronadjene u repozitoriju.
+- Najbolji rezultati: v5 embeddings (Top1 0.729, MRR 0.7488).
+- Slabije oblasti prema by-intent: zakoni_i_propisi i ispiti.
+
+13. SLABOSTI TRENUTNOG SISTEMA
+- Veliki broj generickih chunkova: metadata_summary.json pokazuje page_type="ostalo" 159 i semantic_topic="general" 146, sto moze povuci pogresne rezultate.
+- Direct-route i hardkodovani odgovori (answer_cards) mogu brzo zastariti (npr. ministar, takse, kontakt).
+- answer_cards importovan ali ne koristi se -> mrtav kod.
+- Backend i dokumentacija nisu uskladjeni: PROJECT_OVERVIEW_DETAILED.txt tvrdi da backend koristi dummy, ali kod pokusava ucitati pipeline.
+- Frontend aktivna verzija ne prikazuje sources i confidence, iako backend vraca sources.
+- Nema evaluacije kvaliteta finalnog odgovora (samo retrieval).
+- Nema session memorije, feedback loop-a ni logovanja upita u bazu.
+
+14. MOGUCA UNAPREDJENJA (prioritetno)
+1) Uskladiti frontend sa backendom: prikazati sources i opcionalno intent; eliminisati dupli ChatInterface.
+2) Pojacati metadata filtering prije retrievala (striktnije filtriranje ostalo/general).
+3) Poboljsati reranking (npr. dodatni signali, uredjen metapodatak za page_type).
+4) Uvesti test-set za answer quality (ne samo retrieval); dodati human eval ili heuristike.
+5) Integrisati LLM (Ollama) uz strogu source-based kontrolu + citiranje izvora.
+6) Bolje citiranje izvora (snippets + anchor paragrafi), ne samo URL.
+7) Obrada PDF dokumenata: ciscenje headers/footers, kvalitetniji split.
+8) Dodatni intenti i B/H/S normalizacija + sinonimi.
+9) Caching i logging (upiti, response time, retrieval stats).
+10) Error handling, timeouts i observability u backendu.
+11) Dockerizacija i CI/CD, ciscenje repozitorija.
+12) .gitignore prosirenje za .venv, node_modules, modele i velike dataset fajlove.
+
+15. POZNATI PROBLEMI I GRESKE
+- VS Code errors: get_errors nije pronasao aktivne greske.
+- Potencijalni runtime problemi:
+  - Ako nisu instalirani sentence-transformers ili faiss-cpu, backend ce pasti na import i koristiti dummy_responses.
+  - Ako fali models_v5/faiss_index_v5.bin ili chunks_v5.csv, pipeline se nece ucitati.
+- Nema .env.example; NEXT_PUBLIC_API_URL mora biti definisan manualno ako backend nije na localhost:8000.
+- INTEGRACIJA_ML_MODELA.md sadrzi apsolutne putanje (c:\Users\mahmu\Desktop\DAP) koje nisu validne u ovom workspace-u.
+
+16. GIT/GITHUB UREDNOST
+- Root .gitignore ignorise samo __pycache__.
+- U repozitoriju postoje .venv/ i frontend/node_modules/ (potencijalno veliki i nepozeljni u git-u).
+- Preporuceni .gitignore dodaci (root):
+  - .venv/
+  - node_modules/
+  - .next/
+  - dist/
+  - build/
+  - chatbot/models*/
+  - chatbot/mpr_dataset_*/
+  - chatbot/rag_eval_results*/
+  - *.joblib, *.npy, *.bin, *.pkl
+- README preporuka: Overview -> Architecture -> Data Pipeline -> Training/Indexing -> Backend API -> Frontend -> Evaluation -> Config/Env -> Known Issues -> Roadmap.
+
+17. PRIORITETNI PLAN NASTAVKA RADA
+1) Odmah: uskladiti UI i API (sources u aktivnom frontend-u, ukloniti duplikat ChatInterface).
+2) Kratkorocno: smanjiti genericke chunkove, ostriji metadata filter + reranking tuning.
+3) Srednjerocno: evaluacija kvaliteta odgovora (human/auto), test set za answer quality.
+4) Srednjerocno: integracija lokalnog LLM-a (Ollama) uz strogu source-based kontrolu.
+5) Dugorocno: Docker/CI, logovanje, caching, i ciscenje repozitorija.
+
+18. KRATKI SAZETAK ZA NASTAVAK RADA
+Ovo je NLP/RAG chatbot za Ministarstvo pravde BiH, namijenjen informativnom usmjeravanju korisnika, bez pravnog savjeta. Backend je FastAPI sa /chat endpointom i pokusava ucitati chatbot_pipeline_v1. Pipeline koristi intent klasifikaciju (TF-IDF + LogisticRegression), semanticki retrieval (SentenceTransformer + FAISS) i metadata reranking. Podaci dolaze iz mpr.gov.ba i prolaze kroz scraping (scraper.py, scraper_v3.py, scraper_v4_curated.py), strogo filtriranje i chunking (postprocess.py), te metadata enrichment (update_metadata_v5.py). V5 embedding pipeline koristi model paraphrase-multilingual-MiniLM-L12-v2 i FAISS IndexFlatIP. Evaluacija pokazuje najbolje rezultate u v5 (Top1 0.729, MRR 0.7488) sa slabijim rezultatima u zakoni_i_propisi i ispiti. Frontend je Next.js 14; trenutno aktivni page.tsx ne prikazuje izvore/confidence, iako backend salje sources. Postoji druga UI verzija (frontend/components/ChatInterface.tsx) koja prikazuje izvore, ali nije aktivna. answer_cards.py sadrzi hardkodirane odgovore, ali pipeline ih trenutno ne koristi. Safety je minimalan: smalltalk i osnovna detekcija stetnih zahtjeva. USE_LOCAL_LLM je False; Ollama integracija postoji ali nije aktivna. U repozitoriju su velike artefakte (dataseti i modeli), a root .gitignore je vrlo minimalan. Nema .env.example; NEXT_PUBLIC_API_URL treba rucno podesiti. Dokumenti EVALUATION_VISUAL_COMPARISON.md i DATASET_STRUKTURA_I_PIPELINE.md daju pregled, ali PNG slike navedene u njima nisu pronadjene. Za obnovu pipeline-a potrebno je generisati dataset (scraper_v4_curated -> update_metadata_v5), embedding index (build_embedding_index_v5) i intent model (train_intent_model). Najvazniji prvi korak je uskladiti frontend sa backendom i ukloniti dupli UI. Potom treba smanjiti genericke chunkove i poboljsati reranking. Nakon toga uvesti evaluaciju kvaliteta odgovora i eventualno LLM uz stroge izvore.
+OPSTI KONTEKST ZA DAP / MPR CHATBOT (za prenos u drugi AI)
+Datum pregleda: 2026-06-03
+
+1. OPSTI OPIS PROJEKTA
+- Projekat je NLP/RAG chatbot sistem za Ministarstvo pravde BiH, namijenjen informativnom usmjeravanju korisnika.
+- Cilj: da korisnici prirodnim jezikom pronadju informacije o zakonima, pravilnicima, obrascima, procedurama, registrima, ispitima, besplatnoj pravnoj pomoci, taksama, kontaktima i sl.
+- Korisnici: gradjani, NVO, strucne sluzbe i svi koji traze informacije sa mpr.gov.ba.
+- Problem koji rjesava: brzo i jasno pronalazenje tacnih informacija iz javno dostupnih izvora, bez pravnog savjeta.
+- Klucne funkcionalnosti: intent klasifikacija, semanticki retrieval (FAISS + embeddings), reranking, generisanje odgovora iz izvora, prikaz izvora.
+- Odgovori moraju biti na bosanskom/hrvatskom/srpskom (B/H/S) i uvijek source-based.
+- Sistem ne smije davati pravni savjet kao advokat, vec iskljucivo upucivanje na sluzbene izvore.
+
+2. STRUKTURA PROJEKTA (najvaznije)
+Root:
+- backend/
+  - main.py (FastAPI server, /chat, /health, /info, /suggested-questions)
+  - dummy_responses.py (fallback odgovori)
+  - requirements.txt (backend + ML zavisnosti)
+- chatbot/
+  - chatbot_pipeline_v1.py (glavni pipeline, v5 embeddings + rerank + answer composer)
+  - answer_cards.py (hardkodirani strukturisani odgovori, trenutno se NE koriste u pipeline)
+  - few_shot_composer.py (izvlacenje cinjenica i stilizacija odgovora)
+  - postprocess.py (finalni dataset + chunking + QA/chat dataset)
+  - update_metadata_v5.py (page_type/semantic_topic/generic_penalty)
+  - scraper.py (audit crawler, najveci i najdetaljniji scraping)
+  - scraper_v3.py (sitemap-based, fixed)
+  - scraper_v4_curated.py (kurirani scraping, manual URL + sitemap)
+  - build_rag_index*.py (TF-IDF index v1-v4)
+  - build_embedding_index_v4.py / build_embedding_index_v5.py
+  - evaluate_rag_v4.py / evaluate_rag_embeddings_v4.py / evaluate_rag_embeddings_v5.py
+  - evaluation.py / test_intent_model.py (intent evaluacija)
+  - rag_eval_questions.csv (107 pitanja + expected_url)
+  - mpr_dataset_audit/ (raw + audit rezultati)
+  - mpr_dataset_final/ (finalni ocisceni dataset, QA i chat)
+  - mpr_dataset_v4/, mpr_dataset_v5/ (v4/v5 chunkovi i metadata)
+  - models/, models_v2/, models_v3/, models_v4/, models_v4_embeddings/, models_v5/
+  - rag_eval_results/, rag_eval_results_embeddings/, rag_eval_results_v5/
+- frontend/
+  - app/page.tsx (trenutna Next.js stranica / UI)
+  - components/ChatInterface.tsx (alternativni UI sa prikazom izvora)
+  - app/components/ChatInterface.tsx (wrapper koji re-exportuje components/ChatInterface)
+  - styles/globals.css, tailwind.config.js, tsconfig.json, package.json
+- Dodatni docs na rootu: DATASET_STRUKTURA_I_PIPELINE.md, INTEGRACIJA_ML_MODELA.md, EVALUATION_VISUAL_COMPARISON.md, PROJECT_OVERVIEW_DETAILED.txt
+
+Klucni fajlovi za nastavak razvoja:
+- chatbot/chatbot_pipeline_v1.py
+- chatbot/few_shot_composer.py
+- chatbot/postprocess.py
+- chatbot/update_metadata_v5.py
+- chatbot/build_embedding_index_v5.py
+- chatbot/evaluate_rag_embeddings_v5.py
+- backend/main.py
+- frontend/app/page.tsx (aktivni UI)
+- frontend/components/ChatInterface.tsx (UI sa izvorima)
+
+3. TEHNOLOGIJE I DEPENDENCIES
+Backend/Python (backend/requirements.txt):
+- fastapi, uvicorn, pydantic, python-multipart
+- scikit-learn, sentence-transformers, faiss-cpu, numpy, pandas, joblib, requests
+
+Scraping / data pipeline (iz scraper.py i README):
+- requests, beautifulsoup4, trafilatura, pypdf, python-docx, openpyxl, matplotlib, tqdm
+
+Frontend (frontend/package.json):
+- next@14, react@18, react-dom@18, typescript@5
+- tailwindcss, postcss, autoprefixer
+- @heroicons/react
+
+Konfiguracioni fajlovi:
+- Nema pyproject.toml, environment.yml ni .env.example (nije pronadjeno)
+- Frontend koristi NEXT_PUBLIC_API_URL (env var)
+
+4. POKRETANJE PROJEKTA LOKALNO
+Python venv:
+- Aktivacija (PowerShell): .\.venv\Scripts\Activate.ps1
+- Ako nema venv: python -m venv .venv
+
+Backend:
+- cd backend
+- pip install -r requirements.txt
+- python main.py
+  ili: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+- Port: 8000
+
+Frontend:
+- cd frontend
+- npm install
+- npm run dev
+- Port: 3000
+
+Env var:
+- NEXT_PUBLIC_API_URL (default: http://localhost:8000)
+
+Ako modeli ili FAISS indeks nisu generisani:
+1) Scraping (kurirano): python chatbot/scraper_v4_curated.py
+2) Postprocess (final dataset + QA/chat): python chatbot/postprocess.py
+3) Metadata v5: python chatbot/update_metadata_v5.py
+4) Embeddings + FAISS: python chatbot/build_embedding_index_v5.py
+5) Intent dataset: python chatbot/make_intent_dataset.py
+6) Intent model: python chatbot/train_intent_model.py
+
+Napomena: chatbot_pipeline_v1.py ucitava modele odmah pri importu. Ako neki fajl nedostaje, backend ce prebaciti na dummy_responses.
+
+5. DATA PIPELINE I SCRAPING
+Glavni scraping evolucija:
+- scraper.py: full crawler + audit; koristi keep/drop sekcije i RELEVANT_TERMS; skida dokumente (pdf/doc/xls), pravi audit izvjestaje u mpr_dataset_audit/.
+  - Output: all_records.csv/jsonl, chunks.jsonl, audit_report.html, reports/.
+- scraper_v3.py: sitemap-based, fixed, filtriranje linkova po indeksu (MIN_LINK_ID, MAX_LINK_ID). Output: mpr_dataset_v3_fixed/.
+- scraper_v4_curated.py: manual URL lista + selected_sitemap_links.csv; jače kuriranje; output u mpr_dataset_v4/ (records_v4.csv, chunks_v4.csv/jsonl, coverage_v4.json).
+
+Ciscenje i chunking:
+- postprocess.py: koristi mpr_dataset_audit/all_records.csv; strogi filteri (URL patterns, MIN text 250, GOOD_CATEGORIES/GOOD_TERMS); chunking 350-900 chars, overlap 120; hash dedup.
+- Output: mpr_dataset_final/final_kept_records.csv, final_dropped_records.csv, final_chunks.jsonl, qa_dataset_5000_style.jsonl, chat_finetune_dataset.jsonl, final_summary.json.
+- Realni brojevi (final_summary.json): original_records 1487, final_kept 99, final_dropped 1388, final_chunks 292, qa_rows 1460, chat_rows 1460.
+
+Metadata v5:
+- update_metadata_v5.py: dodaje page_type, semantic_topic, generic_penalty na chunks_v4; output: mpr_dataset_v5/chunks_v5.csv + metadata_summary.json.
+- Metadata summary (v5): mnogo genericnog sadrzaja (page_type ostalo=159; semantic_topic general=146) -> potencijalni shum.
+
+6. INTENT KLASIFIKACIJA
+- Dataset generator: chatbot/make_intent_dataset.py (TARGET_SIZE 5000, dodaje tipose/informal/context)
+- Split: train/val/test (80/10/10)
+- Intenti (primarni): registracija, obrasci, zakoni_i_propisi, pravna_pomoc, ispiti, registri, kontakt_i_nadleznosti, out_of_scope.
+- Fallback intent: needs_clarification.
+- Model: TF-IDF (1-3 grams, min_df=2, max_df=0.95) + LogisticRegression (class_weight balanced).
+- Trening: chatbot/train_intent_model.py -> models/intent_classifier.joblib
+- Evaluacija: chatbot/evaluation.py i chatbot/test_intent_model.py (accuracy, macro F1, weighted F1, confusion matrix, confidence). Rezultati nisu sacuvani u repo (print u konzolu).
+
+7. RETRIEVAL / RAG SISTEM
+Verzije:
+- TF-IDF: build_rag_index.py (v1), build_rag_index_v2.py, build_rag_index_v3.py, build_rag_index_v4.py.
+- Embeddings: build_embedding_index_v4.py, build_embedding_index_v5.py.
+
+Aktivni pipeline (chatbot_pipeline_v1.py):
+- Embedding model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+- FAISS: IndexFlatIP sa normalized embeddings (cosine-like)
+- Ulazni podaci: mpr_dataset_v5/chunks_v5.csv
+- Artefakti: models_v5/faiss_index_v5.bin, chunk_embeddings_v5.npy, embedding_config_v5.joblib
+
+Retrieval logika:
+- intent prediction + keyword fallback + contact override
+- direct_route_rules (hardkodirane rute ka konkretnim URL-ovima)
+- embedding_candidates -> rerank_score (page_type match, semantic_topic match, title token boost, generic_penalty)
+- Nema cross-encoder ili mMARCO reranker (nije pronadjeno u repozitoriju)
+
+Aktualne metrike iz repo (rag_eval_results_*):
+- v4 TF-IDF (rag_eval_results/rag_eval_summary.json): top1=0.5888, top3=0.6729, top5=0.7009, mrr=0.6358
+- v4 Embeddings (rag_eval_results_embeddings/rag_embedding_eval_summary.json): top1=0.6355, top3=0.6822, top5=0.7477, mrr=0.6718
+- v5 Embeddings (rag_eval_results_v5/rag_v5_summary.json): top1=0.7290, top3=0.7664, top5=0.7850, mrr=0.7488
+
+Per-intent (v5, rag_v5_by_intent.csv):
+- registracija top1 ~0.952, obrasci ~0.727, ispiti ~0.542, pravna_pomoc ~0.667, kontakt ~0.545, zakoni_i_propisi ~0.4 (najslabije)
+
+8. CHATBOT PIPELINE I ANSWER GENERATION
+Glavni fajl: chatbot/chatbot_pipeline_v1.py
+Tok:
+1) Normalizacija pitanja
+2) Smalltalk/harmful detekcija
+3) Intent klasifikacija (+ fallback)
+4) Retrieval (FAISS + reranking + direct routes)
+5) Answer generation (LLM opciono) + few-shot composer
+6) Izlaz: odgovor + izvori
+
+Answer generation:
+- USE_LOCAL_LLM = False po defaultu; lokalni LLM podrzan preko Ollama (OLLAMA_URL http://localhost:11434/api/generate, OLLAMA_MODEL qwen2.5:3b).
+- Primarni put bez LLM: few_shot_composer.compose_few_shot_answer (goal detection: procedure/requirements/fee/contact/form/definition/date/general; extraction facts; formatiranje odgovora)
+- Fallback: compose_natural_answer (jednostavniji, vise raw facts)
+- sources: top 3 jedinstvena URL-a sa title/url/score/page_type/semantic_topic.
+
+Answer cards:
+- chatbot/answer_cards.py ima hardkodirane kartice (osnivanje udruzenja, dokumentacija, taksa, promjena, fondacije, ispiti, besplatna pravna pomoc, medjunarodna otmica djece).
+- U pipeline se importuje match_answer_card, ali se NE koristi (mrtav kod / nedovrseno).
+
+9. SIGURNOST I OGRANICENJA ODGOVORA
+- smalltalk: is_smalltalk() u chatbot_pipeline_v1.py (cao, zdravo, hej, how are you...)
+- harmful: is_harmful_request() blokira fraze tipa "kako da otmem", "kako da sakrijem", "kako falsifikovati".
+- out_of_scope: intent out_of_scope -> genericki odgovor da nije u nadleznosti.
+- Pravilo: nema pravnog savjeta; sistem mora upucivati na sluzbene izvore.
+- Frontend prikazuje napomenu da sistem ne daje pravni savjet.
+
+10. FRONTEND
+Framework: Next.js 14, React 18, TypeScript, Tailwind.
+Glavni UI:
+- frontend/app/page.tsx (trenutno aktivna UI stranica)
+- frontend/components/ChatInterface.tsx (alternativna verzija, prikazuje izvore + confidence)
+- frontend/app/components/ChatInterface.tsx je samo wrapper (re-export)
+
+API komunikacija:
+- API_URL = process.env.NEXT_PUBLIC_API_URL || http://localhost:8000
+- koristi /suggested-questions i /chat
+
+UI stanje:
+- Aktivni UI u app/page.tsx NE prikazuje izvore ni confidence score (konfuzno za korisnika).
+- components/ChatInterface.tsx prikazuje confidence + izvore + semantic_topic/page_type, ali nije koriscen od page.tsx.
+- Ovo je potencijalna nedosljednost i izvor konfuzije.
+
+11. BACKEND API
+backend/main.py
+- GET / -> HealthResponse (ok + poruka)
+- GET /health -> HealthResponse
+- GET /info -> meta info (ml_model, features)
+- GET /suggested-questions -> list pitanja
+- POST /chat -> ChatResponse
+  - input: { query, session_id?, language? }
+  - output: { response, confidence, category, sources, timestamp, query, intent? }
+
+Integracija:
+- Backend pokusava da ucita chatbot_pipeline_v1.ask; ako ne uspije (missing modeli ili libs), pada na dummy_responses.
+- CORS allow_origins="*".
+- session_id trenutno nije koristen (nema memorije).
+
+12. EVALUACIJA I REZULTATI
+Skripte:
+- evaluate_rag_v4.py (TF-IDF v4)
+- evaluate_rag_embeddings_v4.py
+- evaluate_rag_embeddings_v5.py
+- evaluation.py / test_intent_model.py (intent evaluacija)
+- test_rag_pipeline.py / test_rag_pipeline_v2.py / test_rag_pipeline_v4.py
+
+Rezultati:
+- Summary JSON u: chatbot/rag_eval_results*/, broj uzoraka 107.
+- Poredjenje verzija u EVALUATION_VISUAL_COMPARISON.md.
+- PNG grafici navedeni u docs (Grafikon_*.png, Dataset_Pipeline_*.png) nisu pronadjeni u repo.
+
+Podrucja koja rade dobro / lose:
+- Registracija: vrlo visoke top1 metrike (v5 top1 ~0.95).
+- Zakoni_i_propisi: slabo (v5 top1 ~0.4).
+- Kontakt / ispiti: srednje (0.54-0.55 top1).
+- Pravna_pomoc: srednje (0.66 top1).
+
+13. SLABOSTI TRENUTNOG SISTEMA
+- Mnogo genericnih chunkova: page_type=ostalo (159) i semantic_topic=general (146) u v5.
+- Intent filter nije strogo koriscen u retrieval (samo rerank, nema prefilter).
+- Answer_cards postoje ali nisu aktivni u pipeline.
+- Frontend dupliciran (app/page.tsx vs components/ChatInterface.tsx), izvori se ne prikazuju u aktivnoj verziji.
+- Hardkodirani URL-i i direktne rute (npr. ministar pravde, takse) mogu zastarjeti.
+- Ogranicena safety logika (mali set harmful fraza).
+- Dataset agresivno filtriran (99 kept od 1487); moguce rupe u pokrivenosti.
+- Nema memorije sesije, nema DB, nema autentifikacije.
+- requirements.txt pokriva ML, ali scraping zavisnosti nisu u requirements.
+- Nema .env.example i jasno definisanih konfiguracija.
+
+TODO/FIXME:
+- U projektu nije pronadjen TODO/FIXME u aplikacijskom kodu; nalazi se samo u .venv i HTML template.
+
+14. MOGUCA UNAPREDJENJA (prioritetno)
+1) Metadata filtering prije retrieval (page_type/semantic_topic gating) + strozi intent filtering.
+2) Uvesti cross-encoder reranker (npr. mMARCO) i hybrid score (embedding + cross score).
+3) Dodati evaluaciju kvaliteta finalnog odgovora (ne samo retrieval) + human/LLM grading.
+4) Konsolidovati frontend UI (odluciti koja ChatInterface verzija je aktivna) i stalno prikazivati izvore; confidence ostaviti iskljucen.
+5) Poboljsati answer composer (bolja ekstrakcija cinjenica, bolje sazimanje, manje sirovog teksta).
+6) Bolja obrada PDF/Doc/Excel (posebno tablice i obrasci).
+7) Ukloniti sum i duplikate (posebno genericne stranice); re-train metadata.
+8) Prosiriti intent set (npr. pristup informacijama / ZOSPI, notari, sudski tumaci) i dodati sinonime.
+9) B/H/S normalizacija i sinonimi (npr. taksa/pristojba, zahtjev/prijava).
+10) Integracija lokalnog LLM-a preko Ollama + sigurnosne guardrails.
+11) Caching i logging (latency i promasaji retrievala).
+12) Error handling i observability (strukturirani logovi, metrics).
+13) Dockerizacija + CI/CD pipeline.
+14) Ciscenje repo i bolji .gitignore (veliki modeli, dataset, node_modules, .venv).
+
+15. POZNATI PROBLEMI I GRESKE
+- VS Code problems: nema detektovanih gresaka (get_errors).
+- Moguce runtime greske ako nedostaju modeli u models_v5 ili intent_classifier.
+- Frontend UI u app/page.tsx ne koristi sources iz backend-a.
+- Backend fallback na dummy_responses ako import pipeline ne uspije.
+- Nema .env ni .env.example; konfiguracija Ollama je hardkodirana.
+
+16. GIT/GITHUB UREDNOST
+- Root .gitignore je minimalan (samo __pycache__).
+- U workspace-u postoje .venv/ i frontend/node_modules/, plus veliki dataset/model direktoriji.
+- Preporuka .gitignore (root):
+  - .venv/
+  - node_modules/
+  - frontend/.next/
+  - chatbot/mpr_dataset_*/
+  - chatbot/models*/
+  - chatbot/rag_eval_results*/
+  - *.npy, *.bin, *.joblib, *.pkl (ako se ne koriste u repo)
+- Razmotriti Git LFS za modele i embeddings.
+- README struktura preporuka: Overview, Quickstart, Data Pipeline, Model Training, Retrieval/Evaluation, API, Frontend, Deployment, FAQ.
+
+17. PRIORITETNI PLAN NASTAVKA RADA
+1) Stabilizovati frontend (jedna ChatInterface), prikaz izvora i jasna napomena o ne-pravnom savjetu.
+2) Uvesti stroze metadata filtre i intent gating prije retrievala.
+3) Dodati cross-encoder reranker ili bar bolji hybrid scoring.
+4) Izgraditi evaluaciju finalnih odgovora + test set za answer quality.
+5) Poboljsati answer composer (bolje izdvajanje cinjenica, uklanjanje suma).
+6) Dodati konfiguraciju (.env.example) i dokumentovati setup.
+7) Refaktorisati answer_cards (ukljuciti u pipeline ili ukloniti).
+8) Ciscenje repo + .gitignore + LFS.
+
+18. KRATKI SAZETAK ZA NASTAVAK RADA
+Projekat je NLP/RAG chatbot za Ministarstvo pravde BiH koji usmjerava korisnike na sluzbene izvore i ne daje pravni savjet. Backend je FastAPI sa /chat endpointom i pokusava da koristi chatbot_pipeline_v1, uz fallback na dummy_responses ako ML modeli ne ucitaju. Glavni pipeline koristi v5 embeddings (SentenceTransformer + FAISS) i metapodatke page_type/semantic_topic za reranking. Intent model je TF-IDF + LogisticRegression i nalazi se u chatbot/models/intent_classifier.joblib. Dataset je agresivno filtriran: 99 kept od 1487, 292 chunkova, 1460 QA parova. Scraping ima vise verzija, a v4_curated koristi manual URL listu i sitemap; metadata v5 dodaje page_type, semantic_topic i generic_penalty. Retrieval evaluacija (107 pitanja) pokazuje da v5 embeddings imaju top1 0.729 i mrr 0.7488, ali zakoni_i_propisi i ispiti su slabi po intentu. U pipeline postoji optional Ollama LLM, ali je USE_LOCAL_LLM=false po defaultu. Frontend je Next.js 14, ali ima dva UI-ja: aktivni app/page.tsx ne prikazuje izvore ni confidence, dok components/ChatInterface prikazuje izvore i confidence. Confidence prikaz je ranije uklonjen zbog konfuzije, pa treba paziti koja komponenta se koristi. Answer_cards postoje, ali nisu ukljucene u pipeline (mrtav kod). Safety logika je minimalna (smalltalk + par harmful fraza). .env.example nije prisutan, a konfiguracija API URL-a ide preko NEXT_PUBLIC_API_URL. Repo sadrzi velike dataset/model direktorije i root .gitignore je nedovoljan; treba prosiriti ignore ili LFS. Najhitnije je konsolidovati frontend i izvore, zatim pojacati metadata filtering i reranking, i dodati evaluaciju kvaliteta finalnog odgovora. Ovo ce dati najveci skok u kvalitetu bez promjene osnovne arhitekture.

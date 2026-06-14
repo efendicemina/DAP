@@ -17,7 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "chatbot"))
 
 try:
-    from chatbot_pipeline_v1 import ask as pipeline_ask
+    from chatbot.chatbot_pipeline_v1 import ask as pipeline_ask
     ML_MODEL_LOADED = True
 except Exception as e:
     print(f"Warning: Could not load ML model: {e}")
