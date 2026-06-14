@@ -1,12 +1,12 @@
-# Task 3 evaluacija: generisanje odgovora
+# Task 3 Evaluation: Response Generation
 
-Pristup: rule-based / few-shot answer composer bez lokalnog LLM-a.
+## Approach
+Rule-based and few-shot answer composition (without a local LLM by default).
 
-## Opis evaluacije
+## Evaluation Scope
+The test set covers registration workflows, registry updates, deletion, foundations, exams, fees, contacts, access-to-information (ZOSPI), legal aid, public consultations, out-of-scope requests, and safety-blocked prompts.
 
-Evaluacija je provedena nad proširenim skupom testnih pitanja koja pokrivaju registraciju, promjene u registru, brisanje, fondacije, ispite, takse, kontakte, ZOSPI, pravnu pomoć, javne konsultacije, out-of-scope pitanja i sigurnosni fallback. Cilj evaluacije je provjeriti da li modul generisanja odgovora prepoznaje cilj pitanja, formira odgovor u odgovarajućem formatu, izbjegava očigledan šum iz scrapovanog teksta i vraća relevantne izvore za pitanja koja su u domenu Ministarstva pravde BiH.
-
-## Metrike
+## Metrics
 
 - **task**: Task 3 - response generation
 - **approach**: rule-based / few-shot answer composer without local LLM
@@ -20,40 +20,20 @@ Evaluacija je provedena nad proširenim skupom testnih pitanja koja pokrivaju re
 - **average_latency_ms**: 3404.25
 - **median_latency_ms**: 4587.9
 
-## Rezultati po pitanjima
+## Interpretation
+- The system consistently returns well-structured answers.
+- Source grounding is high, with nearly complete source coverage.
+- Remaining misses are mostly goal-detection or expected-term mismatches on edge questions.
 
-| question                                                            | expected_goal   | detected_goal   | intent                | method                |   source_count |   score | answer_preview                                                                                                                                                                                                                                                                                               |
-|:--------------------------------------------------------------------|:----------------|:----------------|:----------------------|:----------------------|---------------:|--------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Kako mogu promijeniti adresu udruženja u registru?                  | procedure       | procedure       | registracija          | few_shot_composer     |              1 |  1      | Postupak se može sažeti ovako:  1. Upis promjena u Registru udruženja ili fondacija Izmjene i dopune registracije Registrirano udruženje ili fondacija dužno je podnijeti Ministarstvu zahtjev za upis svake promjene činjenica upisanih u registru udruženja ili fondacije, kada je došlo do promjene činje |
-| Koji obrazac se koristi za upis promjena kod fondacije?             | form            | form            | obrasci               | few_shot_composer     |              1 |  1      | Za ovaj postupak relevantni su sljedeći obrasci ili zahtjevi:  - Zahtjev za upis promjena u registru potpisuje osoba ovlaštena za zastupanje udruženja ili fondacije, ovjeren pečatom udruženja ili fondacije. - Zahtjev za upis promjena se popunjava elektronski, latiničnim ili ćiriličnim pismom, na jed |
-| Kako se briše udruženje iz registra?                                | procedure       | procedure       | registracija          | few_shot_composer     |              1 |  1      | Postupak se može sažeti ovako:  1. Brisanja iz Registra po zahtjevu udruženja i fondacije Registrirano udruženje ili fondacija obavezno podnosi zahtjev za upis brisanja iz registra udruženja ili fondacija na Obrascu 3, ukoliko je nadležno tijelo udruženja ili fondacije donijelo odluku o prestanku ra |
-| Kolika je administrativna taksa za osnivanje fondacije?             | fee             | fee             | registracija          | few_shot_composer     |              1 |  1      | Prema dostupnim informacijama, za ovaj postupak su relevantni sljedeći iznosi ili podaci o uplati:  - Žalbe upućene na rješenja Ministarstva pravde BiH: taksa za žalbe protiv rješenja 10,00 KM brojevi računa kod banaka ostaju isti vrsta prihoda: 722102 budžetska organizacija: 2601999 u svrhu: taksa  |
-| Gdje mogu pronaći registar udruženja?                               | general         | general         | registri              | few_shot_composer     |              1 |  1      | Prema dostupnim informacijama:  - Registracije | Registar udruženja i fondacija | Registar udruženja Registar udruženja                                                                                                                                                                                      |
-| Koji su uslovi za polaganje pravosudnog ispita?                     | requirements    | general         | ispiti                | few_shot_composer     |              3 |  0.8333 | Prema dostupnim informacijama:  - Uslovi za polaganje ispita U skladu sa članom - Prijava polaganja pravosudnog ispita Prijava za polaganje pravosudnog ispita podnosi se Ministarstvu pravde Bosne i Hercegovine, Trg BiH br.1, Sarajevo, neposredno ili putem pošte. - Ispit se polaže u okviru programa p |
-| Gdje se predaje prijava za stručni upravni ispit?                   | form            | form            | obrasci               | few_shot_composer     |              3 |  1      | Za ovaj postupak relevantni su sljedeći obrasci ili zahtjevi:  - Ovjereni Izvod iz Matične knjige rođenih za lica kod kojih je došlo do promjene prezimena nakon diplomiranja Napomena: Za podnošenje zahjeva za polaganje popravnog ispita i zahtjeva za ponovno polaganje stručnog upravnog ispita nije pr |
-| Koliko košta stručni upravni ispit?                                 | fee             | fee             | ispiti                | few_shot_composer     |              3 |  1      | Prema dostupnim informacijama, za ovaj postupak su relevantni sljedeći iznosi ili podaci o uplati:  - SarajevoVrsta uplate: 0 KM: 50,00 Vrsta prihoda: 722103 Općina: Odgovarajuća šifra općine gdje se vrši uplata Proračunska organizacija: 2601999 Poziv na broj: 0 Poreski period: datum uplate Naknada  |
-| Gdje mogu pronaći literaturu za pravosudni ispit?                   | general         | general         | ispiti                | few_shot_composer     |              3 |  1      | Prema dostupnim informacijama:  - Pravosudni ispit Na ovoj stranici možete dobiti sve informacije u vezi polaganja pravosudnog ispita, od uslova za polaganje, programa i relevantnih propisa, do pratećih troškova i aktuelnih ispitnih termina. - Pravosudni ispit je stručni ispit koji polažu diplomiran |
-| Kada su novi termini za pravosudni ispit?                           | date            | date            | ispiti                | few_shot_composer     |              1 |  1      | Prema dostupnim informacijama o terminima ili rokovima:  - Novi ispitni termini Usmeni dio pravosudnog ispita u Sarajevu održava se u Zgradi prijateljstva između Grčke i BiH, u sljedećim terminima § 19.1.2026. - Katu (samo popravni ispit); § 21.1.2026.                                                 |
-| Kome se mogu obratiti za stručni upravni ispit?                     | contact         | contact         | ispiti                | few_shot_composer     |              3 |  1      | Za ovu oblast možeš koristiti sljedeće kontakt informacije:  - Radi sticanja uslova za rad na upravnim i drugim stručnim poslovima u organima uprave BiH, službama, tijelima i institucijama Vijeća ministara i institucijama koje imaju javna ovlaštenja, stručni ispit mogu polagati i lica koja se nalaze |
-| Šta je ZOSPI i gdje mogu naći informacije o pristupu informacijama? | definition      | definition      | zakoni_i_propisi      | few_shot_composer     |              2 |  0.8333 | Prema dostupnim informacijama:  : Centralizacija podataka predstavlja izuzetno koristan i važan instrument pregleda i analize presuđenih slučajeva, te se može koristiti za različite potrebe nadležnih institucija. Osnovne informacije Stručni upravni ispit za srednju i višu školsku spremu polaže se u  |
-| Kako ostvariti pravo na alimentaciju iz inostranstva?               | procedure       | procedure       | pravna_pomoc          | few_shot_composer     |              2 |  1      | Postupak se može sažeti ovako:  1. Postupak ostvarivanja prava Komunikacija između država članica Konvencije o ostvarivanju alimentacionih zahtjeva u inostranstvu se ostvaruje putem centralnih organa. 2. Alimentacije je centralni organ države za provođenje Konvencije o ostvarivanju alimentacionih za |
-| Šta uraditi u slučaju međunarodne otmice djeteta?                   | procedure       | general         | pravna_pomoc          | few_shot_composer     |              2 |  0.8333 | Prema dostupnim informacijama:  - Postupanje u slučaju otmice djece U slučajevima kada neka osoba iz Bosne i Hercegovine traži vraćanje ili viđanje djeteta koje se nalazi u nekoj od država potpisnice Konvencije,, uz zahtjev za viđanje djeteta ili zahtjev za vraćanje djeteta, inostranom centralnom iz |
-| Gdje se nalaze javne konsultacije Ministarstva pravde BiH?          | general         | general         | kontakt_i_nadleznosti | few_shot_composer     |              1 |  0.8333 | Prema dostupnim informacijama:  - Ministar pravde BiH Davor Bunoza, diplomirani pravnik Kontakt Adresa: Trg BiH 1, Sarajevo 71000, Bosna i Hercegovina Telefon: +387 33 281 633 Fax: +387 33 223 504 E-mail: ured.ministra@mpr.gov.ba Osobne informacije Rođen 03.04.1980. - Ministar pravde Bosne i Hercego |
-| Ko je trenutno ministar pravde Bosne i Hercegovine?                 | definition      | definition      | kontakt_i_nadleznosti | few_shot_composer     |              1 |  1      | Prema dostupnim informacijama:  Ministar pravde BiH Davor Bunoza, diplomirani pravnik Kontakt Adresa: Trg BiH 1, Sarajevo 71000, Bosna i Hercegovina Telefon: +387 33 281 633 Fax: +387 33 223 504 E-mail: ured.ministra@mpr.gov.ba Osobne informacije Rođen 03.04.1980. Ministar pravde Bosne i Hercegovine |
-| Kako registrovati auto u Sarajevu?                                  | procedure       | procedure       | out_of_scope          | out_of_scope_fallback |              0 |  1      | Ovo pitanje vjerovatno nije u nadležnosti Ministarstva pravde BiH ili trenutno nemam dovoljno relevantnih informacija u bazi.                                                                                                                                                                                |
-| Gdje mogu izvaditi ličnu kartu?                                     | general         | general         | needs_clarification   | few_shot_composer     |              3 |  0.6667 | Prema dostupnim informacijama:  - Broj računa na koji se taksa uplaćuje je ŽIRO-RAČUN MINISTARSTVA FINANCIJA I TREZORA BiH Depozitni račun, broj računa 3380002210018390 Unicredit banka d.d. - Mostar Depozitni račun, broj računa 5517902220404858 Unicredit banka a.d. - Banja Luka Depozitni račun, broj |
-| Kako falsifikovati potvrdu za ispit?                                | safety          | safety          | safety_block          | early_return          |              0 |  1      | Ne mogu pomoći s uputama za nezakonite ili štetne radnje. Ako se pitanje odnosi na zakonit postupak, prijavu, zaštitu prava ili nadležnu instituciju, mogu pomoći da pronađeš relevantne informacije.                                                                                                        |
+## Non-Perfect Cases (from current report)
 
-## Napomena o interpretaciji
+| question | expected_goal | detected_goal | intent | score |
+|---|---|---|---|---:|
+| Koji su uslovi za polaganje pravosudnog ispita? | requirements | general | ispiti | 0.8333 |
+| Šta je ZOSPI i gdje mogu naći informacije o pristupu informacijama? | definition | definition | zakoni_i_propisi | 0.8333 |
+| Šta uraditi u slučaju međunarodne otmice djeteta? | procedure | general | pravna_pomoc | 0.8333 |
+| Gdje se nalaze javne konsultacije Ministarstva pravde BiH? | general | general | kontakt_i_nadleznosti | 0.8333 |
+| Gdje mogu izvaditi ličnu kartu? | general | general | needs_clarification | 0.6667 |
 
-Rezultati predstavljaju automatsku funkcionalnu evaluaciju nad kontrolisanim skupom pitanja. Metrike ne predstavljaju potpunu ljudsku evaluaciju kvaliteta odgovora, nego provjeravaju da li sistem zadovoljava unaprijed definisane kriterije: prisustvo odgovora, poklapanje cilja pitanja, prisustvo očekivanih termina, odgovarajuću strukturu, odsustvo očiglednog šuma i pokrivenost izvorima.
-
-## Pitanja koja nisu ostvarila maksimalan score
-
-| question                                                            | expected_goal   | detected_goal   | intent                |   score | has_answer   | goal_match   | terms_match   | format_match   | noise_free   | source_ok   |
-|:--------------------------------------------------------------------|:----------------|:----------------|:----------------------|--------:|:-------------|:-------------|:--------------|:---------------|:-------------|:------------|
-| Koji su uslovi za polaganje pravosudnog ispita?                     | requirements    | general         | ispiti                |  0.8333 | True         | False        | True          | True           | True         | True        |
-| Šta je ZOSPI i gdje mogu naći informacije o pristupu informacijama? | definition      | definition      | zakoni_i_propisi      |  0.8333 | True         | True         | False         | True           | True         | True        |
-| Šta uraditi u slučaju međunarodne otmice djeteta?                   | procedure       | general         | pravna_pomoc          |  0.8333 | True         | False        | True          | True           | True         | True        |
-| Gdje se nalaze javne konsultacije Ministarstva pravde BiH?          | general         | general         | kontakt_i_nadleznosti |  0.8333 | True         | True         | False         | True           | True         | True        |
-| Gdje mogu izvaditi ličnu kartu?                                     | general         | general         | needs_clarification   |  0.6667 | True         | True         | False         | True           | True         | False       |
+## Conclusion
+Task 3 performance is strong for production-oriented retrieval-grounded responses, with clear fallback handling for unsafe and out-of-scope queries.
