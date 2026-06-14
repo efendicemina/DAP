@@ -29,11 +29,11 @@ The test set covers registration workflows, registry updates, deletion, foundati
 
 | question | expected_goal | detected_goal | intent | score |
 |---|---|---|---|---:|
-| Koji su uslovi za polaganje pravosudnog ispita? | requirements | general | ispiti | 0.8333 |
-| Šta je ZOSPI i gdje mogu naći informacije o pristupu informacijama? | definition | definition | zakoni_i_propisi | 0.8333 |
-| Šta uraditi u slučaju međunarodne otmice djeteta? | procedure | general | pravna_pomoc | 0.8333 |
-| Gdje se nalaze javne konsultacije Ministarstva pravde BiH? | general | general | kontakt_i_nadleznosti | 0.8333 |
-| Gdje mogu izvaditi ličnu kartu? | general | general | needs_clarification | 0.6667 |
+| What are the requirements for taking the bar exam? | requirements | general | ispiti | 0.8333 |
+| What is ZOSPI and where can I find information on access to information? | definition | definition | zakoni_i_propisi | 0.8333 |
+| What should be done in a case of international child abduction? | procedure | general | pravna_pomoc | 0.8333 |
+| Where can I find the Ministry of Justice BiH public consultations page? | general | general | kontakt_i_nadleznosti | 0.8333 |
+| Where can I get an ID card? | general | general | needs_clarification | 0.6667 |
 
 ## Conclusion
 Task 3 performance is strong for production-oriented retrieval-grounded responses, with clear fallback handling for unsafe and out-of-scope queries.
