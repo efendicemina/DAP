@@ -1,0 +1,39 @@
+{
+  "task": "Task 1 - query understanding",
+  "text_representations": {
+    "baseline": "TF-IDF n-grams",
+    "deep_contextual": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  },
+  "intent_classification": {
+    "tfidf_logistic_regression": {
+      "validation": {
+        "accuracy": 0.998,
+        "macro_f1": 0.998144482929243,
+        "weighted_f1": 0.997999340260597
+      },
+      "test": {
+        "accuracy": 0.982,
+        "macro_f1": 0.9798416121560957,
+        "weighted_f1": 0.9818576338884605
+      }
+    },
+    "sentence_transformer_logistic_regression": {
+      "validation": {
+        "accuracy": 0.974,
+        "macro_f1": 0.9749704371505133,
+        "weighted_f1": 0.9740759032051279
+      },
+      "test": {
+        "accuracy": 0.96,
+        "macro_f1": 0.9586745251449743,
+        "weighted_f1": 0.9598418456547371
+      }
+    }
+  },
+  "key_information_extraction": {
+    "evaluated_examples": 369.0,
+    "correct_examples": 254.0,
+    "skipped_without_weak_label": 131.0,
+    "procedure_extraction_accuracy": 0.6883468834688347
+  }
+}

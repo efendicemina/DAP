@@ -1,0 +1,14 @@
+{
+  "model_type": "SentenceTransformer embeddings + LogisticRegression",
+  "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "validation": {
+    "accuracy": 0.974,
+    "macro_f1": 0.9749704371505133,
+    "weighted_f1": 0.9740759032051279
+  },
+  "test": {
+    "accuracy": 0.96,
+    "macro_f1": 0.9586745251449743,
+    "weighted_f1": 0.9598418456547371
+  }
+}

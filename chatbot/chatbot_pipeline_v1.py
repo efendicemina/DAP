@@ -10,6 +10,7 @@ import faiss
 import requests
 from answer_cards import match_answer_card
 from few_shot_composer import compose_few_shot_answer, answer_quality_bad as few_shot_answer_quality_bad
+from query_understanding_v1 import extract_key_information
 
 # Find the chatbot root directory
 CHATBOT_ROOT = Path(__file__).parent
@@ -239,6 +240,18 @@ def direct_route_url(question):
     matches.sort(reverse=True)
     return matches[0][1]
 
+def expand_query_with_understanding(question, query_info):
+    expanded_query = question
+
+    if query_info.action_type != "opce_pitanje":
+        expanded_query += f" {query_info.action_type}"
+
+    expanded_query += " " + " ".join(query_info.document_types)
+    expanded_query += " " + " ".join(query_info.procedures)
+    expanded_query += " " + " ".join(query_info.legal_topics)
+    expanded_query += " " + " ".join(query_info.keywords[:5])
+
+    return expanded_query.strip()
 
 def rerank_score(question, row, base_score):
     q = norm(question)
@@ -326,13 +339,16 @@ def rerank_with_cross_encoder(question, results, top_k=5):
 
 
 def retrieve(question, top_k=5):
+    query_info = extract_key_information(question)
+    expanded_question = expand_query_with_understanding(question, query_info)
+
     intent, confidence = predict_intent(question)
 
     if intent == "out_of_scope":
-        return intent, confidence, []
+        return intent, confidence, [], query_info
 
     if intent == "needs_clarification" and confidence < 0.20:
-        return intent, confidence, []
+        return intent, confidence, [], query_info
 
     forced_url = direct_route_url(question)
 
@@ -348,19 +364,24 @@ def retrieve(question, top_k=5):
                 item["base_score"] = 1.0
                 item["score"] = 2.0
                 results.append(item)
-            return intent, confidence, results
+            return intent, confidence, results, query_info
 
-    candidates = embedding_candidates(question, candidate_k=40)
+    candidates = embedding_candidates(expanded_question, candidate_k=40)
 
     if RERANK_DEBUG:
+        print("\nQUERY UNDERSTANDING")
+        print(query_info.to_dict())
+        print("\nEXPANDED QUERY:", expanded_question)
+
         print("\nBEFORE RERANK (top candidates)")
         for r in candidates[: min(5, len(candidates))]:
             print(
                 f"heur={float(r.get('score',0.0)):.4f} base={float(r.get('base_score',0.0)):.4f} | url={str(r.get('source_url',''))[:80]} | title={str(r.get('title',''))[:80]}"
             )
+
     results = rerank_with_cross_encoder(question, candidates, top_k=top_k)
 
-    return intent, confidence, results
+    return intent, confidence, results, query_info
 
 
 def split_sentences(text):
@@ -982,13 +1003,14 @@ def ask(question):
             "sources": []
         }
 
-    intent, confidence, results = retrieve(question, top_k=5)
+    intent, confidence, results, query_info = retrieve(question, top_k=5)
     response = generate_answer(question, results, intent=intent, confidence=confidence)
 
     return {
         "question": question,
         "intent": intent,
         "confidence": round(float(confidence), 4),
+        "query_understanding": query_info.to_dict(),
         "answer": response["answer"],
         "sources": response["sources"]
     }
